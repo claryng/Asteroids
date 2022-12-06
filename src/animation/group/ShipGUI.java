@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
+
+import javax.swing.Timer;
 
 import animation.AbstractAnimation;
 
@@ -22,7 +26,7 @@ public class ShipGUI {
     // The top edge of the shape
     private int y;
     
-    private double angle;
+    private double angle = 0;
     
     private AbstractAnimation animation;
     
@@ -70,14 +74,20 @@ public class ShipGUI {
         return at.createTransformedShape(p);
     }
     
-    public void up() {
-        y = y - 5;
+    public void forward() {
+        System.out.println(angle);
+        x = (int) (x + Math.round(Math.sin(angle)));
+        y = (int) (y - Math.round(Math.cos(angle)));
         System.out.println ("Up");
     }
 
-    public void down() {
-        y = y + 5;
-        System.out.println ("Down");
+    public void thrust() {
+        x = (int) (x + Math.round(Math.sin(angle)));
+        y = (int) (y - Math.round(Math.cos(angle)));
+        p.addPoint(5, 20);
+        p.addPoint(0, 25);
+        p.addPoint(-5, 20);
+        System.out.println ("Thrust");
     }
     
     public void right () {
@@ -91,8 +101,11 @@ public class ShipGUI {
     }
     
     public void space () {
+        
         x = (int)Math.floor(Math.random()*(540 - 20+1)+20);
         y = (int)Math.floor(Math.random()*(540 - 20+1)+20);
+        
+        
         System.out.println ("Hyperspace Goooooo!");
     }
     

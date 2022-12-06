@@ -1,4 +1,4 @@
-package animation.demo;
+package animation.group;
 
 public class AnimationStub extends AnimationDemo {
 

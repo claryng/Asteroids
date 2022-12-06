@@ -1,8 +1,10 @@
-package animation.demo;
+package animation.group;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import animation.group.AnimationDemo;
 
 class AnimatedObjectDemoTest {
 
