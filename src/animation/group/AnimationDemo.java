@@ -28,7 +28,9 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
     // many objects!
     private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
     
-    private ShipGUI ship = new ShipGUI(this);
+//    private ShipGUI ship = new ShipGUI(this);
+    
+    private animation.Ship ship = new animation.Ship(this);
     
     private boolean moving = true;
     
@@ -49,7 +51,11 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-            shape.nextFrame();
+//            shape.nextFrame();
+            
+            // demo ship
+            ship.nextFrame();
+            
             repaint();
             if (checkCollision (shape, ship)) {
                 moving = false;
@@ -64,7 +70,7 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
      * @return true if the shapes intersect
      */
     private boolean checkCollision(AnimatedObjectDemo shape1,
-            ShipGUI shape2) {
+            animation.Ship shape2) {
         return shape2.getShape().intersects(shape1.getShape().getBounds2D());
     }
 
@@ -78,8 +84,12 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         // method above, and repaint will call paintComponent.
         
         super.paintComponent(g);
-        shape.paint((Graphics2D) g);
+//        shape.paint((Graphics2D) g);
+        
+        // SHIP demo
         ship.paint((Graphics2D) g);
+        
+//        triangle.paint((Graphics2D) g);
     }
 
     @Override
@@ -93,19 +103,22 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         int key = e.getKeyCode();
         switch (key) {
         case KeyEvent.VK_UP:
-            ship.forward();
-            break;
-        case KeyEvent.VK_SHIFT:
-            ship.thrust();
+//            shape.up();
+            ship.move();
             break;
         case KeyEvent.VK_RIGHT:
-            ship.right();
+//            shape.right();
+            ship.rotate();
+            ship.setOrientation("right");
             break;
         case KeyEvent.VK_LEFT:
-            ship.left();
+//            shape.left();
+            ship.rotate();
+            ship.setOrientation("left");
             break;
         case KeyEvent.VK_SPACE:
-            ship.space();
+//            shape.space();
+            ship.hyperspace();
             break;
         default:
             // Ignore all other keys
