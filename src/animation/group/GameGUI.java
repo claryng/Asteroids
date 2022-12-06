@@ -17,7 +17,7 @@ import animation.AbstractAnimation;
  * animation (or game!) that contains multiple animated objects.
  *
  */
-public class AnimationDemo extends AbstractAnimation implements KeyListener {
+public class GameGUI extends AbstractAnimation implements KeyListener {
     // The width of the window, in pixels.
     private static final int WINDOW_WIDTH = 600;
     
@@ -38,7 +38,7 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
      * Constructs an animation and initializes it to be able to accept
      * key input.
      */
-    public AnimationDemo () {
+    public GameGUI () {
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener (this);
@@ -165,7 +165,7 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         f.getContentPane().setBackground(Color.BLACK);
 
         // Create the animation.
-        AnimationDemo demo = new AnimationDemo();
+        GameGUI demo = new GameGUI();
 
         // Add the animation to the window
         Container contentPane = f.getContentPane();
