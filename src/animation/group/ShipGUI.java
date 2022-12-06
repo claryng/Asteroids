@@ -21,10 +21,10 @@ public class ShipGUI {
     private Polygon p;
     
     // The left edge of the shape
-    private int x;
+    private double x;
     
     // The top edge of the shape
-    private int y;
+    private double y;
     
     private double angle = 0;
     
@@ -74,36 +74,52 @@ public class ShipGUI {
         return at.createTransformedShape(p);
     }
     
+    /**
+     * 
+     */
     public void forward() {
         System.out.println(angle);
-        x = (int) (x + Math.round(Math.sin(angle)));
-        y = (int) (y - Math.round(Math.cos(angle)));
+        x = x + Math.round(Math.sin(angle));
+        y = y - Math.round(Math.cos(angle));
+        System.out.println(x + ", " + y);
         System.out.println ("Up");
     }
 
+    /**
+     * 
+     */
     public void thrust() {
-        x = (int) (x + Math.round(Math.sin(angle)));
-        y = (int) (y - Math.round(Math.cos(angle)));
+        x = x + Math.round(Math.sin(angle));
+        y = y - Math.round(Math.cos(angle));
         p.addPoint(5, 20);
         p.addPoint(0, 25);
         p.addPoint(-5, 20);
         System.out.println ("Thrust");
     }
     
+    /**
+     * 
+     */
     public void right () {
         angle = angle + Math.PI/10;
         System.out.println ("Right");
     }
     
+    /**
+     * 
+     */
     public void left () {
         angle = angle - Math.PI/10;
         System.out.println ("Left");
     }
     
+    /**
+     * 
+     */
     public void space () {
         
-        x = (int)Math.floor(Math.random()*(540 - 20+1)+20);
-        y = (int)Math.floor(Math.random()*(540 - 20+1)+20);
+        x = Math.floor(Math.random()*(540 - 20+1)+20);
+        y = Math.floor(Math.random()*(540 - 20+1)+20);
         
         
         System.out.println ("Hyperspace Goooooo!");
