@@ -76,37 +76,4 @@ public class AffineTransformDemo {
         System.out.println ("Down");
     }
     
-//    /**
-//     * Demo of action to take when the user clicks the right arrow button.
-//     * This prints Right on the console.
-//     * @return 
-//     */
-//    public Shape right() {
-//        AffineTransform at1 = new AffineTransform();
-//        
-//        at1.translate(x, y);
-//        
-//        // Rotate the shape 45 degrees to the left
-//        at1.rotate(Math.PI/4);
-//        AffineTransform at = at1;
-//        
-//        // Create a shape that looks like our triangle, but centered
-//        // and rotated as specified by the AffineTransform object.
-//        return at.createTransformedShape(p);
-//    }
-//
-//    /**
-//     * Demo of action to take when the user clicks the left arrow button.
-//     * This prints Left on the console.
-//     */
-//    public void left() {
-//        System.out.println ("Left");
-//    }
-    
-    public void rightAnimation () {
-        AffineTransform at1 = new AffineTransform();
-        
-        at1.transl
-    }
-    
 }
