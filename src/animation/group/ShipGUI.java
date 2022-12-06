@@ -79,8 +79,8 @@ public class ShipGUI {
      */
     public void forward() {
         System.out.println(angle);
-        x = x + Math.round(Math.sin(angle));
-        y = y - Math.round(Math.cos(angle));
+        x = x + Math.sin(angle);
+        y = y - Math.cos(angle);
         System.out.println(x + ", " + y);
         System.out.println ("Up");
     }
