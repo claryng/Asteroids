@@ -1,4 +1,4 @@
-package animation.demo;
+package animation.group;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -50,7 +50,7 @@ public class AnimatedObjectDemo implements AnimatedObject {
      * @param g the graphics context to draw on.
      */
     public void paint(Graphics2D g) {
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.fill(ball);
     }
 
