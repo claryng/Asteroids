@@ -1,4 +1,4 @@
-package animation.demo;
+package animation.group;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.Color;
 
 import javax.swing.JFrame;
 
@@ -16,7 +17,7 @@ import animation.AbstractAnimation;
  * animation (or game!) that contains multiple animated objects.
  *
  */
-public class AnimationDemo extends AbstractAnimation implements KeyListener {
+public class GameGUI extends AbstractAnimation implements KeyListener {
     // The width of the window, in pixels.
     private static final int WINDOW_WIDTH = 600;
     
@@ -27,7 +28,9 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
     // many objects!
     private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
     
-    private AffineTransformDemo triangle = new AffineTransformDemo();
+//    private ShipGUI ship = new ShipGUI(this);
+    
+    private animation.Ship ship = new animation.Ship(this);
     
     private boolean moving = true;
     
@@ -35,7 +38,7 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
      * Constructs an animation and initializes it to be able to accept
      * key input.
      */
-    public AnimationDemo () {
+    public GameGUI () {
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener (this);
@@ -48,9 +51,13 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-            shape.nextFrame();
+//            shape.nextFrame();
+            
+            // demo ship
+            ship.nextFrame();
+            
             repaint();
-            if (checkCollision (shape, triangle)) {
+            if (checkCollision (shape, ship)) {
                 moving = false;
             }
         }
@@ -63,7 +70,7 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
      * @return true if the shapes intersect
      */
     private boolean checkCollision(AnimatedObjectDemo shape1,
-            AffineTransformDemo shape2) {
+            animation.Ship shape2) {
         return shape2.getShape().intersects(shape1.getShape().getBounds2D());
     }
 
@@ -77,8 +84,12 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         // method above, and repaint will call paintComponent.
         
         super.paintComponent(g);
-        shape.paint((Graphics2D) g);
-        triangle.paint((Graphics2D) g);
+//        shape.paint((Graphics2D) g);
+        
+        // SHIP demo
+        ship.paint((Graphics2D) g);
+        
+//        triangle.paint((Graphics2D) g);
     }
 
     @Override
@@ -92,16 +103,22 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         int key = e.getKeyCode();
         switch (key) {
         case KeyEvent.VK_UP:
-            shape.up();
+//            shape.up();
+            ship.move();
             break;
         case KeyEvent.VK_RIGHT:
-            shape.right();
+//            shape.right();
+            ship.rotate();
+            ship.setOrientation("right");
             break;
         case KeyEvent.VK_LEFT:
-            shape.left();
+//            shape.left();
+            ship.rotate();
+            ship.setOrientation("left");
             break;
         case KeyEvent.VK_SPACE:
-            shape.space();
+//            shape.space();
+            ship.hyperspace();
             break;
         default:
             // Ignore all other keys
@@ -144,9 +161,11 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         // This says that when the user closes the window, the
         // entire program should exit.
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        f.getContentPane().setBackground(Color.BLACK);
 
         // Create the animation.
-        AnimationDemo demo = new AnimationDemo();
+        GameGUI demo = new GameGUI();
 
         // Add the animation to the window
         Container contentPane = f.getContentPane();
