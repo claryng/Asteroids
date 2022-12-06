@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.Color;
 
 import javax.swing.JFrame;
 
@@ -92,10 +93,14 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         int key = e.getKeyCode();
         switch (key) {
         case KeyEvent.VK_UP:
-            shape.up();
+            triangle.up();
+            break;
+        case KeyEvent.VK_DOWN:
+            triangle.down();
             break;
         case KeyEvent.VK_RIGHT:
-            shape.right();
+            triangle.right();
+            repaint();
             break;
         case KeyEvent.VK_LEFT:
             shape.left();
@@ -144,6 +149,8 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         // This says that when the user closes the window, the
         // entire program should exit.
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        f.getContentPane().setBackground(Color.BLACK);
 
         // Create the animation.
         AnimationDemo demo = new AnimationDemo();

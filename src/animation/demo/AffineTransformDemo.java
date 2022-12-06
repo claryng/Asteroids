@@ -25,9 +25,9 @@ public class AffineTransformDemo {
      */
     public AffineTransformDemo () {
         p = new Polygon();
-        p.addPoint(-10, 20);
+        p.addPoint(-11, 20);
         p.addPoint(0, -20);
-        p.addPoint(10, 20);
+        p.addPoint(11, 20);
         
         x = 100;
         y = 100;
@@ -38,7 +38,7 @@ public class AffineTransformDemo {
      * @param g the graphics context to draw on
      */
     public void paint(Graphics2D g) {
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.draw(getShape());
     }
 
@@ -58,6 +58,35 @@ public class AffineTransformDemo {
         at1.translate(x, y);
         
         // Rotate the shape 45 degrees to the left
+        at1.rotate(-Math.PI/4);
+        AffineTransform at = at1;
+        
+        // Create a shape that looks like our triangle, but centered
+        // and rotated as specified by the AffineTransform object.
+        return at.createTransformedShape(p);
+    }
+    
+    public void up() {
+        y = y - 5;
+        System.out.println ("Up");
+    }
+
+    public void down() {
+        y = y + 5;
+        System.out.println ("Down");
+    }
+    
+    /**
+     * Demo of action to take when the user clicks the right arrow button.
+     * This prints Right on the console.
+     * @return 
+     */
+    public Shape right() {
+        AffineTransform at1 = new AffineTransform();
+        
+        at1.translate(x, y);
+        
+        // Rotate the shape 45 degrees to the left
         at1.rotate(Math.PI/4);
         AffineTransform at = at1;
         
@@ -65,4 +94,13 @@ public class AffineTransformDemo {
         // and rotated as specified by the AffineTransform object.
         return at.createTransformedShape(p);
     }
+
+    /**
+     * Demo of action to take when the user clicks the left arrow button.
+     * This prints Left on the console.
+     */
+    public void left() {
+        System.out.println ("Left");
+    }
+    
 }
