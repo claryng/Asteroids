@@ -27,6 +27,8 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
     // many objects!
     private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
     
+    private animation.Ship ship = new animation.Ship(this);
+    
     private AffineTransformDemo triangle = new AffineTransformDemo();
     
     private boolean moving = true;
@@ -48,7 +50,11 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-            shape.nextFrame();
+//            shape.nextFrame();
+            
+            // demo ship
+            ship.nextFrame();
+            
             repaint();
             if (checkCollision (shape, triangle)) {
                 moving = false;
@@ -77,8 +83,12 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         // method above, and repaint will call paintComponent.
         
         super.paintComponent(g);
-        shape.paint((Graphics2D) g);
-        triangle.paint((Graphics2D) g);
+//        shape.paint((Graphics2D) g);
+        
+        // SHIP demo
+        ship.paint((Graphics2D) g);
+        
+//        triangle.paint((Graphics2D) g);
     }
 
     @Override
@@ -92,16 +102,22 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         int key = e.getKeyCode();
         switch (key) {
         case KeyEvent.VK_UP:
-            shape.up();
+//            shape.up();
+            ship.move();
             break;
         case KeyEvent.VK_RIGHT:
-            shape.right();
+//            shape.right();
+            ship.rotate();
+            ship.setOrientation("right");
             break;
         case KeyEvent.VK_LEFT:
-            shape.left();
+//            shape.left();
+            ship.rotate();
+            ship.setOrientation("left");
             break;
         case KeyEvent.VK_SPACE:
-            shape.space();
+//            shape.space();
+            ship.hyperspace();
             break;
         default:
             // Ignore all other keys
