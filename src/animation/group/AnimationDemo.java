@@ -93,10 +93,10 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         int key = e.getKeyCode();
         switch (key) {
         case KeyEvent.VK_UP:
-            ship.up();
+            ship.forward();
             break;
-        case KeyEvent.VK_DOWN:
-            ship.down();
+        case KeyEvent.VK_SHIFT:
+            ship.thrust();
             break;
         case KeyEvent.VK_RIGHT:
             ship.right();
