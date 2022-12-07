@@ -34,12 +34,6 @@ public class Ship implements AnimatedObject {
     // The animation that this object is part of
     private AbstractAnimation animation;
     
-    // Used to check if the ship needs to rotate
-    private boolean rotate = false;
-    
-    // Used to check orientation of rotation
-    private String orientation = "";
-    
     // Used to check if direction changes
     private boolean direction_changed = false;
     
@@ -47,7 +41,22 @@ public class Ship implements AnimatedObject {
     private double angle = 0;
     
     // Direction of movement
-    private Double vector_target = new Double(X,Y - 20);
+    private Double vector_target = new Double(X,Y - 3);
+    
+    // Used to check if the ship is moving
+    private boolean moving = false;
+    
+    // Used to keep track of current speed
+    private double speed = 3;
+    
+    // Used to keep track of number of frames
+    private int frames = 1;
+    
+    // Used to keep track of number of thrusts
+    private int thrusts = 0;
+    
+    // Testing
+    private int i = 1;
     
     /**
      * Create the Ship object
@@ -57,9 +66,11 @@ public class Ship implements AnimatedObject {
     public Ship(AbstractAnimation animation) {
         this.animation = animation;
         ship = new Polygon();
-        ship.addPoint(-10, 20);
-        ship.addPoint(0, -20);
-        ship.addPoint(10, 20);
+        
+        // Size of the ship: 10 x 17
+        ship.addPoint(-5, 9);
+        ship.addPoint(5, 9);
+        ship.addPoint(0, -8);
         
         x = X;
         y = Y;
@@ -70,7 +81,22 @@ public class Ship implements AnimatedObject {
      * the next frame of the animation.
      */
     public void nextFrame() {
-//        vector_target.setLocation(vector_target.getX() - x_direction, vector_target.getY() - y_direction);
+        if(moving && speed < 1) {
+            System.out.println("Speed - stop: " + speed);
+            moving = false;
+            thrusts = 0;
+        }
+        if(moving && frames % 3 == 0 && frames > 0) {
+            
+            System.out.println("Frames - decreasing:" + frames);
+            speed = (speed * 90)/100;
+            System.out.println("Speed - decreasing:" + speed);
+        }
+        if(moving) {
+            frames++;
+            System.out.println("Frames - increase: " + frames);
+            move();
+        }
     }
     
     /**
@@ -97,17 +123,8 @@ public class Ship implements AnimatedObject {
         // case, this is the center of the triangle.  See the constructor
         // to see where the points are.
         affineTransform.translate(x, y);
-        
-        if(rotate) {
-            if(orientation.equals("left")) {
-                angle -= 0.2;
-            }else {
-                angle += 0.2;
-            }
-            
-            setVectorTarget();
-            rotate = false;
-        }
+
+        setVectorTarget(speed);
         
         // Rotate the ship
         affineTransform.rotate(angle);
@@ -123,51 +140,61 @@ public class Ship implements AnimatedObject {
      * Move the ship in its current direction
      */
     public void move() {
-        if (direction_changed) {
-            x = Math.abs((x + 1 * (vector_target.getX() - x)) % WIDTH);
-            y = Math.abs((y + 1 * (vector_target.getY() - y)) % WIDTH);
-            setVectorTarget();
-        }else {
-            y -= 1;
-        }
+        x = x + 1 * ((vector_target.getX() - x));
+        y = y + 1 * ((vector_target.getY() - y));
+        x = (x <= 0) ? WIDTH + x : x % WIDTH;
+        y = (y <= 0) ? WIDTH + y : y % WIDTH;
+        System.out.println("X: " + x);
+        System.out.println("Y: " + y);
+        setVectorTarget(speed);
+        moving = true;
     }
     
     /**
-     * Indicate that rotation happens and direction changes
+     * Rotate counter-clockwise
      */
-    public void rotate() {
-        rotate = true;
-        direction_changed = true;
+    public void rotateLeft() {
+        angle -= 0.2;
     }
     
     /**
-     * Set the orientation of the rotation
-     * @param orientation the orientation of the rotation
+     * Rotate clockwise
      */
-    public void setOrientation(String orientation) {
-        this.orientation = orientation;
+    public void rotateRight() {
+        angle += 0.2;
     }
     
     /**
      * Reset vector_target when direction of movement changes
      */
-    private void setVectorTarget() {
+    private void setVectorTarget(double speed) {
         // -> positive x-axis
         // positive y-axis is reversed
-        double x_direction_point = x + 20 * Math.sin(angle);
-        double y_direction_point = y - 20 * Math.cos(angle);
+        double x_direction_point = x + speed * Math.sin(angle);
+        double y_direction_point = y - speed * Math.cos(angle);
         vector_target.setLocation(x_direction_point, y_direction_point);
     }
     
     /**
      * Send the ship into hyperspace
      */
-    public void hyperspace() {
+    public void space() {
         double min = 20;
         double max = WIDTH - 20;
         double range = max - min + 1;
         x = (Math.random() * range) + min;
         y = (Math.random() * range) + min;
-        setVectorTarget();
+        setVectorTarget(speed);
+    }
+    
+    /**
+     * Set the number of thrusts
+     */
+    public void setThrusts() {
+        thrusts ++;
+        frames = 0;
+        speed = 3 * thrusts;
+        System.out.println("Speed: " + speed);
+        System.out.println("Thrusts: " + thrusts);
     }
 }
