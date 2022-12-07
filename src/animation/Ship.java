@@ -34,9 +34,6 @@ public class Ship implements AnimatedObject {
     // The animation that this object is part of
     private AbstractAnimation animation;
     
-    // Used to check if direction changes
-    private boolean direction_changed = false;
-    
     // Original Angle of direction
     private double angle = 0;
     
