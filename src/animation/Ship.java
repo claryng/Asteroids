@@ -52,9 +52,6 @@ public class Ship implements AnimatedObject {
     // Used to keep track of number of thrusts
     private int thrusts = 0;
     
-    // Testing
-    private int i = 1;
-    
     /**
      * Create the Ship object
      * 
@@ -141,8 +138,6 @@ public class Ship implements AnimatedObject {
         y = y + 1 * ((vector_target.getY() - y));
         x = (x <= 0) ? WIDTH + x : x % WIDTH;
         y = (y <= 0) ? WIDTH + y : y % WIDTH;
-        System.out.println("X: " + x);
-        System.out.println("Y: " + y);
         setVectorTarget(speed);
         moving = true;
     }
@@ -191,7 +186,5 @@ public class Ship implements AnimatedObject {
         thrusts ++;
         frames = 0;
         speed = 3 * thrusts;
-        System.out.println("Speed: " + speed);
-        System.out.println("Thrusts: " + thrusts);
     }
 }
