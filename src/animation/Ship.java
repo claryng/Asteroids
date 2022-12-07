@@ -34,9 +34,6 @@ public class Ship implements AnimatedObject {
     // The animation that this object is part of
     private AbstractAnimation animation;
     
-    // The number of pixels to move on each frame of the animation
-    private int moveAmount = 1;
-    
     // Used to check if the ship needs to rotate
     private boolean rotate = false;
     
@@ -81,7 +78,7 @@ public class Ship implements AnimatedObject {
      * @param g the graphics context to draw on
      */
     public void paint(Graphics2D g) {
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.draw(getShape());
     }
     
@@ -127,11 +124,11 @@ public class Ship implements AnimatedObject {
      */
     public void move() {
         if (direction_changed) {
-            x = Math.abs(x + 1 * (vector_target.getX() - x)) % WIDTH;
-            y = Math.abs(y + 1 * (vector_target.getY() - y)) % WIDTH;
+            x = Math.abs((x + 1 * (vector_target.getX() - x)) % WIDTH);
+            y = Math.abs((y + 1 * (vector_target.getY() - y)) % WIDTH);
             setVectorTarget();
         }else {
-            y -= moveAmount;
+            y -= 1;
         }
     }
     

@@ -57,9 +57,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             ship.nextFrame();
             
             repaint();
-            if (checkCollision (shape, ship)) {
-                moving = false;
-            }
+//            if (checkCollision (shape, ship)) {
+//                moving = false;
+//            }
         }
     }
 
@@ -107,12 +107,11 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             ship.move();
             break;
         case KeyEvent.VK_RIGHT:
-//            shape.right();
             ship.rotate();
             ship.setOrientation("right");
             break;
         case KeyEvent.VK_LEFT:
-//            shape.left();
+//            ship.left();
             ship.rotate();
             ship.setOrientation("left");
             break;
