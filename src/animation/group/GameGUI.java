@@ -31,8 +31,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     // many objects!
     private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
     
-//    private ShipGUI ship = new ShipGUI(this);
-    
     private static JLabel scoreUpdate;
     
     private static String score = "0000";
@@ -109,8 +107,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         
         // SHIP demo
         ship.paint((Graphics2D) g);
-        
-//        triangle.paint((Graphics2D) g);
     }
 
     @Override
@@ -124,19 +120,16 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         int key = e.getKeyCode();
         switch (key) {
         case KeyEvent.VK_UP:
-//            shape.up();
-            ship.setThrusts();
+            ship.thrust();
             ship.move();
             break;
         case KeyEvent.VK_RIGHT:
             ship.rotateRight();
             break;
         case KeyEvent.VK_LEFT:
-//            ship.left();
             ship.rotateLeft();
             break;
         case KeyEvent.VK_H:
-//            shape.space();
             ship.space();
             break;
         default:
