@@ -53,7 +53,7 @@ public class UFO implements AnimatedObject {
         ufo.addPoint(0, 30);
         ufo.addPoint(-10, 25);
         
-        x = UFO_PARKING_SPACE;
+        x = 0;
         y = 100;
     }
     

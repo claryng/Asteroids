@@ -37,10 +37,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     
     private static String score = "0000";
     
-    private static JLabel livesText;
-    
-    private static int lives = 4;
-    
     private animation.Ship ship = new animation.Ship(this);
     
     private animation.UFO ufo = new animation.UFO(this);
