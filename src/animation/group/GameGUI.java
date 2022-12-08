@@ -2,15 +2,19 @@ package animation.group;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.Color;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import animation.AbstractAnimation;
+import animation.Ship;
+import animation.UFO;
 
 /**
  * This class provides a simple demonstration of how you would implement an 
@@ -30,7 +34,17 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     
 //    private ShipGUI ship = new ShipGUI(this);
     
+    private static JLabel scoreUpdate;
+    
+    private static String score = "0000";
+    
+    private static JLabel livesText;
+    
+    private static int lives = 4;
+    
     private animation.Ship ship = new animation.Ship(this);
+    
+    private animation.UFO ufo = new animation.UFO(this);
     
     private boolean moving = true;
     
@@ -39,6 +53,16 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * key input.
      */
     public GameGUI () {
+        
+        scoreUpdate = new JLabel(score);
+        scoreUpdate.setForeground(Color.white);
+        scoreUpdate.setBackground(Color.black);
+        scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        add(scoreUpdate);
+        add(livesText);
+        
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener (this);
@@ -51,15 +75,17 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-//            shape.nextFrame();
+            ufo.nextFrame();
             
             // demo ship
             ship.nextFrame();
             
             repaint();
-//            if (checkCollision (shape, ship)) {
-//                moving = false;
-//            }
+            
+            if (checkCollision (ufo, ship)) {
+                ufo.die();
+            }
+
         }
     }
 
@@ -69,8 +95,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * @param shape2 the second shape to test
      * @return true if the shapes intersect
      */
-    private boolean checkCollision(AnimatedObjectDemo shape1,
-            animation.Ship shape2) {
+    private boolean checkCollision(UFO shape1,
+            Ship shape2) {
         return shape2.getShape().intersects(shape1.getShape().getBounds2D());
     }
 
@@ -84,7 +110,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         // method above, and repaint will call paintComponent.
         
         super.paintComponent(g);
-//        shape.paint((Graphics2D) g);
+        ufo.paint((Graphics2D) g);
         
         // SHIP demo
         ship.paint((Graphics2D) g);
