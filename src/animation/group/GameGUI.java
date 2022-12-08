@@ -81,9 +81,11 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             ship.nextFrame();
             
             repaint();
+            
             if (checkCollision (ufo, ship)) {
                 ufo.die();
             }
+
         }
     }
 
@@ -128,21 +130,19 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         switch (key) {
         case KeyEvent.VK_UP:
 //            shape.up();
+            ship.setThrusts();
             ship.move();
             break;
         case KeyEvent.VK_RIGHT:
-//            shape.right();
-            ship.rotate();
-            ship.setOrientation("right");
+            ship.rotateRight();
             break;
         case KeyEvent.VK_LEFT:
-//            shape.left();
-            ship.rotate();
-            ship.setOrientation("left");
+//            ship.left();
+            ship.rotateLeft();
             break;
         case KeyEvent.VK_H:
 //            shape.space();
-            ship.hyperspace();
+            ship.space();
             break;
         default:
             // Ignore all other keys
