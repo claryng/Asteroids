@@ -71,8 +71,10 @@ public class Ship implements AnimatedObject {
      * the animation.
      */
     public void nextFrame() {
+
         // Stop moving when speed is near 0
-        if (moving && speed < 1) {
+        if(moving && speed < 0.5) {
+            System.out.println("Speed - stop: " + speed);
             moving = false;
         }
 

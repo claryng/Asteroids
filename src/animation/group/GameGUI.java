@@ -2,7 +2,6 @@ package animation.group;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -36,10 +35,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     
     private static String score = "0000";
     
-    private static JLabel livesText;
-    
-    private static int lives = 4;
-    
     private animation.Ship ship = new animation.Ship(this);
     
     private animation.UFO ufo = new animation.UFO(this);
@@ -52,14 +47,13 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     public GameGUI () {
         
-//        scoreUpdate = new JLabel(score);
-//        scoreUpdate.setForeground(Color.white);
-//        scoreUpdate.setBackground(Color.black);
-//        scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
-//        
-//        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//        add(scoreUpdate);
-//        add(livesText);
+        scoreUpdate = new JLabel(score);
+        scoreUpdate.setForeground(Color.white);
+        scoreUpdate.setBackground(Color.black);
+        scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        
+        setLayout(new BorderLayout());
+        add(scoreUpdate, BorderLayout.PAGE_START);
         
         // Allow the game to receive key input
         setFocusable(true);
@@ -82,6 +76,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             
             if (checkCollision (ufo, ship)) {
                 ufo.die();
+                
             }
 
         }
