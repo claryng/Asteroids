@@ -44,13 +44,10 @@ public class Ship implements AnimatedObject {
     private boolean moving = false;
     
     // Used to keep track of current speed
-    private double speed = 3;
+    private double speed = 0;
     
     // Used to keep track of number of frames
     private int frames = 1;
-    
-    // Used to keep track of number of thrusts
-    private int thrusts = 0;
     
     /**
      * Create the Ship object
@@ -76,19 +73,13 @@ public class Ship implements AnimatedObject {
      */
     public void nextFrame() {
         if(moving && speed < 1) {
-            System.out.println("Speed - stop: " + speed);
             moving = false;
-            thrusts = 0;
         }
         if(moving && frames % 3 == 0 && frames > 0) {
-            
-            System.out.println("Frames - decreasing:" + frames);
             speed = (speed * 90)/100;
-            System.out.println("Speed - decreasing:" + speed);
         }
         if(moving) {
             frames++;
-            System.out.println("Frames - increase: " + frames);
             move();
         }
     }
@@ -180,11 +171,10 @@ public class Ship implements AnimatedObject {
     }
     
     /**
-     * Set the number of thrusts
+     * Set frames and increase speed at each thrust
      */
-    public void setThrusts() {
-        thrusts ++;
+    public void thrust() {
         frames = 0;
-        speed = 3 * thrusts;
+        speed += 3;
     }
 }

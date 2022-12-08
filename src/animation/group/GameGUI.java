@@ -130,7 +130,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         switch (key) {
         case KeyEvent.VK_UP:
 //            shape.up();
-            ship.setThrusts();
+            ship.thrust();
             ship.move();
             break;
         case KeyEvent.VK_RIGHT:
