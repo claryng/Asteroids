@@ -58,8 +58,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         scoreUpdate.setBackground(Color.black);
         scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
         
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(scoreUpdate);
+        setLayout(new BorderLayout());
+        add(scoreUpdate, BorderLayout.PAGE_START);
         
         // Allow the game to receive key input
         setFocusable(true);
@@ -82,6 +82,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             
             if (checkCollision (ufo, ship)) {
                 ufo.die();
+                
             }
 
         }
