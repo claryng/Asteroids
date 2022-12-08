@@ -27,6 +27,9 @@ public class UFO implements AnimatedObject {
     // Shape of the Ship
     private Polygon ufo;
     
+    //The x when ufo die
+    private static final double UFO_PARKING_SPACE = -100;
+    
     // The animation that this object is part of
     private AbstractAnimation animation;
     
@@ -36,7 +39,7 @@ public class UFO implements AnimatedObject {
 //    private Shot[] bullets = new Shot[];
     
     /**
-     * Create the Ship object
+     * Create the Saucer object
      * 
      * @param animation the animation that this object is part of
      */
@@ -50,7 +53,7 @@ public class UFO implements AnimatedObject {
         ufo.addPoint(0, 30);
         ufo.addPoint(-10, 25);
         
-        x = 0;
+        x = UFO_PARKING_SPACE;
         y = 100;
     }
     
@@ -59,7 +62,14 @@ public class UFO implements AnimatedObject {
      * the next frame of the animation.
      */
     public void nextFrame() {
-        x = x + moveAmount;
+        
+        if (x >= -10) {
+            x = x + moveAmount;
+        }
+        
+        if (x >= WIDTH) {
+            x = UFO_PARKING_SPACE;
+        }
         
         getShape();
         
@@ -88,5 +98,19 @@ public class UFO implements AnimatedObject {
         return at.createTransformedShape(ufo);
     }
     
+    /**
+     * @param amount
+     */
+    public void setX(double amount) {
+        x = amount;
+    }
+    
+    public void die() {
+        x = UFO_PARKING_SPACE;
+    }
+    
+    public void appear() {
+        x = -10;
+    }
 
 }

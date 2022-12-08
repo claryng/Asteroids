@@ -54,11 +54,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     public GameGUI () {
         
-        livesText = new JLabel("Lives: " + lives);
-        livesText.setForeground(Color.white);
-        livesText.setBackground(Color.black);
-        livesText.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        
         scoreUpdate = new JLabel(score);
         scoreUpdate.setForeground(Color.white);
         scoreUpdate.setBackground(Color.black);
@@ -87,7 +82,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             
             repaint();
             if (checkCollision (ufo, ship)) {
-                moving = false;
+                ufo.die();
             }
         }
     }
