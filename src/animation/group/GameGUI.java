@@ -60,7 +60,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(scoreUpdate);
-        add(livesText);
         
         // Allow the game to receive key input
         setFocusable(true);
