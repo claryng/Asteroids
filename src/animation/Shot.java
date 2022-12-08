@@ -55,6 +55,7 @@ public class Shot implements AnimatedObject {
         
         this.x = x;
         this.y = y;
+        this.angle = angle;
         shot = new Ellipse2D.Double(x, y, SHOT_SIZE, SHOT_SIZE);
         this.speed = this.speed + speed;
         
@@ -70,7 +71,8 @@ public class Shot implements AnimatedObject {
         if (x < 600 && y < 600 && x > 0 && y > 0) {
             x = x + (speed)*Math.sin(angle);
             y = y - (speed)*Math.cos(angle);
-        } 
+            System.out.println("Shot speed: " + speed +  " Coordinate: "+x + ", " + y + "Angle: " + angle);
+        }
 
         shot.setFrame(x, y, SHOT_SIZE, SHOT_SIZE);
     }
