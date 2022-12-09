@@ -28,10 +28,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     // The height of the window, in pixels.
     private static final int WINDOW_HEIGHT = 600;
     
-    // The object that moves during the animation.  You might have
-    // many objects!
-    private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
-    
     private static JLabel scoreUpdate;
     
     private static String score = "0000";
@@ -43,6 +39,12 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     private animation.UFO ufo = new animation.UFO(this);
     
     private Shot shot = new Shot(this, 3, 300, 300, Math.PI/4);
+    
+    private animation.LargeAsteroids asteroid1 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid2 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid3 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid4 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid5 = new animation.LargeAsteroids(this);
     
     private boolean moving = true;
     
@@ -96,6 +98,13 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                 
             }
 
+            asteroid1.nextFrame();
+            asteroid2.nextFrame();
+            asteroid3.nextFrame();
+            asteroid4.nextFrame();
+            asteroid5.nextFrame();
+            repaint();
+
         }
     }
 
@@ -125,12 +134,19 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         
         super.paintComponent(g);
         
-        shot.paint((Graphics2D) g);
+//        shot.paint((Graphics2D) g);
         
         ufo.paint((Graphics2D) g);
         
         // SHIP demo
         ship.paint((Graphics2D) g);
+
+        asteroid1.paint((Graphics2D) g);
+        asteroid2.paint((Graphics2D) g);
+        asteroid3.paint((Graphics2D) g);
+        asteroid4.paint((Graphics2D) g);
+        asteroid5.paint((Graphics2D) g);
+
     }
 
     @Override
