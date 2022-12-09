@@ -16,6 +16,8 @@ import animation.AbstractAnimation;
 import animation.Ship;
 import animation.UFO;
 
+import java.util.Iterator;
+
 /**
  * This class provides a simple demonstration of how you would implement an 
  * animation (or game!) that contains multiple animated objects.
@@ -32,19 +34,23 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     // many objects!
     private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
     
-    private static JLabel scoreUpdate;
-    
-    private static String score = "0000";
-    
-    private static JLabel livesText;
-    
-    private static int lives = 4;
+//    private static JLabel scoreUpdate;
+//    
+//    private static String score = "0000";
+//    
+//    private static JLabel livesText;
+//    
+//    private static int lives = 4;
     
     private animation.Ship ship = new animation.Ship(this);
     
-    private animation.UFO ufo = new animation.UFO(this);
+//    private animation.Shot shot;
+    
+//    private animation.UFO ufo = new animation.UFO(this);
     
     private boolean moving = true;
+    
+    private boolean shooting = false;
     
     /**
      * Constructs an animation and initializes it to be able to accept
@@ -73,17 +79,26 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-            ufo.nextFrame();
+//            ufo.nextFrame();
             
             // demo ship
             ship.nextFrame();
             
+            Iterator shots = ship.getShots().iterator();
+            while(shots.hasNext()) {
+                animation.Shot shot = (animation.Shot) shots.next();
+                shot.nextFrame();
+                if(!shot.getMoving()) {
+                    shots.remove();
+                }
+            }
+            
             repaint();
             
-            if (checkCollision (ufo, ship)) {
-                ufo.die();
-            }
-
+//            if (checkCollision (ufo, ship)) {
+////                ufo.die();
+//            }
+            
         }
     }
 
@@ -108,10 +123,13 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         // method above, and repaint will call paintComponent.
         
         super.paintComponent(g);
-        ufo.paint((Graphics2D) g);
+//        ufo.paint((Graphics2D) g);
         
         // SHIP demo
         ship.paint((Graphics2D) g);
+        for(animation.Shot s: ship.getShots()) {
+            s.paint((Graphics2D) g);
+        }
     }
 
     @Override
@@ -119,7 +137,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * This is called on the downward action when the user presses a key.
      * It notifies the animated ball about presses of up arrow, right 
      * arrow, left arrow, and the space bar.  All other keys are ignored.
-     * @param e information abou the key pressed
+     * @param e information about the key pressed
      */
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -137,6 +155,11 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         case KeyEvent.VK_H:
             ship.space();
             break;
+        case KeyEvent.VK_SPACE:
+//            shot = new animation.Shot(this,ship.getSpeed(),ship.getAngle(),ship.getTargetX(),ship.getTargetY());
+            ship.addShots();
+            ship.fire();
+//            shooting = true;
         default:
             // Ignore all other keys
                 

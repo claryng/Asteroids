@@ -10,6 +10,8 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D.Double;
 
+import java.util.LinkedList;
+
 /**
  * This class creates the Ship
  *
@@ -47,6 +49,9 @@ public class Ship implements AnimatedObject {
 
     // Used to keep track of number of frames
     private int frames = 1;
+    
+    // List of bullets
+    private LinkedList<Shot> shots = new LinkedList<>();
 
     /**
      * Create the Ship object
@@ -202,6 +207,23 @@ public class Ship implements AnimatedObject {
      * Fire shots
      */
     public void fire() {
-        //
+        for(Shot s: shots) {
+            s.move();
+        }
+    }
+    
+    /**
+     * Add shots to list of shots
+     */
+    public void addShots() {
+        Shot shot = new animation.Shot(animation,speed,angle,vector_target.getX(),vector_target.getY());
+        shots.add(shot);
+    }
+    
+    /**
+     * Get the list of shots
+     */
+    public LinkedList<Shot> getShots() {
+        return shots;
     }
 }
