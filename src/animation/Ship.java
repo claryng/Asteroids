@@ -29,7 +29,9 @@ public class Ship implements AnimatedObject {
 
     // Shape of the Ship
     private Polygon ship;
-
+    
+    private Shot shot;
+    
     // The animation that this object is part of
     private AbstractAnimation animation;
 
@@ -76,6 +78,13 @@ public class Ship implements AnimatedObject {
         if(moving && speed < 0.5) {
             System.out.println("Speed - stop: " + speed);
             moving = false;
+        }
+
+        if(moving && frames % 3 == 0 && frames > 0) {
+            
+            System.out.println("Frames - decreasing:" + frames);
+            speed = (speed * 90)/100;
+            System.out.println("Speed - decreasing:" + speed);
         }
 
         // Speed decreases by 10% every 3 frames
@@ -198,5 +207,13 @@ public class Ship implements AnimatedObject {
     public void thrust() {
         frames = 0;
         speed += 3;
+    }
+    
+    public double getAngle() {
+        return angle;
+    }
+    
+    public void fire() {
+        shot = new Shot(animation, speed, x, y, angle);
     }
 }

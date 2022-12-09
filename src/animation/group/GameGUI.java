@@ -13,6 +13,7 @@ import javax.swing.*;
 
 import animation.AbstractAnimation;
 import animation.Ship;
+import animation.Shot;
 import animation.UFO;
 
 /**
@@ -39,6 +40,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     
     private animation.UFO ufo = new animation.UFO(this);
     
+    private Shot shot = new Shot(this, 3, 300, 300, Math.PI/4);
+    
     private boolean moving = true;
     
     /**
@@ -46,6 +49,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * key input.
      */
     public GameGUI () {
+        
+        ufo.appear();
         
         scoreUpdate = new JLabel(score);
         scoreUpdate.setForeground(Color.white);
@@ -67,6 +72,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
+            shot.nextFrame();
+            
             ufo.nextFrame();
             
             // demo ship
@@ -103,6 +110,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         // method above, and repaint will call paintComponent.
         
         super.paintComponent(g);
+        
+        shot.paint((Graphics2D) g);
+        
         ufo.paint((Graphics2D) g);
         
         // SHIP demo
@@ -131,6 +141,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             break;
         case KeyEvent.VK_H:
             ship.space();
+            break;
+        case KeyEvent.VK_SPACE:
+            ship.fire();
             break;
         default:
             // Ignore all other keys
