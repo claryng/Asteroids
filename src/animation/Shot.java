@@ -72,6 +72,9 @@ public class Shot implements AnimatedObject {
             x = x + (speed)*Math.sin(angle);
             y = y - (speed)*Math.cos(angle);
             System.out.println("Shot speed: " + speed +  " Coordinate: "+x + ", " + y + "Angle: " + angle);
+        } else {
+            x = -100;
+            y = -100;
         }
 
         shot.setFrame(x, y, SHOT_SIZE, SHOT_SIZE);

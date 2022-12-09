@@ -36,6 +36,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     
     private static String score = "0000";
     
+    private static JLabel gameOverText = new JLabel();
+    
     private animation.Ship ship = new animation.Ship(this);
     
     private animation.UFO ufo = new animation.UFO(this);
@@ -57,8 +59,15 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         scoreUpdate.setBackground(Color.black);
         scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
         
+        gameOverText.setForeground(Color.white);
+        gameOverText.setBackground(Color.black);
+        gameOverText.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        gameOverText.setHorizontalAlignment(SwingConstants.CENTER);
+
+        
         setLayout(new BorderLayout());
         add(scoreUpdate, BorderLayout.PAGE_START);
+        add(gameOverText, BorderLayout.CENTER);
         
         // Allow the game to receive key input
         setFocusable(true);
@@ -83,6 +92,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             
             if (checkCollision (ufo, ship)) {
                 ufo.die();
+                gameOverText.setText("GAME OVER");
                 
             }
 
@@ -98,6 +108,10 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     private boolean checkCollision(UFO shape1,
             Ship shape2) {
         return shape2.getShape().intersects(shape1.getShape().getBounds2D());
+    }
+    
+    private void gameOver() {
+        add(scoreUpdate, BorderLayout.PAGE_START);
     }
 
     /**
