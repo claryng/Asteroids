@@ -77,7 +77,6 @@ public class Shot implements AnimatedObject {
             if (!(x < 600 && y < 600 && x > 0 && y > 0)) {
                 moving = false;
             }
-        }
     }
 
     /**
