@@ -29,6 +29,12 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
     
     private AffineTransformDemo triangle = new AffineTransformDemo();
     
+    private animation.LargeAsteroids asteroid1 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid2 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid3 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid4 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid5 = new animation.LargeAsteroids(this);
+    
     private boolean moving = true;
     
     /**
@@ -49,10 +55,15 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
     protected void nextFrame() {
         if (moving) {
             shape.nextFrame();
+            asteroid1.nextFrame();
+            asteroid2.nextFrame();
+            asteroid3.nextFrame();
+            asteroid4.nextFrame();
+            asteroid5.nextFrame();
             repaint();
-            if (checkCollision (shape, triangle)) {
-                moving = false;
-            }
+//            if (checkCollision (shape, triangle)) {
+//                moving = false;
+//            }
         }
     }
 
@@ -79,6 +90,12 @@ public class AnimationDemo extends AbstractAnimation implements KeyListener {
         super.paintComponent(g);
         shape.paint((Graphics2D) g);
         triangle.paint((Graphics2D) g);
+        asteroid1.paint((Graphics2D) g);
+        asteroid2.paint((Graphics2D) g);
+        asteroid3.paint((Graphics2D) g);
+        asteroid4.paint((Graphics2D) g);
+        asteroid5.paint((Graphics2D) g);
+
     }
 
     @Override
