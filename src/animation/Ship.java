@@ -216,7 +216,7 @@ public class Ship implements AnimatedObject {
      * Add shots to list of shots
      */
     public void addShots() {
-        Shot shot = new animation.Shot(animation, speed, angle,
+        Shot shot = new Shot(animation, speed, angle,
                 vector_target.getX(), vector_target.getY());
         shots.add(shot);
     }
