@@ -9,6 +9,7 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D.Double;
+import java.util.LinkedList;
 
 /**
  * This class creates the Ship
@@ -29,9 +30,7 @@ public class Ship implements AnimatedObject {
 
     // Shape of the Ship
     private Polygon ship;
-    
-    private Shot shot;
-    
+
     // The animation that this object is part of
     private AbstractAnimation animation;
 
@@ -49,6 +48,9 @@ public class Ship implements AnimatedObject {
 
     // Used to keep track of number of frames
     private int frames = 1;
+
+    // List of bullets
+    private LinkedList<Shot> shots = new LinkedList<>();
 
     /**
      * Create the Ship object
@@ -75,16 +77,8 @@ public class Ship implements AnimatedObject {
     public void nextFrame() {
 
         // Stop moving when speed is near 0
-        if(moving && speed < 0.5) {
-            System.out.println("Speed - stop: " + speed);
+        if (moving && speed < 0.5) {
             moving = false;
-        }
-
-        if(moving && frames % 3 == 0 && frames > 0) {
-            
-            System.out.println("Frames - decreasing:" + frames);
-            speed = (speed * 90)/100;
-            System.out.println("Speed - decreasing:" + speed);
         }
 
         // Speed decreases by 10% every 3 frames
@@ -208,12 +202,29 @@ public class Ship implements AnimatedObject {
         frames = 0;
         speed += 3;
     }
-    
-    public double getAngle() {
-        return angle;
-    }
-    
+
+    /**
+     * Fire shots
+     */
     public void fire() {
-        shot = new Shot(animation, speed, x, y, angle);
+        for (Shot s : shots) {
+            s.move();
+        }
+    }
+
+    /**
+     * Add shots to list of shots
+     */
+    public void addShots() {
+        Shot shot = new animation.Shot(animation, speed, angle,
+                vector_target.getX(), vector_target.getY());
+        shots.add(shot);
+    }
+
+    /**
+     * Get the list of shots
+     */
+    public LinkedList<Shot> getShots() {
+        return shots;
     }
 }
