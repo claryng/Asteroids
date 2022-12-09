@@ -72,7 +72,7 @@ public class Ship implements AnimatedObject {
      */
     public void nextFrame() {
         // Stop moving when speed is near 0
-        if (moving && speed < 1) {
+        if (moving && speed < 0.5) {
             moving = false;
         }
 
@@ -196,5 +196,12 @@ public class Ship implements AnimatedObject {
     public void thrust() {
         frames = 0;
         speed += 3;
+    }
+    
+    /**
+     * Fire shots
+     */
+    public void fire() {
+        //
     }
 }
