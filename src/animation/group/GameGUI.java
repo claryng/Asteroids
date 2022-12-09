@@ -2,7 +2,6 @@ package animation.group;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,6 +13,7 @@ import javax.swing.*;
 
 import animation.AbstractAnimation;
 import animation.Ship;
+import animation.Shot;
 import animation.UFO;
 
 import java.util.Iterator;
@@ -34,6 +34,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     // many objects!
     private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
     
+<<<<<<< HEAD
 //    private static JLabel scoreUpdate;
 //    
 //    private static String score = "0000";
@@ -41,12 +42,19 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 //    private static JLabel livesText;
 //    
 //    private static int lives = 4;
+=======
+    private static JLabel scoreUpdate;
+    
+    private static String score = "0000";
+>>>>>>> 971b94d06f498d7ceb6b094913a10987fccaf72c
     
     private animation.Ship ship = new animation.Ship(this);
     
 //    private animation.Shot shot;
     
 //    private animation.UFO ufo = new animation.UFO(this);
+    
+    private Shot shot = new Shot(this, 3, 300, 300, Math.PI/4);
     
     private boolean moving = true;
     
@@ -58,14 +66,15 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     public GameGUI () {
         
-//        scoreUpdate = new JLabel(score);
-//        scoreUpdate.setForeground(Color.white);
-//        scoreUpdate.setBackground(Color.black);
-//        scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
-//        
-//        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//        add(scoreUpdate);
-//        add(livesText);
+        ufo.appear();
+        
+        scoreUpdate = new JLabel(score);
+        scoreUpdate.setForeground(Color.white);
+        scoreUpdate.setBackground(Color.black);
+        scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        
+        setLayout(new BorderLayout());
+        add(scoreUpdate, BorderLayout.PAGE_START);
         
         // Allow the game to receive key input
         setFocusable(true);
@@ -79,7 +88,13 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
+<<<<<<< HEAD
 //            ufo.nextFrame();
+=======
+            shot.nextFrame();
+            
+            ufo.nextFrame();
+>>>>>>> 971b94d06f498d7ceb6b094913a10987fccaf72c
             
             // demo ship
             ship.nextFrame();
@@ -95,10 +110,18 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             
             repaint();
             
+<<<<<<< HEAD
 //            if (checkCollision (ufo, ship)) {
 ////                ufo.die();
 //            }
             
+=======
+            if (checkCollision (ufo, ship)) {
+                ufo.die();
+                
+            }
+
+>>>>>>> 971b94d06f498d7ceb6b094913a10987fccaf72c
         }
     }
 
@@ -123,7 +146,14 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         // method above, and repaint will call paintComponent.
         
         super.paintComponent(g);
+<<<<<<< HEAD
 //        ufo.paint((Graphics2D) g);
+=======
+        
+        shot.paint((Graphics2D) g);
+        
+        ufo.paint((Graphics2D) g);
+>>>>>>> 971b94d06f498d7ceb6b094913a10987fccaf72c
         
         // SHIP demo
         ship.paint((Graphics2D) g);
@@ -156,10 +186,15 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             ship.space();
             break;
         case KeyEvent.VK_SPACE:
+<<<<<<< HEAD
 //            shot = new animation.Shot(this,ship.getSpeed(),ship.getAngle(),ship.getTargetX(),ship.getTargetY());
             ship.addShots();
             ship.fire();
 //            shooting = true;
+=======
+            ship.fire();
+            break;
+>>>>>>> 971b94d06f498d7ceb6b094913a10987fccaf72c
         default:
             // Ignore all other keys
                 

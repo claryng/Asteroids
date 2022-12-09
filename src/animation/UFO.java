@@ -44,17 +44,19 @@ public class UFO implements AnimatedObject {
      * @param animation the animation that this object is part of
      */
     public UFO(AbstractAnimation animation) {
+        
+        //ufo have size 
+        
         this.animation = animation;
         ufo = new Polygon();
-        ufo.addPoint(-15, 25);
-        ufo.addPoint(0, -25);
-        ufo.addPoint(15, 25);
-        ufo.addPoint(10, 25);
-        ufo.addPoint(0, 30);
-        ufo.addPoint(-10, 25);
-        
-        x = UFO_PARKING_SPACE;
-        y = 100;
+        ufo.addPoint(-20, 15);
+        ufo.addPoint(-15, -10);
+        ufo.addPoint(15, -10);
+        ufo.addPoint(20, 15);
+        ufo.addPoint(15, 15);
+        ufo.addPoint(12, 23);
+        ufo.addPoint(-12, 23);
+        ufo.addPoint(-15, 15);
     }
     
     /**
@@ -110,7 +112,8 @@ public class UFO implements AnimatedObject {
     }
     
     public void appear() {
-        x = -10;
+        x = 0;
+        y = Math.random()*(600 -  + 1);
     }
 
 }
