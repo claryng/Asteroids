@@ -31,8 +31,6 @@ public class Ship implements AnimatedObject {
     // Shape of the Ship
     private Polygon ship;
 
-    private Shot shot;
-
     // The animation that this object is part of
     private AbstractAnimation animation;
 
