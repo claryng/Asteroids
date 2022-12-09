@@ -98,9 +98,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             // demo ship
             ship.nextFrame();
 
-            Iterator shots = ship.getShots().iterator();
+            Iterator<Shot> shots = ship.getShots().iterator();
             while (shots.hasNext()) {
-                animation.Shot shot = (animation.Shot) shots.next();
+                Shot shot = (Shot) shots.next();
                 shot.nextFrame();
                 if (!shot.getMoving()) {
                     shots.remove();
@@ -134,7 +134,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     }
     
     private void gameOver() {
-        add(scoreUpdate, BorderLayout.PAGE_START);
+        gameOverText.setText("GAME OVER");
     }
 
     /**
@@ -191,7 +191,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         case KeyEvent.VK_SPACE:
             ship.addShots();
             ship.fire();
-            shooting = true;
+            ship.fire();
+//            shooting = true;
             break;
         default:
             // Ignore all other keys
