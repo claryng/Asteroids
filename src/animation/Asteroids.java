@@ -84,13 +84,14 @@ public abstract class Asteroids implements AnimatedObject {
     }
     
     public void setAngle() {
-        if (targetedY == -20 || targetedY == 620) {
+        if (targetedY == 570) {
             angle = Math.atan(Math.abs((getLocationX() - getTargetedX())) / Math.abs((getLocationY() - getTargetedY())));
-        } else if (targetedX == -20 || targetedX == 620) {
+        } else if (targetedY == 30) {
+            angle = Math.atan(Math.abs((getLocationX() - getTargetedX())) / Math.abs((getLocationY() - getTargetedY()))) - Math.PI;
+        } else if (targetedX == 30 || targetedX == 570) {
             angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
         }
     }
-    
     
      
     public void move() {
@@ -101,36 +102,38 @@ public abstract class Asteroids implements AnimatedObject {
      */
     public void setRandom() {
         locationX = Math.random() * (MAX - MIN) + MIN;
+        System.out.println(locationX);
         
         // The asteroid is always coming from outside of screen
         if (locationX < 0 || locationX > 600) {
             locationY = Math.random() * (MAX - MIN) + MIN;
             // left edge
             if (locationX < 0) {
-                targetedX = -20;
+                targetedX = 30;
             // right edge
             } else {
-                targetedX = 620;
+                targetedX = 570;
             }
-            targetedY = Math.random() * (200) + 200;
+            targetedY = Math.random() * (150) + 250;
         // Randomize if X is greater than 0
         } else {
             List<Integer> givenList = Arrays.asList(1, 2);
             Random rand = new Random();
             int randomElement = givenList.get(rand.nextInt(givenList.size()));
             System.out.println(randomElement);
+            
             // Upper edge
             if (randomElement == 1) {
                 locationY = Math.random() * 50 - 50;
                 System.out.println(locationY);
-                targetedY = -20;
+                targetedY = 30;
             // Asteroid is coming from the bottom edge
             } else {
                 locationY = Math.random() * 50 + 600;
                 System.out.println(locationY);
-                targetedY = 620;
+                targetedY = 570;
             }
-            targetedX = Math.random() * (200) + 200;
+            targetedX = Math.random() * (150) + 250;
             System.out.println(locationX);
         }
     }

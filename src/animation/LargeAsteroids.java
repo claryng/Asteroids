@@ -33,7 +33,8 @@ public class LargeAsteroids extends Asteroids {
         asteroid.addPoint(0, -30);
         asteroid.addPoint(-20, -15);
         asteroid.addPoint(-20, 15);
-
+        
+        setAngle();
         
     }
     
@@ -81,14 +82,14 @@ public class LargeAsteroids extends Asteroids {
      */
     public void move() {
         
-        setAngle();
+        
         // Find coordinates using calculus: position vector
         setLocationX (this.getLocationX() + 1 * ((this.getTargetedX() - this.getLocationX())));
         setLocationY (this.getLocationY() + 1 * ((this.getTargetedY() - this.getLocationY())));
 
-        // Wrap the ship around the screen
-//        x = (x <= 0) ? WIDTH + x : x % WIDTH;
-//        y = (y <= 0) ? WIDTH + y : y % WIDTH;
+         //Wrap the ship around the screen
+        setLocationX ((this.getLocationX() <= 0) ? WIDTH + this.getLocationX() : this.getLocationX() % WIDTH);
+        setLocationY ((this.getLocationY() <= 0) ? WIDTH + this.getLocationY() : this.getLocationY() % WIDTH);
 
         // Change the vector target according to the new coordinates
         setTarget();
