@@ -5,6 +5,7 @@ package animation;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D.Double;
 
@@ -50,6 +51,10 @@ public class Shot implements AnimatedObject {
      * Create the Ship object
      * 
      * @param animation the animation that this object is part of
+     * @param speedShip the speed of the object carrying shot
+     * @param angle the angle that the object is pointing
+     * @param x coordinate of the object
+     * @param y coordinate of the object
      */
 
     public Shot(AbstractAnimation animation, double speedShip, double angle,
@@ -73,7 +78,7 @@ public class Shot implements AnimatedObject {
         if (moving) {
             move();
             System.out.println("Shot speed: " + speed + " Coordinate: " + x
-                    + ", " + y + "Angle: " + angle);
+                    + ", " + y + "; Angle: " + angle);
             if (!(x < 600 && y < 600 && x > 0 && y > 0)) {
                 moving = false;
             }
@@ -104,8 +109,15 @@ public class Shot implements AnimatedObject {
 
     /**
      * Get status
+     * 
+     * @return moving 
      */
     public boolean getMoving() {
         return moving;
+    }
+
+    @Override
+    public Shape getShape() {
+        return shot;
     }
 }
