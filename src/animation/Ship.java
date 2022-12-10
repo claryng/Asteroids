@@ -223,6 +223,7 @@ public class Ship implements AnimatedObject {
 
     /**
      * Get the list of shots
+     * @return the shots exist in the ship
      */
     public LinkedList<Shot> getShots() {
         return shots;

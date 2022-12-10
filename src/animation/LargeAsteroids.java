@@ -73,7 +73,6 @@ public class LargeAsteroids extends Asteroids {
      */
     public void paint(Graphics2D g) {
         super.paint(g);
-//        g.setColor(Color.WHITE);
         g.draw(getShape());
     }
     

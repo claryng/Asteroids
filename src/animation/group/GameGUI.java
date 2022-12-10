@@ -95,12 +95,12 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
 //            ufo.nextFrame();
 
-            // demo ship
+            // ship
             ship.nextFrame();
 
             Iterator<Shot> shots = ship.getShots().iterator();
             while (shots.hasNext()) {
-                Shot shot = (Shot) shots.next();
+                Shot shot = shots.next();
                 shot.nextFrame();
                 if (!shot.getMoving()) {
                     shots.remove();
