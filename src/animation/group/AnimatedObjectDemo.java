@@ -1,4 +1,4 @@
-package animation.demo;
+package animation.group;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -50,7 +50,7 @@ public class AnimatedObjectDemo implements AnimatedObject {
      * @param g the graphics context to draw on.
      */
     public void paint(Graphics2D g) {
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.fill(ball);
     }
 
@@ -73,7 +73,7 @@ public class AnimatedObjectDemo implements AnimatedObject {
 
         // Check if the left edge of the ball is beyond the left
         // edge of the window. If it is, move it to the left edge
-        // and chante the direction, so it will move right on its
+        // and change the direction, so it will move right on its
         // next move.
         else if (x < 0) {
             x = 0;
