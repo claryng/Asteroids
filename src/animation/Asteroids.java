@@ -91,18 +91,35 @@ public abstract class Asteroids implements AnimatedObject {
     }
     
     public void setRandomAngle() {
-        // Bottom edge
+        // Bottom edge -- Correct
         if (targetedY == 570) {
-            angle = Math.atan(Math.abs((getLocationX() - getTargetedX())) / Math.abs((getLocationY() - getTargetedY())));
+            if (targetedX < 300) {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
+            } else {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / ((-1) * Math.abs((getLocationX() - getTargetedX()))));
+            }
         // Upper edge
         } else if (targetedY == 30) {
-            angle = Math.atan(Math.abs((getLocationX() - getTargetedX())) / Math.abs((getLocationY() - getTargetedY()))) - Math.PI;
+            if (targetedX < 300) {
+                angle = Math.PI/2 + (Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))));
+            } else {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))) - Math.PI;
+            }       
         // Left edge
         } else if (targetedX == 30) {
-            angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
+            if (targetedX < 300) {
+                angle = Math.PI/2 + (Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))));
+            } else {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
+            }
         // Right edge
         } else if (targetedX == 570) {
-            angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / ((-1) * Math.abs((getLocationX() - getTargetedX()))));
+            if (targetedX < 300) {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / ((-1) * Math.abs((getLocationX() - getTargetedX())))) - Math.PI;
+            } else {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))) - Math.PI/2;
+            }
+            
         }
         System.out.println(angle);
     }
@@ -157,7 +174,7 @@ public abstract class Asteroids implements AnimatedObject {
             } 
             targetedY = Math.random() * (200) + 200;
         // Randomize if X is greater than 0
-        } else {
+        } else if (locationX >= 0) {
             List<Integer> givenList = Arrays.asList(1, 2);
             
             Random rand = new Random();
@@ -168,7 +185,7 @@ public abstract class Asteroids implements AnimatedObject {
             if (randomElement == 1) {
                 locationY = Math.random() * 50 - 50;
                 targetedY = 30;
-            // Asteroid is coming from the bottom edge
+            // Bottom edge
             } else {
                 locationY = Math.random() * 50 + 600;
                 targetedY = 570;

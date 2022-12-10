@@ -38,6 +38,7 @@ public class LargeAsteroids extends Asteroids {
         setRandomAngle();
         
     }
+   
     
     /**
      * Returns the shape after applying the current translation and rotation
