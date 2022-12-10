@@ -104,6 +104,7 @@ public class Shot implements AnimatedObject {
 
     /**
      * Get status
+     * @return the status ò the 
      */
     public boolean getMoving() {
         return moving;

@@ -9,6 +9,7 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D.Double;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -31,8 +32,6 @@ public class Ship implements AnimatedObject {
     // Shape of the Ship
     private Polygon ship;
 
-    private Shot shot;
-
     // The animation that this object is part of
     private AbstractAnimation animation;
 
@@ -52,7 +51,10 @@ public class Ship implements AnimatedObject {
     private int frames = 1;
 
     // List of bullets
-    private LinkedList<Shot> shots = new LinkedList<>();
+    private LinkedList<Shot> shotList = new LinkedList<>();
+    
+    // Rotating angle
+    private double rotatingAngle = 0;
 
     /**
      * Create the Ship object
@@ -81,6 +83,7 @@ public class Ship implements AnimatedObject {
         // Stop moving when speed is near 0
         if (moving && speed < 0.5) {
             moving = false;
+            angle = rotatingAngle;
         }
 
         // Speed decreases by 10% every 3 frames
@@ -124,7 +127,7 @@ public class Ship implements AnimatedObject {
         setVectorTarget(speed);
 
         // Rotate the ship
-        affineTransform.rotate(angle);
+        affineTransform.rotate(rotatingAngle);
 
         AffineTransform at = affineTransform;
 
@@ -156,14 +159,14 @@ public class Ship implements AnimatedObject {
      * Rotate counter-clockwise
      */
     public void rotateLeft() {
-        angle -= 0.2;
+        rotatingAngle -= 0.2;
     }
 
     /**
      * Rotate clockwise
      */
     public void rotateRight() {
-        angle += 0.2;
+        rotatingAngle += 0.2;
     }
 
     /**
@@ -203,14 +206,16 @@ public class Ship implements AnimatedObject {
     public void thrust() {
         frames = 0;
         speed += 3;
+        angle = rotatingAngle;
     }
 
     /**
      * Fire shots
      */
     public void fire() {
-        for (Shot s : shots) {
-            s.move();
+        Iterator<Shot> shots = shotList.iterator();
+        while (shots.hasNext()) {
+            shots.next().move();
         }
     }
 
@@ -220,13 +225,15 @@ public class Ship implements AnimatedObject {
     public void addShots() {
         Shot shot = new animation.Shot(animation, speed, angle,
                 vector_target.getX(), vector_target.getY());
-        shots.add(shot);
+        shotList.add(shot);
+//        shots = shot_list.listIterator();
     }
 
     /**
      * Get the list of shots
+     * @return list of shots
      */
     public LinkedList<Shot> getShots() {
-        return shots;
+        return shotList;
     }
 }
