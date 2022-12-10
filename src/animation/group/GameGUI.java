@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import animation.AbstractAnimation;
+import animation.AnimatedObject;
 import animation.Ship;
 import animation.Shot;
 import animation.UFO;
@@ -102,6 +103,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             while (shots.hasNext()) {
                 Shot shot = shots.next();
                 shot.nextFrame();
+                if (checkCollision (shot, asteroid1)) {
+                    //asteroid1.die?
+                }
                 if (!shot.getMoving()) {
                     shots.remove();
                 }
@@ -129,7 +133,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * @param shape2 the second shape to test
      * @return true if the shapes intersect
      */
-    private boolean checkCollision(UFO shape1, Ship shape2) {
+    private boolean checkCollision(AnimatedObject shape1, AnimatedObject shape2) {
         return shape2.getShape().intersects(shape1.getShape().getBounds2D());
     }
     

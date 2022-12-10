@@ -3,6 +3,7 @@ package animation;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Shape;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -165,4 +166,10 @@ public abstract class Asteroids implements AnimatedObject {
 ////        g.draw(getShape());
     }
     
+    /**
+     * @return the tranformed shape
+     */
+    public Shape getShape() {
+        return null;
+    }
 }
