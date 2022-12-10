@@ -14,6 +14,8 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import java.util.LinkedList;
+
 import animation.AbstractAnimation;
 import animation.Ship;
 import animation.Shot;
@@ -33,7 +35,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
     // The object that moves during the animation. You might have
     // many objects!
-    private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
+//    private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
 
 //    private static JLabel scoreUpdate;
 //    
@@ -46,17 +48,13 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
     private static String score = "0000";
 
-    private animation.Ship ship = new animation.Ship(this);
+    private Ship ship = new animation.Ship(this);
 
 //    private animation.Shot shot;
 
 //    private animation.UFO ufo = new animation.UFO(this);
 
-    private Shot shot = new Shot(this, 3, 300, 300, Math.PI / 4);
-
     private boolean moving = true;
-
-    private boolean shooting = false;
 
     /**
      * Constructs an animation and initializes it to be able to accept key
@@ -87,14 +85,14 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     protected void nextFrame() {
         if (moving) {
 //            ufo.nextFrame();
-            shot.nextFrame();
+//            shot.nextFrame();
 
 //            ufo.nextFrame();
 
             // demo ship
             ship.nextFrame();
 
-            Iterator shots = ship.getShots().iterator();
+            Iterator<Shot> shots = ship.getShots().iterator();
             while (shots.hasNext()) {
                 animation.Shot shot = (animation.Shot) shots.next();
                 shot.nextFrame();
@@ -137,14 +135,15 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         super.paintComponent(g);
 
 //        ufo.paint((Graphics2D) g);
-        shot.paint((Graphics2D) g);
-
-//        ufo.paint((Graphics2D) g);
 
         // SHIP demo
         ship.paint((Graphics2D) g);
-        for (animation.Shot s : ship.getShots()) {
-            s.paint((Graphics2D) g);
+//        for (animation.Shot s : ship.getShots()) {
+//            s.paint((Graphics2D) g);
+//        }
+        
+        for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
+            shots.next().paint((Graphics2D) g);
         }
     }
 
@@ -173,10 +172,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             ship.space();
             break;
         case KeyEvent.VK_SPACE:
-//            shot = new animation.Shot(this,ship.getSpeed(),ship.getAngle(),ship.getTargetX(),ship.getTargetY());
             ship.addShots();
-            ship.fire();
-//            shooting = true;
             ship.fire();
             break;
         default:

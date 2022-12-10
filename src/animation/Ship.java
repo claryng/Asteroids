@@ -31,8 +31,6 @@ public class Ship implements AnimatedObject {
     // Shape of the Ship
     private Polygon ship;
 
-    private Shot shot;
-
     // The animation that this object is part of
     private AbstractAnimation animation;
 
@@ -225,6 +223,7 @@ public class Ship implements AnimatedObject {
 
     /**
      * Get the list of shots
+     * @return list of shots
      */
     public LinkedList<Shot> getShots() {
         return shots;
