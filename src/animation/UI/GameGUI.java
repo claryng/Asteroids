@@ -56,7 +56,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
     private static JLabel scoreUpdate;
 
-    private static String score = "0000";
+    private static int score = 0;
 
     private Ship ship = new animation.Ship(this);
     
@@ -68,11 +68,12 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * Constructs an animation and initializes it to be able to accept key
      * input.
      */
+    @SuppressWarnings("boxing")
     public GameGUI() {
 
 //        ufo.appear();
 
-        scoreUpdate = new JLabel(score);
+        scoreUpdate = new JLabel(String.format("%04d", score));
         scoreUpdate.setForeground(Color.white);
         scoreUpdate.setBackground(Color.black);
         scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
@@ -91,6 +92,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         addKeyListener(this);
     }
 
+    @SuppressWarnings("boxing")
     @Override
     /**
      * Updates the animated object for the next frame of the animation and
@@ -133,6 +135,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             for (animation.Asteroids asteroid : asteroids) {
                 if (checkCollisionShipAsteroid(asteroid, ship)) {
                     ship.die();
+                    gameOver();
                 } 
             }
             
@@ -141,7 +144,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             for (int i = 0; i < shotList.size(); i++) {
                 for (animation.Asteroids asteroid : asteroids) {
                     if (checkCollisionShotAsteroid(asteroid, shotList.get(i))) {
-                        asteroid.split();    
+                        asteroid.split();  
+                        score+=20;
+                        scoreUpdate.setText(String.format("%04d", score));
                     }   
                 }
             }
@@ -174,6 +179,10 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         return asteroid.getShape().intersects(shot.getShape().getBounds2D());
     }
     
+    /**
+     * Add game over to the screen
+     * 
+     */
     private void gameOver() {
         gameOverText.setText("GAME OVER");
     }
