@@ -79,7 +79,7 @@ public class Shot implements AnimatedObject {
             move();
 //            System.out.println("Shot speed: " + speed + " Coordinate: " + x
 //                    + ", " + y + "Angle: " + angle);
-            if (!(x < 605 && y < 605 && x > -5 && y > -5)) {
+            if (!(x < 600 && y < 600 && x > 0 && y > 0)) {
                 moving = false;
             }
         }

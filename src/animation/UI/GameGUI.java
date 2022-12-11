@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,7 +49,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     private animation.Asteroids asteroid4 = new animation.LargeAsteroids(this);
     private animation.Asteroids asteroid5 = new animation.LargeAsteroids(this);
     
-    List<animation.Asteroids> asteroids = new ArrayList<animation.Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
+    CopyOnWriteArrayList<animation.Asteroids> asteroids = new CopyOnWriteArrayList<animation.Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
 
 //    private static JLabel livesText;
 //    
@@ -100,12 +101,15 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-
-            asteroid1.nextFrame();
-            asteroid2.nextFrame();
-            asteroid3.nextFrame();
-            asteroid4.nextFrame();
-            asteroid5.nextFrame();
+            
+            for (animation.Asteroids asteroid : asteroids) {
+                asteroid.nextFrame();
+            }
+//            asteroid1.nextFrame();
+//            asteroid2.nextFrame();
+//            asteroid3.nextFrame();
+//            asteroid4.nextFrame();
+//            asteroid5.nextFrame();
 //            repaint();
 //            if (checkCollision (shape, triangle)) {
 //                moving = false;
@@ -144,7 +148,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             for (int i = 0; i < shotList.size(); i++) {
                 for (animation.Asteroids asteroid : asteroids) {
                     if (checkCollisionShotAsteroid(asteroid, shotList.get(i))) {
-                        asteroid.split();  
+                        asteroid.split(asteroid.getAngle(), asteroid.getLocationX(), asteroid.getLocationY()); 
+                        asteroids.remove(asteroid);
+                        asteroids.addAll(asteroid.getAsteroids());
                         score+=20;
                         scoreUpdate.setText(String.format("%04d", score));
                     }   
@@ -198,11 +204,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         // method above, and repaint will call paintComponent.
 
         super.paintComponent(g);
-        asteroid1.paint((Graphics2D) g);
-        asteroid2.paint((Graphics2D) g);
-        asteroid3.paint((Graphics2D) g);
-        asteroid4.paint((Graphics2D) g);
-        asteroid5.paint((Graphics2D) g);
+        for (animation.Asteroids asteroid : asteroids) {
+            asteroid.paint((Graphics2D) g);
+        }
 
         // Paint ship
         ship.paint((Graphics2D) g);
