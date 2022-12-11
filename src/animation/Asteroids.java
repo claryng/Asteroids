@@ -286,7 +286,6 @@ public abstract class Asteroids implements AnimatedObject {
             Asteroids a = new MediumAsteroids(animation, angle - Math.PI/4, x, y);
             Asteroids b = new MediumAsteroids(animation, angle + Math.PI/4, x, y);
             
-            
             asteroids.add(a);
             asteroids.add(b);
 //            a.move();

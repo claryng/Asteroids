@@ -41,9 +41,8 @@ public class SmallAsteroids extends Asteroids {
         setLocationY(y);
         
         setTarget();
-        
-        
-       
+        move();
+        move();
         
     }
     

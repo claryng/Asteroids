@@ -41,6 +41,8 @@ public class MediumAsteroids extends Asteroids {
         setLocationY(y);
         
         setTarget();
+        move();
+        move();
 
     }
     
