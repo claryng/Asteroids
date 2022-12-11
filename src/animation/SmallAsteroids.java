@@ -22,7 +22,7 @@ public class SmallAsteroids extends Asteroids {
     /**
      * Constructor to create a large asteroid
      */
-    public SmallAsteroids(AbstractAnimation animation, double angle, int no) {
+    public SmallAsteroids(AbstractAnimation animation, Asteroids a, double angle, int no) {
         
         super(animation);
         

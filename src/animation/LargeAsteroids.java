@@ -14,6 +14,7 @@ import java.awt.geom.AffineTransform;
 public class LargeAsteroids extends Asteroids {
     
     private Polygon asteroid; 
+    private int size;
 //    private double locationX;
 //    private double locationY;
 //    private double targetedX;
@@ -25,6 +26,7 @@ public class LargeAsteroids extends Asteroids {
     public LargeAsteroids(AbstractAnimation animation) {
         
         super(animation);
+        size = 1;
         
         asteroid = new Polygon();
         asteroid.addPoint(0, 30);
@@ -56,7 +58,6 @@ public class LargeAsteroids extends Asteroids {
         // to see where the points are.
         affineTransform.translate(getLocationX(), getLocationY());
 
-//        setVectorTarget(speed);
 
         // Rotate the ship
 //        affineTransform.rotate(angle);

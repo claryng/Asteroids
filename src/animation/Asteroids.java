@@ -3,6 +3,9 @@ package animation;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -30,6 +33,9 @@ public abstract class Asteroids implements AnimatedObject {
     // Direction angle
     private double angle;
     
+    // size
+    private int size;
+    
     // Shape of the asteroid
     private Polygon asteroid;
     
@@ -44,6 +50,9 @@ public abstract class Asteroids implements AnimatedObject {
     
     // Random variable used to generate asteroids randomly
     private Random rand = new Random();
+    
+    // List of broken up asteroids
+    private ArrayList<Asteroids> asteroids = new ArrayList<>();
     
     
     /**
@@ -74,6 +83,14 @@ public abstract class Asteroids implements AnimatedObject {
         return angle;
     }
     
+    public int getSize() {
+        return size;
+    }
+    
+    public ArrayList<Asteroids> getAsteroids() {
+        return asteroids;
+    }
+    
     public void setLocationX(double x) {
         locationX = x;
     }
@@ -89,6 +106,7 @@ public abstract class Asteroids implements AnimatedObject {
     public void setTargetedY(double y) {
         targetedY = y;
     }
+   
     
     public void setRandomAngle() {
         // Bottom edge -- Correct
@@ -217,13 +235,57 @@ public abstract class Asteroids implements AnimatedObject {
      }
     
     /**
+     * Returns the shape after applying the current translation and rotation
+     * 
+     * @return the shape located as we want it to appear
+     */
+    public Shape getShape() {
+
+        // AffineTransform captures the movement and rotation we
+        // want the asteroid to have
+        AffineTransform affineTransform = new AffineTransform();
+
+        // x, y are where the origin of the shape will be. In this
+        // case, this is the center of the polygon. See the constructor
+        // to see where the points are.
+        affineTransform.translate(getLocationX(), getLocationY());
+
+//        setVectorTarget(speed);
+
+        // Rotate the ship
+//        affineTransform.rotate(angle);
+
+        AffineTransform at = affineTransform;
+
+        // Create a shape that looks like our polygon, but centered
+        // and rotated as specified by the AffineTransform object.
+        return at.createTransformedShape(asteroid);
+    }
+    
+    /**
      * Draws an asteroid.
      * 
      * @param g the graphics context to draw on.
      */
     public void paint(Graphics2D g) {
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
 ////        g.draw(getShape());
+    }
+    
+    public void split(Asteroids asteroid, ArrayList<Asteroids> lst) {
+        
+        if (asteroid.getSize() == 1) {
+            MediumAsteroids a = new MediumAsteroids(animation, asteroid, asteroid.getAngle(), 1);
+            MediumAsteroids b = new MediumAsteroids(animation, asteroid, asteroid.getAngle(), 2);
+            asteroids.add(a);
+            asteroids.add(b);
+        } else {
+            SmallAsteroids a = new SmallAsteroids(animation, asteroid, asteroid.getAngle(), 1);
+            SmallAsteroids b = new SmallAsteroids(animation, asteroid, asteroid.getAngle(), 2);
+            asteroids.add(a);
+            asteroids.add(b);
+        }
+        
     }
     
 }

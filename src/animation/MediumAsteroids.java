@@ -14,15 +14,15 @@ import java.awt.geom.AffineTransform;
 public class MediumAsteroids extends Asteroids {
     
     private Polygon asteroid; 
-//    private double locationX;
-//    private double locationY;
-//    private double targetedX;
-//    private double targetedY;
+    private double locationX;
+    private double locationY;
+    private double targetedX;
+    private double targetedY;
     
     /**
      * Constructor to create a large asteroid
      */
-    public MediumAsteroids(AbstractAnimation animation, double angle, int no) {
+    public MediumAsteroids(AbstractAnimation animation, Asteroids a, double angle, int no) {
         
         super(animation);
         
@@ -35,6 +35,8 @@ public class MediumAsteroids extends Asteroids {
         asteroid.addPoint(10, 0);
        
         setAngle(angle, no);
+        setLocationX(a.getLocationX());
+        setLocationY(a.getLocationY());
         
     }
     

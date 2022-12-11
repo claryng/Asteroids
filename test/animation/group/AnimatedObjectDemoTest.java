@@ -1,12 +1,14 @@
-package animation.demo;
+package animation.group;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import animation.group.GameGUI;
+
 class AnimatedObjectDemoTest {
 
-    private AnimationDemo demo = new AnimationStub();
+    private GameGUI demo = new AnimationStub();
     private AnimatedObjectDemo obj = new AnimatedObjectDemo(demo);
 
     @BeforeEach
