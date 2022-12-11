@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -34,18 +36,24 @@ public abstract class Asteroids implements AnimatedObject {
     // Shape of the asteroid
     private Polygon asteroid;
     
+    // Check if hit by the ship
+    private boolean isHit = false;
+    
     // Animation that contains the object
     private AbstractAnimation animation;
     
     // Random variable used to generate asteroids randomly
     private Random rand = new Random();
     
+    // List of broken up asteroids
+    private ArrayList<Asteroids> asteroids = new ArrayList<>();
+    
     /**
      * Constructor
      */
     public Asteroids(AbstractAnimation animation) { 
         this.animation = animation;
-        this.setRandom();
+//        this.setRandom();
     }
     
     public double getLocationX() {
@@ -68,6 +76,14 @@ public abstract class Asteroids implements AnimatedObject {
         return angle;
     }
     
+//    public boolean getHit() {
+//        return isHit;
+//    }
+    
+    public ArrayList<Asteroids> getAsteroids() {
+        return asteroids;
+    }
+    
     public void setLocationX(double x) {
         locationX = x;
     }
@@ -84,26 +100,84 @@ public abstract class Asteroids implements AnimatedObject {
         targetedY = y;
     }
     
-    public void setAngle() {
+    public void setRandomAngle() {
+        // Bottom edge -- Correct
         if (targetedY == 570) {
-            angle = Math.atan(Math.abs((getLocationX() - getTargetedX())) / Math.abs((getLocationY() - getTargetedY())));
+            if (targetedX < 300) {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
+            } else {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / ((-1) * Math.abs((getLocationX() - getTargetedX()))));
+            }
+        // Upper edge
         } else if (targetedY == 30) {
-            angle = Math.atan(Math.abs((getLocationX() - getTargetedX())) / Math.abs((getLocationY() - getTargetedY()))) - Math.PI;
-        } else if (targetedX == 30 || targetedX == 570) {
-            angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
+            if (targetedX < 300) {
+                angle = Math.PI/2 + (Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))));
+            } else {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))) - Math.PI;
+            }       
+        // Left edge
+        } else if (targetedX == 30) {
+            if (targetedX < 300) {
+                angle = Math.PI/2 + (Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))));
+            } else {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
+            }
+        // Right edge
+        } else if (targetedX == 570) {
+            if (targetedX < 300) {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / ((-1) * Math.abs((getLocationX() - getTargetedX())))) - Math.PI;
+            } else {
+                angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))) - Math.PI/2;
+            }
+            
         }
+        System.out.println(angle);
     }
     
+    public void setAngle(double parentAngle, int no) {
+        if (no == 1) {
+            angle = parentAngle + Math.PI/4;
+        } else if (no == 2) {
+            angle = parentAngle - Math.PI/4;
+        }
+    }
      
+    /**
+     * Move the ship in its current direction
+     */
     public void move() {
         
+        if (!isHit) {
+              
+            // Find coordinates using calculus: position vector
+            setLocationX (this.getLocationX() + 1 * ((this.getTargetedX() - this.getLocationX())));
+            setLocationY (this.getLocationY() + 1 * ((this.getTargetedY() - this.getLocationY())));
+    
+             //Wrap the ship around the screen
+            setLocationX ((this.getLocationX() <= 0) ? WIDTH + this.getLocationX() : this.getLocationX() % WIDTH);
+            setLocationY ((this.getLocationY() <= 0) ? WIDTH + this.getLocationY() : this.getLocationY() % WIDTH);
+    
+            // Change the vector target according to the new coordinates
+            setTarget();
+        } else {
+            setLocationX(-300);
+            setLocationY(-300);
+        }
+        
+        
+        // Set moving flag to true to continue moving in the next frames
+//        moving = true;
+    }
+    
+    public void setTarget() {
+        setTargetedX(this.getLocationX() + SPEED * Math.sin(getAngle()));
+        setTargetedY(this.getLocationY() - SPEED * Math.cos(getAngle()));
     }
     /**
      * 
      */
     public void setRandom() {
         locationX = Math.random() * (MAX - MIN) + MIN;
-        System.out.println(locationX);
         
         // The asteroid is always coming from outside of screen
         if (locationX < 0 || locationX > 600) {
@@ -112,12 +186,12 @@ public abstract class Asteroids implements AnimatedObject {
             if (locationX < 0) {
                 targetedX = 30;
             // right edge
-            } else {
+            } else if (locationX  > 600) {
                 targetedX = 570;
-            }
-            targetedY = Math.random() * (150) + 250;
+            } 
+            targetedY = Math.random() * (200) + 200;
         // Randomize if X is greater than 0
-        } else {
+        } else if (locationX >= 0) {
             List<Integer> givenList = Arrays.asList(1, 2);
             Random rand = new Random();
             int randomElement = givenList.get(rand.nextInt(givenList.size()));
@@ -126,17 +200,18 @@ public abstract class Asteroids implements AnimatedObject {
             // Upper edge
             if (randomElement == 1) {
                 locationY = Math.random() * 50 - 50;
-                System.out.println(locationY);
                 targetedY = 30;
-            // Asteroid is coming from the bottom edge
+            // Bottom edge
             } else {
                 locationY = Math.random() * 50 + 600;
-                System.out.println(locationY);
                 targetedY = 570;
             }
-            targetedX = Math.random() * (150) + 250;
-            System.out.println(locationX);
+            targetedX = Math.random() * (200) + 200;
         }
+        System.out.println(locationY);
+        System.out.println(locationX);
+        System.out.println(targetedY);
+        System.out.println(targetedX);
     }
     
     /**
@@ -157,6 +232,36 @@ public abstract class Asteroids implements AnimatedObject {
      }
     
     /**
+     * Returns the shape after applying the current translation and rotation
+     * 
+     * @return the shape located as we want it to appear
+     */
+    public Shape getShape() {
+
+        // AffineTransform captures the movement and rotation we
+        // want the asteroid to have
+        AffineTransform affineTransform = new AffineTransform();
+
+        // x, y are where the origin of the shape will be. In this
+        // case, this is the center of the polygon. See the constructor
+        // to see where the points are.
+        affineTransform.translate(getLocationX(), getLocationY());
+
+//        setVectorTarget(speed);
+
+        // Rotate the ship
+//        affineTransform.rotate(angle);
+
+        AffineTransform at = affineTransform;
+
+        // Create a shape that looks like our polygon, but centered
+        // and rotated as specified by the AffineTransform object.
+        return at.createTransformedShape(asteroid);
+    }
+    
+    
+    
+    /**
      * Draws an asteroid.
      * 
      * @param g the graphics context to draw on.
@@ -166,10 +271,25 @@ public abstract class Asteroids implements AnimatedObject {
 ////        g.draw(getShape());
     }
     
-    /**
-     * @return the tranformed shape
-     */
-    public Shape getShape() {
-        return null;
+    public void split() {
+        
+        if (this.getClass() == LargeAsteroids.class) {
+            Asteroids a = new MediumAsteroids(animation, this, this.getAngle() - Math.PI/4);
+            Asteroids b = new MediumAsteroids(animation, this, this.getAngle() + Math.PI/4);
+            a.move();
+            b.move();
+            
+        } else if (this.getClass() == MediumAsteroids.class){
+            Asteroids a = new SmallAsteroids(animation, this, this.getAngle() - Math.PI/4);
+            Asteroids b = new SmallAsteroids(animation, this, this.getAngle() + Math.PI/4);
+            a.move();
+            b.move();    
+        }
+        
+        this.isHit = true;
+        
+        
+        
     }
+    
 }

@@ -1,19 +1,25 @@
 package animation.group;
 
 import java.awt.BorderLayout;
+import animation.AnimatedObject;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import animation.AbstractAnimation;
 import animation.AnimatedObject;
@@ -32,26 +38,28 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     // The height of the window, in pixels.
     private static final int WINDOW_HEIGHT = 600;
 
-    private static JLabel scoreUpdate;
+    // The object that moves during the animation. You might have
+    // many objects!
     
-    private static String score = "0000";
+    private animation.Asteroids asteroid1 = new animation.LargeAsteroids(this);
+    private animation.Asteroids asteroid2 = new animation.LargeAsteroids(this);
+    private animation.Asteroids asteroid3 = new animation.LargeAsteroids(this);
+    private animation.Asteroids asteroid4 = new animation.LargeAsteroids(this);
+    private animation.Asteroids asteroid5 = new animation.LargeAsteroids(this);
+    
+    List<animation.Asteroids> asteroids = new ArrayList<animation.Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
 
 //    private static JLabel livesText;
 //    
 //    private static int lives = 4;
+
+    private static JLabel scoreUpdate;
+
+    private static String score = "0000";
+
+    private Ship ship = new animation.Ship(this);
     
     private static JLabel gameOverText = new JLabel();
-    
-    private animation.Ship ship = new animation.Ship(this);
-    
-    private animation.LargeAsteroids asteroid1 = new animation.LargeAsteroids(this);
-    private animation.LargeAsteroids asteroid2 = new animation.LargeAsteroids(this);
-    private animation.LargeAsteroids asteroid3 = new animation.LargeAsteroids(this);
-    private animation.LargeAsteroids asteroid4 = new animation.LargeAsteroids(this);
-    private animation.LargeAsteroids asteroid5 = new animation.LargeAsteroids(this);
-
-
-    private animation.UFO ufo = new animation.UFO(this);
 
     private boolean moving = true;
 
@@ -89,10 +97,24 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-            // ship
+
+            asteroid1.nextFrame();
+            asteroid2.nextFrame();
+            asteroid3.nextFrame();
+            asteroid4.nextFrame();
+            asteroid5.nextFrame();
+//            repaint();
+//            if (checkCollision (shape, triangle)) {
+//                moving = false;
+//            }
+//            ufo.nextFrame();
+//            shot.nextFrame();
+
+//            ufo.nextFrame();
+
+            // demo ship
             ship.nextFrame();
-            
-            // Shoot
+
             Iterator<Shot> shots = ship.getShots().iterator();
             while (shots.hasNext()) {
                 Shot shot = shots.next();
@@ -106,6 +128,27 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                 }
             }
             repaint();
+            
+            for (animation.Asteroids asteroid : asteroids) {
+                if (checkCollisionShipAsteroid(asteroid, ship)) {
+                    ship.die();
+                } 
+            }
+            
+            LinkedList<Shot> shotList = ship.getShots(); 
+//            ArrayList<animation.Asteroids> smallerAsteroids = new ArrayList<>();
+            for (int i = 0; i < shotList.size(); i++) {
+                for (animation.Asteroids asteroid : asteroids) {
+                    if (checkCollisionShotAsteroid(asteroid, shotList.get(i))) {
+                        asteroid.split();    
+                    }   
+                }
+            }
+
+//            if (checkCollision (ufo, ship)) {
+////                ufo.die();
+//            }
+            
         }
     }
 
@@ -117,14 +160,21 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * @param shape2 the second shape to test
      * @return true if the shapes intersect
      */
-    private boolean checkCollision(AnimatedObject shape1, AnimatedObject shape2) {
-        return shape2.getShape().intersects(shape1.getShape().getBounds2D());
+    private boolean checkCollisionShipAsteroid(animation.Asteroids asteroid,Ship ship) {
+        return ship.getShape().intersects(asteroid.getShape().getBounds2D());
+    }
+    
+    /**
+     * 
+     */
+    public boolean checkCollisionShotAsteroid(animation.Asteroids asteroid, Shot shot) {
+        return asteroid.getShape().intersects(shot.getShape().getBounds2D());
     }
     
     private void gameOver() {
         gameOverText.setText("GAME OVER");
     }
-
+    
     /**
      * Paint the animation by painting the objects in the animation.
      * 
@@ -136,7 +186,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         // method above, and repaint will call paintComponent.
 
         super.paintComponent(g);
-
         asteroid1.paint((Graphics2D) g);
         asteroid2.paint((Graphics2D) g);
         asteroid3.paint((Graphics2D) g);
@@ -145,10 +194,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
         // Paint ship
         ship.paint((Graphics2D) g);
-
-        // Paint shots
-        for (Shot shot : ship.getShots()) {
-            shot.paint((Graphics2D) g);
+        
+        for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
+            shots.next().paint((Graphics2D) g);
         }
     }
 

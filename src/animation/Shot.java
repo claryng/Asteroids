@@ -115,8 +115,10 @@ public class Shot implements AnimatedObject {
     public boolean getMoving() {
         return moving;
     }
-
-    @Override
+    
+    /**
+     * Get shape 
+     */
     public Shape getShape() {
         return shot;
     }

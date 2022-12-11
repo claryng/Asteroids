@@ -11,10 +11,10 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
-public class LargeAsteroids extends Asteroids {
+public class SmallAsteroids extends Asteroids {
     
-    private Polygon asteroid; 
-    private int size;
+    private Polygon asteroid;
+    private double angle;
 //    private double locationX;
 //    private double locationY;
 //    private double targetedX;
@@ -23,22 +23,32 @@ public class LargeAsteroids extends Asteroids {
     /**
      * Constructor to create a large asteroid
      */
-    public LargeAsteroids(AbstractAnimation animation) {
+    public SmallAsteroids(AbstractAnimation animation, Asteroids a, double angle) {
         
         super(animation);
-        size = 1;
+        
+        this.angle = angle;
         
         asteroid = new Polygon();
-        asteroid.addPoint(0, 30);
-        asteroid.addPoint(20, 15);
-        asteroid.addPoint(20, -15);
-        asteroid.addPoint(0, -30);
-        asteroid.addPoint(-20, -15);
-        asteroid.addPoint(-20, 15);
+        asteroid.addPoint(0, 10);
+        asteroid.addPoint(-5, 0);
+        asteroid.addPoint(-5, 5);
+        asteroid.addPoint(0, -5);
+        asteroid.addPoint(5, 5);
+        asteroid.addPoint(5, 0);
         
-        setRandom();
-        setRandomAngle();
+        setLocationX(a.getLocationX());
+        setLocationY(a.getLocationY());
         
+        setTarget();
+        
+        
+       
+        
+    }
+    
+    public void setAngle(double parentAngle, int no) {
+        super.setAngle(parentAngle, no);
     }
     
     /**
@@ -56,6 +66,8 @@ public class LargeAsteroids extends Asteroids {
         // case, this is the center of the polygon. See the constructor
         // to see where the points are.
         affineTransform.translate(getLocationX(), getLocationY());
+
+//        setVectorTarget(speed);
 
         // Rotate the ship
 //        affineTransform.rotate(angle);
@@ -82,11 +94,25 @@ public class LargeAsteroids extends Asteroids {
      * Move the ship in its current direction
      */
     public void move() {
-        super.move();
+        
+        // Find coordinates using calculus: position vector
+        setLocationX (this.getLocationX() + 1 * ((this.getTargetedX() - this.getLocationX())));
+        setLocationY (this.getLocationY() + 1 * ((this.getTargetedY() - this.getLocationY())));
+
+         //Wrap the ship around the screen
+        setLocationX ((this.getLocationX() <= 0) ? WIDTH + this.getLocationX() : this.getLocationX() % WIDTH);
+        setLocationY ((this.getLocationY() <= 0) ? WIDTH + this.getLocationY() : this.getLocationY() % WIDTH);
+
+        // Change the vector target according to the new coordinates
+        setTarget();
+
+        // Set moving flag to true to continue moving in the next frames
+//        moving = true;
     }
     
     public void setTarget() {
-        super.setTarget();
+        setTargetedX(this.getLocationX() + SPEED * Math.sin(getAngle()));
+        setTargetedY(this.getLocationY() - SPEED * Math.cos(getAngle()));
     }
     
     /**
