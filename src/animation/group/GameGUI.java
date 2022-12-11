@@ -19,6 +19,7 @@ import animation.AbstractAnimation;
 import animation.AnimatedObject;
 import animation.Ship;
 import animation.Shot;
+import animation.UFO;
 
 /**
  * This class provides a simple demonstration of how you would implement an
@@ -55,6 +56,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
     private boolean moving = true;
 
+    private boolean shooting = false;
+
     /**
      * Constructs an animation and initializes it to be able to accept key
      * input.
@@ -72,6 +75,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         gameOverText.setBackground(Color.black);
         gameOverText.setFont(new Font("Monospaced", Font.PLAIN, 25));
         gameOverText.setHorizontalAlignment(SwingConstants.CENTER);
+
         
         setLayout(new BorderLayout());
         add(scoreUpdate, BorderLayout.PAGE_START);
@@ -89,23 +93,35 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
+
+//            ufo.nextFrame();
+
             // ship
             ship.nextFrame();
-            
-            // Shoot
+
             Iterator<Shot> shots = ship.getShots().iterator();
             while (shots.hasNext()) {
                 Shot shot = shots.next();
                 shot.nextFrame();
-            }
-
-            // Remove out of screen shots
-            for (Shot s : ship.getShots()) {
-                if (!s.getMoving()) {
-                    ship.getShots().remove(s);
+                if (checkCollision (shot, asteroid1)) {
+                    //asteroid1.die?
+                }
+                if (!shot.getMoving()) {
+                    shots.remove();
                 }
             }
+            
+            asteroid1.nextFrame();
+            asteroid2.nextFrame();
+            asteroid3.nextFrame();
+            asteroid4.nextFrame();
+            asteroid5.nextFrame();
             repaint();
+
+            if (checkCollision (ufo, ship)) {
+//                ufo.die();
+            }
+
         }
     }
 
@@ -143,12 +159,12 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         asteroid4.paint((Graphics2D) g);
         asteroid5.paint((Graphics2D) g);
 
-        // Paint ship
-        ship.paint((Graphics2D) g);
+//        ufo.paint((Graphics2D) g);
 
-        // Paint shots
-        for (Shot shot : ship.getShots()) {
-            shot.paint((Graphics2D) g);
+        // SHIP demo
+        ship.paint((Graphics2D) g);
+        for (animation.Shot s : ship.getShots()) {
+            s.paint((Graphics2D) g);
         }
     }
 
@@ -179,6 +195,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         case KeyEvent.VK_SPACE:
             ship.addShots();
             ship.fire();
+            ship.fire();
+//            shooting = true;
             break;
         default:
             // Ignore all other keys
