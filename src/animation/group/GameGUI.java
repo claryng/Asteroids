@@ -16,14 +16,15 @@ import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import animation.AbstractAnimation;
+import animation.AnimatedObject;
 import animation.Ship;
 import animation.Shot;
-import animation.UFO;
 
 /**
  * This class provides a simple demonstration of how you would implement an
@@ -48,25 +49,17 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     
     List<animation.Asteroids> asteroids = new ArrayList<animation.Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
 
-    
-//    private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
-
-//    private static JLabel scoreUpdate;
-//    
-//    private static String score = "0000";
-//    
 //    private static JLabel livesText;
 //    
 //    private static int lives = 4;
+
     private static JLabel scoreUpdate;
 
     private static String score = "0000";
 
     private Ship ship = new animation.Ship(this);
-
-//    private animation.Shot shot;
-
-//    private animation.UFO ufo = new animation.UFO(this);
+    
+    private static JLabel gameOverText = new JLabel();
 
     private boolean moving = true;
 
@@ -82,10 +75,16 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         scoreUpdate.setForeground(Color.white);
         scoreUpdate.setBackground(Color.black);
         scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
-
+        
+        gameOverText.setForeground(Color.white);
+        gameOverText.setBackground(Color.black);
+        gameOverText.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        gameOverText.setHorizontalAlignment(SwingConstants.CENTER);
+        
         setLayout(new BorderLayout());
         add(scoreUpdate, BorderLayout.PAGE_START);
-
+        add(gameOverText, BorderLayout.CENTER);
+        
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener(this);
@@ -118,13 +117,16 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
             Iterator<Shot> shots = ship.getShots().iterator();
             while (shots.hasNext()) {
-                animation.Shot shot = (animation.Shot) shots.next();
+                Shot shot = shots.next();
                 shot.nextFrame();
-                if (!shot.getMoving()) {
-                    shots.remove();
-                }
             }
 
+            // Remove out of screen shots
+            for (Shot s : ship.getShots()) {
+                if (!s.getMoving()) {
+                    ship.getShots().remove(s);
+                }
+            }
             repaint();
             
             for (animation.Asteroids asteroid : asteroids) {
@@ -147,7 +149,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 ////                ufo.die();
 //            }
             
-
         }
     }
 
@@ -170,6 +171,10 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         return asteroid.getShape().intersects(shot.getShape().getBounds2D());
     }
     
+    private void gameOver() {
+        gameOverText.setText("GAME OVER");
+    }
+    
     /**
      * Paint the animation by painting the objects in the animation.
      * 
@@ -187,14 +192,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         asteroid4.paint((Graphics2D) g);
         asteroid5.paint((Graphics2D) g);
 
-
-//        ufo.paint((Graphics2D) g);
-
-        // SHIP demo
+        // Paint ship
         ship.paint((Graphics2D) g);
-//        for (animation.Shot s : ship.getShots()) {
-//            s.paint((Graphics2D) g);
-//        }
         
         for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
             shots.next().paint((Graphics2D) g);

@@ -40,7 +40,6 @@ public class LargeAsteroids extends Asteroids {
         setRandomAngle();
         
     }
-   
     
     /**
      * Returns the shape after applying the current translation and rotation
@@ -57,7 +56,6 @@ public class LargeAsteroids extends Asteroids {
         // case, this is the center of the polygon. See the constructor
         // to see where the points are.
         affineTransform.translate(getLocationX(), getLocationY());
-
 
         // Rotate the ship
 //        affineTransform.rotate(angle);

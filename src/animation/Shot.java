@@ -38,7 +38,7 @@ public class Shot implements AnimatedObject {
     private double angle = 0;
 
     // Direction of movement
-    private Double vector_target;
+    private Double vectorTarget;
 
     // Used to check if the bullet is moving
     private boolean moving = false;
@@ -51,19 +51,23 @@ public class Shot implements AnimatedObject {
      * Create the Ship object
      * 
      * @param animation the animation that this object is part of
+     * @param speedShip the speed of the object carrying shot
+     * @param angle the angle that the object is pointing
+     * @param x coordinate of the object
+     * @param y coordinate of the object
      */
 
-    public Shot(AbstractAnimation animation, double speedShip, double angle,
-            double x, double y) {
+    public Shot(AbstractAnimation animation, double speedShip,
+            double rotatingAngle, double x, double y) {
         this.animation = animation;
-        this.angle = angle;
+        this.angle = rotatingAngle;
         this.x = x;
         this.y = y;
         shot = new Ellipse2D.Double(x, y, SHOT_SIZE, SHOT_SIZE);
 
         this.speed = INCREMENT + speedShip;
 
-        vector_target = new Double(this.x, this.y - this.speed);
+        vectorTarget = new Double(this.x, this.y - this.speed);
     }
 
     /**
@@ -75,7 +79,7 @@ public class Shot implements AnimatedObject {
             move();
             System.out.println("Shot speed: " + speed + " Coordinate: " + x
                     + ", " + y + "Angle: " + angle);
-            if (!(x < 600 && y < 600 && x > 0 && y > 0)) {
+            if (!(x < 605 && y < 605 && x > -5 && y > -5)) {
                 moving = false;
             }
         }
@@ -96,15 +100,17 @@ public class Shot implements AnimatedObject {
      * Bullet flies
      */
     public void move() {
-        x += (vector_target.getX() - x);
-        y += (vector_target.getY() - y);
-        vector_target.setLocation(x + (speed) * Math.sin(angle),
+        vectorTarget.setLocation(x + (speed) * Math.sin(angle),
                 y - (speed) * Math.cos(angle));
+        x += (vectorTarget.getX() - x);
+        y += (vectorTarget.getY() - y);
         moving = true;
     }
 
     /**
      * Get status
+     * 
+     * @return the status of the bullet
      */
     public boolean getMoving() {
         return moving;

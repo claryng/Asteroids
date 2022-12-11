@@ -33,7 +33,6 @@ public abstract class Asteroids implements AnimatedObject {
     // Direction angle
     private double angle;
     
-    
     // Shape of the asteroid
     private Polygon asteroid;
     
@@ -48,7 +47,6 @@ public abstract class Asteroids implements AnimatedObject {
     
     // List of broken up asteroids
     private ArrayList<Asteroids> asteroids = new ArrayList<>();
-    
     
     /**
      * Constructor
@@ -101,8 +99,6 @@ public abstract class Asteroids implements AnimatedObject {
     public void setTargetedY(double y) {
         targetedY = y;
     }
-    
-   
     
     public void setRandomAngle() {
         // Bottom edge -- Correct
@@ -197,7 +193,6 @@ public abstract class Asteroids implements AnimatedObject {
         // Randomize if X is greater than 0
         } else if (locationX >= 0) {
             List<Integer> givenList = Arrays.asList(1, 2);
-            
             Random rand = new Random();
             int randomElement = givenList.get(rand.nextInt(givenList.size()));
             System.out.println(randomElement);
@@ -217,7 +212,6 @@ public abstract class Asteroids implements AnimatedObject {
         System.out.println(locationX);
         System.out.println(targetedY);
         System.out.println(targetedX);
-       
     }
     
     /**
