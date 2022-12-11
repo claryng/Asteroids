@@ -1,5 +1,6 @@
 package animation;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 
 /**
  * An object that changes during animation.
@@ -17,4 +18,10 @@ public interface AnimatedObject {
      * @param g the graphics context to draw on
      */
     public void paint(Graphics2D g);
+    
+    /**
+     * @return the tranformed shape
+     */
+    public Shape getShape();
+      
 }

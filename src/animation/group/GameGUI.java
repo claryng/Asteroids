@@ -13,8 +13,10 @@ import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import animation.AbstractAnimation;
+import animation.AnimatedObject;
 import animation.Ship;
 import animation.Shot;
 
@@ -30,24 +32,26 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     // The height of the window, in pixels.
     private static final int WINDOW_HEIGHT = 600;
 
-    // The object that moves during the animation. You might have
-    // many objects!
-//    private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
+    private static JLabel scoreUpdate;
+    
+    private static String score = "0000";
 
-//    private static JLabel scoreUpdate;
-//    
-//    private static String score = "0000";
-//    
 //    private static JLabel livesText;
 //    
 //    private static int lives = 4;
-    private static JLabel scoreUpdate;
-
-    private static String score = "0000";
-
-    private Ship ship = new Ship(this);
-
+    
     private static JLabel gameOverText = new JLabel();
+    
+    private animation.Ship ship = new animation.Ship(this);
+    
+    private animation.LargeAsteroids asteroid1 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid2 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid3 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid4 = new animation.LargeAsteroids(this);
+    private animation.LargeAsteroids asteroid5 = new animation.LargeAsteroids(this);
+
+
+    private animation.UFO ufo = new animation.UFO(this);
 
     private boolean moving = true;
 
@@ -63,16 +67,16 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         scoreUpdate.setForeground(Color.white);
         scoreUpdate.setBackground(Color.black);
         scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
-
+        
         gameOverText.setForeground(Color.white);
         gameOverText.setBackground(Color.black);
         gameOverText.setFont(new Font("Monospaced", Font.PLAIN, 25));
-//        gameOverText.setHorizontalAlignment(SwingConstants.CENTER);
-
+        gameOverText.setHorizontalAlignment(SwingConstants.CENTER);
+        
         setLayout(new BorderLayout());
         add(scoreUpdate, BorderLayout.PAGE_START);
         add(gameOverText, BorderLayout.CENTER);
-
+        
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener(this);
@@ -85,10 +89,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-
-            // demo ship
+            // ship
             ship.nextFrame();
-
+            
             // Shoot
             Iterator<Shot> shots = ship.getShots().iterator();
             while (shots.hasNext()) {
@@ -114,13 +117,13 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * @param shape2 the second shape to test
      * @return true if the shapes intersect
      */
-//    private boolean checkCollision(UFO shape1, Ship shape2) {
-//        return shape2.getShape().intersects(shape1.getShape().getBounds2D());
-//    }
-
-//    private void gameOver() {
-//        add(scoreUpdate, BorderLayout.PAGE_START);
-//    }
+    private boolean checkCollision(AnimatedObject shape1, AnimatedObject shape2) {
+        return shape2.getShape().intersects(shape1.getShape().getBounds2D());
+    }
+    
+    private void gameOver() {
+        gameOverText.setText("GAME OVER");
+    }
 
     /**
      * Paint the animation by painting the objects in the animation.
@@ -134,7 +137,11 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
         super.paintComponent(g);
 
-//        ufo.paint((Graphics2D) g);
+        asteroid1.paint((Graphics2D) g);
+        asteroid2.paint((Graphics2D) g);
+        asteroid3.paint((Graphics2D) g);
+        asteroid4.paint((Graphics2D) g);
+        asteroid5.paint((Graphics2D) g);
 
         // Paint ship
         ship.paint((Graphics2D) g);
