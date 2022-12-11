@@ -38,7 +38,7 @@ public class Shot implements AnimatedObject {
     private double angle = 0;
 
     // Direction of movement
-    private Double vectorTarget;
+    private Double vector_target;
 
     // Used to check if the bullet is moving
     private boolean moving = false;
@@ -57,17 +57,17 @@ public class Shot implements AnimatedObject {
      * @param y coordinate of the object
      */
 
-    public Shot(AbstractAnimation animation, double speedShip,
-            double rotatingAngle, double x, double y) {
+    public Shot(AbstractAnimation animation, double speedShip, double angle,
+            double x, double y) {
         this.animation = animation;
-        this.angle = rotatingAngle;
+        this.angle = angle;
         this.x = x;
         this.y = y;
         shot = new Ellipse2D.Double(x, y, SHOT_SIZE, SHOT_SIZE);
 
         this.speed = INCREMENT + speedShip;
 
-        vectorTarget = new Double(this.x, this.y - this.speed);
+        vector_target = new Double(this.x, this.y - this.speed);
     }
 
     /**
@@ -78,8 +78,8 @@ public class Shot implements AnimatedObject {
         if (moving) {
             move();
             System.out.println("Shot speed: " + speed + " Coordinate: " + x
-                    + ", " + y + "Angle: " + angle);
-            if (!(x < 605 && y < 605 && x > -5 && y > -5)) {
+                    + ", " + y + "; Angle: " + angle);
+            if (!(x < 600 && y < 600 && x > 0 && y > 0)) {
                 moving = false;
             }
         }
@@ -100,17 +100,17 @@ public class Shot implements AnimatedObject {
      * Bullet flies
      */
     public void move() {
-        vectorTarget.setLocation(x + (speed) * Math.sin(angle),
+        x += (vector_target.getX() - x);
+        y += (vector_target.getY() - y);
+        vector_target.setLocation(x + (speed) * Math.sin(angle),
                 y - (speed) * Math.cos(angle));
-        x += (vectorTarget.getX() - x);
-        y += (vectorTarget.getY() - y);
         moving = true;
     }
 
     /**
      * Get status
      * 
-     * @return the status of the bullet
+     * @return moving 
      */
     public boolean getMoving() {
         return moving;
