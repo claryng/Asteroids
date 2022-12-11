@@ -1,4 +1,4 @@
-package animation.group;
+package animation.UI;
 
 import java.awt.BorderLayout;
 import animation.AnimatedObject;
@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import animation.AbstractAnimation;
 import animation.AnimatedObject;
@@ -135,7 +136,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                 } 
             }
             
-            LinkedList<Shot> shotList = ship.getShots(); 
+            CopyOnWriteArrayList<Shot> shotList = ship.getShots(); 
 //            ArrayList<animation.Asteroids> smallerAsteroids = new ArrayList<>();
             for (int i = 0; i < shotList.size(); i++) {
                 for (animation.Asteroids asteroid : asteroids) {
@@ -144,6 +145,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                     }   
                 }
             }
+            
+            repaint();
 
 //            if (checkCollision (ufo, ship)) {
 ////                ufo.die();

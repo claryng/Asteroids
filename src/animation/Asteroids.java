@@ -268,7 +268,6 @@ public abstract class Asteroids implements AnimatedObject {
      */
     public void paint(Graphics2D g) {
         g.setColor(Color.WHITE);
-////        g.draw(getShape());
     }
     
     public void split() {
@@ -278,12 +277,14 @@ public abstract class Asteroids implements AnimatedObject {
             Asteroids b = new MediumAsteroids(animation, this, this.getAngle() + Math.PI/4);
             a.move();
             b.move();
+            System.out.println("Successful split Large");
             
         } else if (this.getClass() == MediumAsteroids.class){
             Asteroids a = new SmallAsteroids(animation, this, this.getAngle() - Math.PI/4);
             Asteroids b = new SmallAsteroids(animation, this, this.getAngle() + Math.PI/4);
             a.move();
-            b.move();    
+            b.move(); 
+            System.out.println("Successful split Medium");
         }
         
         this.isHit = true;
