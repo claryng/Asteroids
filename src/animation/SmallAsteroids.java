@@ -23,7 +23,7 @@ public class SmallAsteroids extends Asteroids {
     /**
      * Constructor to create a large asteroid
      */
-    public SmallAsteroids(AbstractAnimation animation, Asteroids a, double angle) {
+    public SmallAsteroids(AbstractAnimation animation, double angle, double x, double y) {
         
         super(animation);
         
@@ -37,11 +37,8 @@ public class SmallAsteroids extends Asteroids {
         asteroid.addPoint(-5, 0);
         asteroid.addPoint(-5, 5);
         
-        
-        
-        
-        setLocationX(a.getLocationX());
-        setLocationY(a.getLocationY());
+        setLocationX(x);
+        setLocationY(y);
         
         setTarget();
         
@@ -133,5 +130,11 @@ public class SmallAsteroids extends Asteroids {
 //        if (!isDestroyed) {
 //            frames++;
         move();     
+    }
+    /**
+     * Get Angle
+     */
+    public double getAngle() {
+        return angle;
     }
 }

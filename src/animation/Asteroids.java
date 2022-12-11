@@ -76,9 +76,7 @@ public abstract class Asteroids implements AnimatedObject {
         return targetedY;
     }
     
-    public double getAngle() {
-        return angle;
-    }
+    public abstract double getAngle();
     
 //    public boolean getHit() {
 //        return isHit;
@@ -106,7 +104,7 @@ public abstract class Asteroids implements AnimatedObject {
     
    
     
-    public void setRandomAngle() {
+    public double setRandomAngle() {
         // Bottom edge -- Correct
         if (targetedY == 570) {
             if (targetedX < 300) {
@@ -138,6 +136,7 @@ public abstract class Asteroids implements AnimatedObject {
             
         }
         System.out.println(angle);
+        return angle;
     }
     
     public void setAngle(double parentAngle, int no) {
@@ -202,7 +201,7 @@ public abstract class Asteroids implements AnimatedObject {
             
             Random rand = new Random();
             int randomElement = givenList.get(rand.nextInt(givenList.size()));
-            System.out.println(randomElement);
+//            System.out.println(randomElement);
             
             // Upper edge
             if (randomElement == 1) {
@@ -215,10 +214,10 @@ public abstract class Asteroids implements AnimatedObject {
             }
             targetedX = Math.random() * (200) + 200;
         }
-        System.out.println(locationY);
-        System.out.println(locationX);
-        System.out.println(targetedY);
-        System.out.println(targetedX);
+//        System.out.println(locationY);
+//        System.out.println(locationX);
+//        System.out.println(targetedY);
+//        System.out.println(targetedX);
        
     }
     
@@ -279,13 +278,14 @@ public abstract class Asteroids implements AnimatedObject {
 ////        g.draw(getShape());
     }
     
-    public void split() {
+    public void split(double angle, double x, double y) {
         
         asteroids = new CopyOnWriteArrayList<>();
         
         if (this.getClass() == LargeAsteroids.class) {
-            Asteroids a = new MediumAsteroids(animation, this, this.getAngle() - Math.PI/4);
-            Asteroids b = new MediumAsteroids(animation, this, this.getAngle() + Math.PI/4);
+            Asteroids a = new MediumAsteroids(animation, angle - Math.PI/4, x, y);
+            Asteroids b = new MediumAsteroids(animation, angle + Math.PI/4, x, y);
+            
             
             asteroids.add(a);
             asteroids.add(b);
@@ -293,8 +293,10 @@ public abstract class Asteroids implements AnimatedObject {
 //            b.move();
             
         } else if (this.getClass() == MediumAsteroids.class){
-            Asteroids a = new SmallAsteroids(animation, this, this.getAngle() - Math.PI/4);
-            Asteroids b = new SmallAsteroids(animation, this, this.getAngle() + Math.PI/4);
+            Asteroids a = new SmallAsteroids(animation, angle - Math.PI/4, x, y);
+            System.out.println(a.getAngle());
+            Asteroids b = new SmallAsteroids(animation, angle + Math.PI/4, x, y);
+            System.out.println(b.getAngle());
             
             asteroids.add(a);
             asteroids.add(b);
@@ -302,7 +304,7 @@ public abstract class Asteroids implements AnimatedObject {
 //            a.move();
 //            b.move();    
         }
-        
+        System.out.println(asteroids.toString());
         this.isHit = true;
         
         

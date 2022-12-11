@@ -23,7 +23,7 @@ public class MediumAsteroids extends Asteroids {
     /**
      * Constructor to create a large asteroid
      */
-    public MediumAsteroids(AbstractAnimation animation, Asteroids a, double angle) {
+    public MediumAsteroids(AbstractAnimation animation, double angle, double x, double y) {
         
         super(animation);
         
@@ -37,8 +37,8 @@ public class MediumAsteroids extends Asteroids {
         asteroid.addPoint(10, 8);
         asteroid.addPoint(10, -8);
       
-        setLocationX(a.getLocationX());
-        setLocationY(a.getLocationY());
+        setLocationX(x);
+        setLocationY(y);
         
         setTarget();
 
@@ -114,5 +114,11 @@ public class MediumAsteroids extends Asteroids {
 //        if (!isDestroyed) {
 //            frames++;
         move();     
+    }
+    /**
+     * Get Angle
+     */
+    public double getAngle() {
+        return angle;
     }
 }

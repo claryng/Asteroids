@@ -15,6 +15,7 @@ public class LargeAsteroids extends Asteroids {
     
     private Polygon asteroid; 
     private int size;
+    private double angle;
 //    private double locationX;
 //    private double locationY;
 //    private double targetedX;
@@ -26,7 +27,6 @@ public class LargeAsteroids extends Asteroids {
     public LargeAsteroids(AbstractAnimation animation) {
         
         super(animation);
-        size = 1;
         
         asteroid = new Polygon();
         asteroid.addPoint(0, 30);
@@ -37,10 +37,13 @@ public class LargeAsteroids extends Asteroids {
         asteroid.addPoint(-20, 15);
         
         setRandom();
-        setRandomAngle();
+        this.angle = setRandomAngle();
         
     }
-   
+    
+//    public double getAngle() {
+//        return angle;
+//    }
     
     /**
      * Returns the shape after applying the current translation and rotation
@@ -106,5 +109,11 @@ public class LargeAsteroids extends Asteroids {
 //        if (!isDestroyed) {
 //            frames++;
         move();     
+    }
+    /**
+     * Get Angle
+     */
+    public double getAngle() {
+        return angle;
     }
 }
