@@ -1,6 +1,7 @@
 package animation;
 
 import java.awt.Color;
+
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class Asteroids implements AnimatedObject {
     
@@ -47,7 +49,7 @@ public abstract class Asteroids implements AnimatedObject {
     private Random rand = new Random();
     
     // List of broken up asteroids
-    private ArrayList<Asteroids> asteroids = new ArrayList<>();
+    private CopyOnWriteArrayList<Asteroids> asteroids;
     
     
     /**
@@ -82,7 +84,7 @@ public abstract class Asteroids implements AnimatedObject {
 //        return isHit;
 //    }
     
-    public ArrayList<Asteroids> getAsteroids() {
+    public CopyOnWriteArrayList<Asteroids> getAsteroids() {
         return asteroids;
     }
     
@@ -279,17 +281,26 @@ public abstract class Asteroids implements AnimatedObject {
     
     public void split() {
         
+        asteroids = new CopyOnWriteArrayList<>();
+        
         if (this.getClass() == LargeAsteroids.class) {
             Asteroids a = new MediumAsteroids(animation, this, this.getAngle() - Math.PI/4);
             Asteroids b = new MediumAsteroids(animation, this, this.getAngle() + Math.PI/4);
-            a.move();
-            b.move();
+            
+            asteroids.add(a);
+            asteroids.add(b);
+//            a.move();
+//            b.move();
             
         } else if (this.getClass() == MediumAsteroids.class){
             Asteroids a = new SmallAsteroids(animation, this, this.getAngle() - Math.PI/4);
             Asteroids b = new SmallAsteroids(animation, this, this.getAngle() + Math.PI/4);
-            a.move();
-            b.move();    
+            
+            asteroids.add(a);
+            asteroids.add(b);
+            
+//            a.move();
+//            b.move();    
         }
         
         this.isHit = true;

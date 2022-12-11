@@ -31,11 +31,14 @@ public class SmallAsteroids extends Asteroids {
         
         asteroid = new Polygon();
         asteroid.addPoint(0, 10);
-        asteroid.addPoint(-5, 0);
-        asteroid.addPoint(-5, 5);
-        asteroid.addPoint(0, -5);
         asteroid.addPoint(5, 5);
         asteroid.addPoint(5, 0);
+        asteroid.addPoint(0, -5);
+        asteroid.addPoint(-5, 0);
+        asteroid.addPoint(-5, 5);
+        
+        
+        
         
         setLocationX(a.getLocationX());
         setLocationY(a.getLocationY());

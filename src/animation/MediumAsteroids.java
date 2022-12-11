@@ -30,13 +30,13 @@ public class MediumAsteroids extends Asteroids {
         this.angle = angle;
        
         asteroid = new Polygon();
-        asteroid.addPoint(0, 20);
-        asteroid.addPoint(-10, 0);
-        asteroid.addPoint(-10, 10);
-        asteroid.addPoint(0, -10);
-        asteroid.addPoint(10, 10);
-        asteroid.addPoint(10, 0);
-       
+        asteroid.addPoint(0, -15);
+        asteroid.addPoint(-10, -8);
+        asteroid.addPoint(-10, 8);
+        asteroid.addPoint(0, 15);
+        asteroid.addPoint(10, 8);
+        asteroid.addPoint(10, -8);
+      
         setLocationX(a.getLocationX());
         setLocationY(a.getLocationY());
         
