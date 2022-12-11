@@ -22,6 +22,10 @@ public class MediumAsteroids extends Asteroids {
     
     /**
      * Constructor to create a large asteroid
+     * @param animation 
+     * @param angle 
+     * @param x 
+     * @param y 
      */
     public MediumAsteroids(AbstractAnimation animation, double angle, double x, double y) {
         
