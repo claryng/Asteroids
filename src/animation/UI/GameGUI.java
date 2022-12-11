@@ -2,6 +2,9 @@ package animation.UI;
 
 import java.awt.BorderLayout;
 import animation.AnimatedObject;
+import animation.LargeAsteroids;
+import animation.MediumAsteroids;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -27,6 +30,7 @@ import animation.AbstractAnimation;
 import animation.AnimatedObject;
 import animation.Ship;
 import animation.Shot;
+import animation.SmallAsteroids;
 
 /**
  * This class provides a simple demonstration of how you would implement an
@@ -148,11 +152,19 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             for (int i = 0; i < shotList.size(); i++) {
                 for (animation.Asteroids asteroid : asteroids) {
                     if (checkCollisionShotAsteroid(asteroid, shotList.get(i))) {
+                        if (asteroid.getClass() == LargeAsteroids.class) {
+                            score+=20;
+                            scoreUpdate.setText(String.format("%04d", score));
+                        } else if (asteroid.getClass() == MediumAsteroids.class) {
+                            score+=50;
+                            scoreUpdate.setText(String.format("%04d", score));
+                        } else if (asteroid.getClass() == SmallAsteroids.class) {
+                            score+=100;
+                            scoreUpdate.setText(String.format("%04d", score));
+                        }
                         asteroid.split(asteroid.getAngle(), asteroid.getLocationX(), asteroid.getLocationY()); 
                         asteroids.remove(asteroid);
                         asteroids.addAll(asteroid.getAsteroids());
-                        score+=20;
-                        scoreUpdate.setText(String.format("%04d", score));
                     }   
                 }
             }
