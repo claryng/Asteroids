@@ -9,17 +9,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ListIterator;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import java.util.LinkedList;
-
 import animation.AbstractAnimation;
 import animation.Ship;
 import animation.Shot;
-import animation.UFO;
 
 /**
  * This class provides a simple demonstration of how you would implement an
@@ -49,13 +46,10 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     private static String score = "0000";
 
     private Ship ship = new Ship(this);
-    
+
     private static JLabel gameOverText = new JLabel();
 
     private boolean moving = true;
-    
-    // List of shots
-    private LinkedList<Shot> shots = new LinkedList<>();
 
     /**
      * Constructs an animation and initializes it to be able to accept key
@@ -69,17 +63,16 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         scoreUpdate.setForeground(Color.white);
         scoreUpdate.setBackground(Color.black);
         scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
-        
+
         gameOverText.setForeground(Color.white);
         gameOverText.setBackground(Color.black);
         gameOverText.setFont(new Font("Monospaced", Font.PLAIN, 25));
 //        gameOverText.setHorizontalAlignment(SwingConstants.CENTER);
 
-        
         setLayout(new BorderLayout());
         add(scoreUpdate, BorderLayout.PAGE_START);
         add(gameOverText, BorderLayout.CENTER);
-        
+
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener(this);
@@ -95,20 +88,21 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
             // demo ship
             ship.nextFrame();
-            ListIterator<Shot> shots = ship.getShots().listIterator();
+
+            // Shoot
+            Iterator<Shot> shots = ship.getShots().iterator();
             while (shots.hasNext()) {
                 Shot shot = shots.next();
                 shot.nextFrame();
-                if (!shot.getMoving()) {
-                    shots.remove();
-                    ship.getShots().remove(shot);
+            }
+
+            // Remove out of screen shots
+            for (Shot s : ship.getShots()) {
+                if (!s.getMoving()) {
+                    ship.getShots().remove(s);
                 }
             }
-//            for(Shot s: ship.getShots()) {
-//                s.nextFrame();
-//            }
             repaint();
-
         }
     }
 
@@ -123,7 +117,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 //    private boolean checkCollision(UFO shape1, Ship shape2) {
 //        return shape2.getShape().intersects(shape1.getShape().getBounds2D());
 //    }
-    
+
 //    private void gameOver() {
 //        add(scoreUpdate, BorderLayout.PAGE_START);
 //    }
@@ -142,12 +136,12 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
 //        ufo.paint((Graphics2D) g);
 
-        // SHIP demo
+        // Paint ship
         ship.paint((Graphics2D) g);
 
-        ListIterator<Shot> shots = ship.getShots().listIterator();
-        while (shots.hasNext()) {
-            shots.next().paint((Graphics2D) g);
+        // Paint shots
+        for (Shot shot : ship.getShots()) {
+            shot.paint((Graphics2D) g);
         }
     }
 
