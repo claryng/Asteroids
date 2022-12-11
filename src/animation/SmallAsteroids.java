@@ -13,7 +13,8 @@ import java.awt.geom.AffineTransform;
 
 public class SmallAsteroids extends Asteroids {
     
-    private Polygon asteroid; 
+    private Polygon asteroid;
+    private double angle;
 //    private double locationX;
 //    private double locationY;
 //    private double targetedX;
@@ -22,9 +23,11 @@ public class SmallAsteroids extends Asteroids {
     /**
      * Constructor to create a large asteroid
      */
-    public SmallAsteroids(AbstractAnimation animation, Asteroids a, double angle, int no) {
+    public SmallAsteroids(AbstractAnimation animation, Asteroids a, double angle) {
         
         super(animation);
+        
+        this.angle = angle;
         
         asteroid = new Polygon();
         asteroid.addPoint(0, 10);
@@ -33,8 +36,14 @@ public class SmallAsteroids extends Asteroids {
         asteroid.addPoint(0, -5);
         asteroid.addPoint(5, 5);
         asteroid.addPoint(5, 0);
+        
+        setLocationX(a.getLocationX());
+        setLocationY(a.getLocationY());
+        
+        setTarget();
+        
+        
        
-        setAngle(angle, no);
         
     }
     

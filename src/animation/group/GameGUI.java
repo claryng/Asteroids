@@ -138,8 +138,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             for (int i = 0; i < shotList.size(); i++) {
                 for (animation.Asteroids asteroid : asteroids) {
                     if (checkCollisionShotAsteroid(asteroid, shotList.get(i))) {
-                        System.out.println("Hit");
-                        
+                        asteroid.split();    
                     }   
                 }
             }

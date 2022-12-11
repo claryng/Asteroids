@@ -18,14 +18,17 @@ public class MediumAsteroids extends Asteroids {
     private double locationY;
     private double targetedX;
     private double targetedY;
+    private double angle;
     
     /**
      * Constructor to create a large asteroid
      */
-    public MediumAsteroids(AbstractAnimation animation, Asteroids a, double angle, int no) {
+    public MediumAsteroids(AbstractAnimation animation, Asteroids a, double angle) {
         
         super(animation);
         
+        this.angle = angle;
+       
         asteroid = new Polygon();
         asteroid.addPoint(0, 20);
         asteroid.addPoint(-10, 0);
@@ -34,15 +37,16 @@ public class MediumAsteroids extends Asteroids {
         asteroid.addPoint(10, 10);
         asteroid.addPoint(10, 0);
        
-        setAngle(angle, no);
         setLocationX(a.getLocationX());
         setLocationY(a.getLocationY());
         
+        setTarget();
+
     }
     
-    public void setAngle(double parentAngle, int no) {
-        super.setAngle(parentAngle, no);
-    }
+//    public void setAngle(double parentAngle, int no) {
+//        super.setAngle(parentAngle, no);
+//    }
     
     /**
      * Returns the shape after applying the current translation and rotation
@@ -86,21 +90,8 @@ public class MediumAsteroids extends Asteroids {
     /**
      * Move the ship in its current direction
      */
-    public void move() {
-        
-        // Find coordinates using calculus: position vector
-        setLocationX (this.getLocationX() + 1 * ((this.getTargetedX() - this.getLocationX())));
-        setLocationY (this.getLocationY() + 1 * ((this.getTargetedY() - this.getLocationY())));
-
-         //Wrap the ship around the screen
-        setLocationX ((this.getLocationX() <= 0) ? WIDTH + this.getLocationX() : this.getLocationX() % WIDTH);
-        setLocationY ((this.getLocationY() <= 0) ? WIDTH + this.getLocationY() : this.getLocationY() % WIDTH);
-
-        // Change the vector target according to the new coordinates
-        setTarget();
-
-        // Set moving flag to true to continue moving in the next frames
-//        moving = true;
+    public void move() {        
+        super.move();
     }
     
     public void setTarget() {

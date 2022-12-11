@@ -33,17 +33,12 @@ public abstract class Asteroids implements AnimatedObject {
     // Direction angle
     private double angle;
     
-    // size
-    private int size;
     
     // Shape of the asteroid
     private Polygon asteroid;
     
-    // Check if hit by the shot
+    // Check if hit by the ship
     private boolean isHit = false;
-    
-    // Check if is completely destroyed
-    private boolean isDestroyed = false;
     
     // Animation that contains the object
     private AbstractAnimation animation;
@@ -83,9 +78,9 @@ public abstract class Asteroids implements AnimatedObject {
         return angle;
     }
     
-    public int getSize() {
-        return size;
-    }
+//    public boolean getHit() {
+//        return isHit;
+//    }
     
     public ArrayList<Asteroids> getAsteroids() {
         return asteroids;
@@ -106,6 +101,7 @@ public abstract class Asteroids implements AnimatedObject {
     public void setTargetedY(double y) {
         targetedY = y;
     }
+    
    
     
     public void setRandomAngle() {
@@ -144,9 +140,9 @@ public abstract class Asteroids implements AnimatedObject {
     
     public void setAngle(double parentAngle, int no) {
         if (no == 1) {
-            angle = parentAngle * Math.PI/4;
+            angle = parentAngle + Math.PI/4;
         } else if (no == 2) {
-            angle = parentAngle * (- Math.PI/4);
+            angle = parentAngle - Math.PI/4;
         }
     }
      
@@ -154,18 +150,25 @@ public abstract class Asteroids implements AnimatedObject {
      * Move the ship in its current direction
      */
     public void move() {
+        
+        if (!isHit) {
               
-        // Find coordinates using calculus: position vector
-        setLocationX (this.getLocationX() + 1 * ((this.getTargetedX() - this.getLocationX())));
-        setLocationY (this.getLocationY() + 1 * ((this.getTargetedY() - this.getLocationY())));
-
-         //Wrap the ship around the screen
-        setLocationX ((this.getLocationX() <= 0) ? WIDTH + this.getLocationX() : this.getLocationX() % WIDTH);
-        setLocationY ((this.getLocationY() <= 0) ? WIDTH + this.getLocationY() : this.getLocationY() % WIDTH);
-
-        // Change the vector target according to the new coordinates
-        setTarget();
-
+            // Find coordinates using calculus: position vector
+            setLocationX (this.getLocationX() + 1 * ((this.getTargetedX() - this.getLocationX())));
+            setLocationY (this.getLocationY() + 1 * ((this.getTargetedY() - this.getLocationY())));
+    
+             //Wrap the ship around the screen
+            setLocationX ((this.getLocationX() <= 0) ? WIDTH + this.getLocationX() : this.getLocationX() % WIDTH);
+            setLocationY ((this.getLocationY() <= 0) ? WIDTH + this.getLocationY() : this.getLocationY() % WIDTH);
+    
+            // Change the vector target according to the new coordinates
+            setTarget();
+        } else {
+            setLocationX(-300);
+            setLocationY(-300);
+        }
+        
+        
         // Set moving flag to true to continue moving in the next frames
 //        moving = true;
     }
@@ -262,6 +265,8 @@ public abstract class Asteroids implements AnimatedObject {
         return at.createTransformedShape(asteroid);
     }
     
+    
+    
     /**
      * Draws an asteroid.
      * 
@@ -272,19 +277,24 @@ public abstract class Asteroids implements AnimatedObject {
 ////        g.draw(getShape());
     }
     
-    public void split(Asteroids asteroid, ArrayList<Asteroids> lst) {
+    public void split() {
         
-        if (asteroid.getSize() == 1) {
-            MediumAsteroids a = new MediumAsteroids(animation, asteroid, asteroid.getAngle(), 1);
-            MediumAsteroids b = new MediumAsteroids(animation, asteroid, asteroid.getAngle(), 2);
-            asteroids.add(a);
-            asteroids.add(b);
-        } else {
-            SmallAsteroids a = new SmallAsteroids(animation, asteroid, asteroid.getAngle(), 1);
-            SmallAsteroids b = new SmallAsteroids(animation, asteroid, asteroid.getAngle(), 2);
-            asteroids.add(a);
-            asteroids.add(b);
+        if (this.getClass() == LargeAsteroids.class) {
+            Asteroids a = new MediumAsteroids(animation, this, this.getAngle() - Math.PI/4);
+            Asteroids b = new MediumAsteroids(animation, this, this.getAngle() + Math.PI/4);
+            a.move();
+            b.move();
+            
+        } else if (this.getClass() == MediumAsteroids.class){
+            Asteroids a = new SmallAsteroids(animation, this, this.getAngle() - Math.PI/4);
+            Asteroids b = new SmallAsteroids(animation, this, this.getAngle() + Math.PI/4);
+            a.move();
+            b.move();    
         }
+        
+        this.isHit = true;
+        
+        
         
     }
     
