@@ -1,4 +1,4 @@
-package animation.UI;
+package animation;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
