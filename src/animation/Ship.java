@@ -21,8 +21,9 @@ public class Ship implements AnimatedObject {
     private static final int WIDTH = 600;
 
     // Initial position of the ship when the game starts
-    private static final int X = 300;
-    private static final int Y = 300;
+    // Center of the screen
+    private static final int X = WIDTH / 2;
+    private static final int Y = WIDTH / 2;
 
     // Coordinates of the center of the Ship
     private double x;
@@ -47,9 +48,11 @@ public class Ship implements AnimatedObject {
     private double speed = 0;
 
     // Used to keep track of number of frames
-    private int frames = 1;
+    private int frames;
 
     // List of bullets
+    // Use CopyOnWriteArrayList to avoid ConcurrentMosdificationException in
+    // main class
     private CopyOnWriteArrayList<Shot> shotList = new CopyOnWriteArrayList<>();
 
     // Rotating angle
@@ -90,7 +93,7 @@ public class Ship implements AnimatedObject {
             speed = (speed * 90) / 100;
         }
 
-        // The ship keeps moving when speed is larger than 1
+        // The ship keeps moving when speed is larger than 0.5
         if (moving) {
             frames++;
             move();
@@ -123,8 +126,6 @@ public class Ship implements AnimatedObject {
         // to see where the points are.
         affineTransform.translate(x, y);
 
-        setVectorTarget(speed);
-
         // Rotate the ship
         affineTransform.rotate(rotatingAngle);
 
@@ -139,6 +140,7 @@ public class Ship implements AnimatedObject {
      * Move the ship in its current direction
      */
     public void move() {
+
         // Find coordinates using calculus: position vector
         x = x + 1 * ((vectorTarget.getX() - x));
         y = y + 1 * ((vectorTarget.getY() - y));
@@ -182,9 +184,11 @@ public class Ship implements AnimatedObject {
     }
 
     /**
-     * Send the ship into hyperspace
+     * Send the ship into hyperspace: disappear and reappear at a random
+     * location
      */
     public void space() {
+
         // Set max, min value so that the ship still jumps to coordinates inside
         // the screen
         double min = 20;
@@ -194,6 +198,9 @@ public class Ship implements AnimatedObject {
         double range = max - min + 1;
         x = (Math.random() * range) + min;
         y = (Math.random() * range) + min;
+
+        // Change speed to 0
+        speed = 0;
 
         // Change the vector target according to new coordinates
         setVectorTarget(speed);
@@ -212,6 +219,8 @@ public class Ship implements AnimatedObject {
      * Fire shots
      */
     public void fire() {
+
+        // Fire every shots in the list
         for (Shot shot : shotList) {
             shot.move();
         }
@@ -221,6 +230,8 @@ public class Ship implements AnimatedObject {
      * Add shots to list of shots
      */
     public void addShots() {
+
+        // Create the Shot
         Shot shot = new animation.Shot(animation, speed, rotatingAngle,
                 vectorTarget.getX(), vectorTarget.getY());
         shotList.add(shot);
@@ -234,4 +245,21 @@ public class Ship implements AnimatedObject {
     public CopyOnWriteArrayList<Shot> getShots() {
         return shotList;
     }
+
+    /**
+     * Die
+     */
+    public void die() {
+
+        // Get back to the center of the screen
+        x = X;
+        y = Y;
+
+        // Reset the vector target of the ship
+        setVectorTarget(3);
+
+        // Reset the speed to stop moving
+        speed = 0;
+    }
+
 }

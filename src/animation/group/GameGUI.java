@@ -7,12 +7,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import animation.AbstractAnimation;
 import animation.Ship;
@@ -32,22 +35,33 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
     // The object that moves during the animation. You might have
     // many objects!
-//    private AnimatedObjectDemo shape = new AnimatedObjectDemo(this);
+    
+    private animation.Asteroids asteroid1 = new animation.LargeAsteroids(this);
+    private animation.Asteroids asteroid2 = new animation.LargeAsteroids(this);
+    private animation.Asteroids asteroid3 = new animation.LargeAsteroids(this);
+    private animation.Asteroids asteroid4 = new animation.LargeAsteroids(this);
+    private animation.Asteroids asteroid5 = new animation.LargeAsteroids(this);
+    
+    CopyOnWriteArrayList<animation.Asteroids> asteroids = new CopyOnWriteArrayList<animation.Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
 
-//    private static JLabel scoreUpdate;
-//    
-//    private static String score = "0000";
-//    
-//    private static JLabel livesText;
-//    
-//    private static int lives = 4;
+    private static JLabel livesUpdate;
+    
+    private static int lives = 3;
+
     private static JLabel scoreUpdate;
 
-    private static String score = "0000";
+    private static int score = 0;
+//    private static JLabel scoreUpdate;
 
-    private Ship ship = new Ship(this);
+//    private static String score = "0000";
 
     private static JLabel gameOverText = new JLabel();
+    
+    private Ship ship = new Ship(this);
+
+//    private animation.Shot shot;
+
+//    private animation.UFO ufo = new animation.UFO(this);
 
     private boolean moving = true;
 
@@ -59,18 +73,24 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
 //        ufo.appear();
 
-        scoreUpdate = new JLabel(score);
+        scoreUpdate = new JLabel(String.format("%04d", score));
         scoreUpdate.setForeground(Color.white);
         scoreUpdate.setBackground(Color.black);
         scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
-
+        
+        livesUpdate = new JLabel("Lives: " + lives);
+        livesUpdate.setForeground(Color.white);
+        livesUpdate.setBackground(null);
+        livesUpdate.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        
         gameOverText.setForeground(Color.white);
         gameOverText.setBackground(Color.black);
         gameOverText.setFont(new Font("Monospaced", Font.PLAIN, 25));
-//        gameOverText.setHorizontalAlignment(SwingConstants.CENTER);
-
+        gameOverText.setHorizontalAlignment(SwingConstants.CENTER);
+        
         setLayout(new BorderLayout());
         add(scoreUpdate, BorderLayout.PAGE_START);
+        add(livesUpdate, BorderLayout.PAGE_START);
         add(gameOverText, BorderLayout.CENTER);
 
         // Allow the game to receive key input
@@ -85,11 +105,14 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
+            
+            for (animation.Asteroids asteroid : asteroids) {
+                asteroid.nextFrame();
+            }
 
             // demo ship
             ship.nextFrame();
 
-            // Shoot
             Iterator<Shot> shots = ship.getShots().iterator();
             while (shots.hasNext()) {
                 Shot shot = shots.next();
@@ -103,6 +126,45 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                 }
             }
             repaint();
+            
+            // Check collsion of the asteroids with the ship
+            for (animation.Asteroids asteroid : asteroids) {
+                if (checkCollision(asteroid.getShape(), ship.getShape())) {
+                    ship.die();
+                    lives--;
+                    livesUpdate.setText("Lives: " + lives);
+                    if (lives == 0) {
+                        gameOver();
+                    }
+                } 
+            }
+            
+            CopyOnWriteArrayList<Shot> shotList = ship.getShots(); 
+            for (int i = 0; i < shotList.size(); i++) {
+                for (animation.Asteroids asteroid : asteroids) {
+                    if (checkCollision(asteroid.getShape(), shotList.get(i).getShape())) {
+                        if (asteroid.getClass() == animation.LargeAsteroids.class) {
+                            score+=20;
+                            scoreUpdate.setText(String.format("%04d", score));
+                        } else if (asteroid.getClass() == animation.MediumAsteroids.class) {
+                            score+=50;
+                            scoreUpdate.setText(String.format("%04d", score));
+                        } else if (asteroid.getClass() == animation.SmallAsteroids.class) {
+                            score+=100;
+                            scoreUpdate.setText(String.format("%04d", score));
+                        }
+                        
+                        if (score%10000 == 0) {
+                            lives++;
+                            livesUpdate.setText("Lives: " + lives);
+                        }
+                        asteroid.split(asteroid.getAngle(), asteroid.getLocationX(), asteroid.getLocationY()); 
+                        asteroids.remove(asteroid);
+                        asteroids.addAll(asteroid.getAsteroids());
+                    }   
+                }
+            }
+            
         }
     }
 
@@ -114,14 +176,19 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * @param shape2 the second shape to test
      * @return true if the shapes intersect
      */
-//    private boolean checkCollision(UFO shape1, Ship shape2) {
-//        return shape2.getShape().intersects(shape1.getShape().getBounds2D());
-//    }
-
-//    private void gameOver() {
-//        add(scoreUpdate, BorderLayout.PAGE_START);
-//    }
-
+    public boolean checkCollision(Shape shape1, Shape shape2) {
+        return shape1.intersects(shape2.getBounds2D());
+    }
+    
+    /**
+     * Add game over to the screen
+     * 
+     */
+    private void gameOver() {
+        gameOverText.setText("GAME OVER");
+        stop();
+    }
+    
     /**
      * Paint the animation by painting the objects in the animation.
      * 
@@ -133,8 +200,10 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         // method above, and repaint will call paintComponent.
 
         super.paintComponent(g);
+        for (animation.Asteroids asteroid : asteroids) {
+            asteroid.paint((Graphics2D) g);
+        }
 
-//        ufo.paint((Graphics2D) g);
 
         // Paint ship
         ship.paint((Graphics2D) g);
@@ -143,6 +212,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         for (Shot shot : ship.getShots()) {
             shot.paint((Graphics2D) g);
         }
+//        for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
+//            shots.next().paint((Graphics2D) g);
+//        }
     }
 
     @Override
