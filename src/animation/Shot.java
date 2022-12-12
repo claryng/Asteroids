@@ -122,4 +122,43 @@ public class Shot implements AnimatedObject {
     public Shape getShape() {
         return shot;
     }
+    
+    protected double getSpeed() {
+        return speed;
+    }
+    
+    protected double getX() {
+        return x;
+    }
+    
+    protected double getY() {
+        return y;
+    }
+    
+    protected double getAngle() {
+        return angle;
+    }
+    
+    /**
+     * @param newMoving
+     */
+    public void setMoving(boolean newMoving) {
+        moving = newMoving;
+    }
+    
+    protected void setSpeed(double newSpeed) {
+        speed = newSpeed;
+    }
+    
+    protected void setX(double newX) {
+        x = newX;
+    }
+    
+    protected void setY(double newY) {
+        y = newY;
+    }
+    
+    protected void setAngle(double newAngle) {
+        angle = newAngle;
+    }
 }
