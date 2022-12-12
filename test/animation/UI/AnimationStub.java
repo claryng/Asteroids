@@ -1,4 +1,4 @@
-package animation.group;
+package animation.UI;
 
 public class AnimationStub extends GameGUI {
 

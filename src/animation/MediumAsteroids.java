@@ -11,38 +11,45 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
-public class LargeAsteroids extends Asteroids {
+public class MediumAsteroids extends Asteroids {
     
     private Polygon asteroid; 
-    private int size;
+    private double locationX;
+    private double locationY;
+    private double targetedX;
+    private double targetedY;
     private double angle;
-//    private double locationX;
-//    private double locationY;
-//    private double targetedX;
-//    private double targetedY;
     
     /**
      * Constructor to create a large asteroid
+     * @param animation 
+     * @param angle 
+     * @param x 
+     * @param y 
      */
-    public LargeAsteroids(AbstractAnimation animation) {
+    public MediumAsteroids(AbstractAnimation animation, double angle, double x, double y) {
         
         super(animation);
         
+        this.angle = angle;
+       
         asteroid = new Polygon();
-        asteroid.addPoint(0, 30);
-        asteroid.addPoint(20, 15);
-        asteroid.addPoint(20, -15);
-        asteroid.addPoint(0, -30);
-        asteroid.addPoint(-20, -15);
-        asteroid.addPoint(-20, 15);
+        asteroid.addPoint(0, -15);
+        asteroid.addPoint(-10, -8);
+        asteroid.addPoint(-10, 8);
+        asteroid.addPoint(0, 15);
+        asteroid.addPoint(10, 8);
+        asteroid.addPoint(10, -8);
+      
+        setLocationX(x);
+        setLocationY(y);
         
-        setRandom();
-        this.angle = setRandomAngle();
-        
+        setTarget();
+
     }
     
-//    public double getAngle() {
-//        return angle;
+//    public void setAngle(double parentAngle, int no) {
+//        super.setAngle(parentAngle, no);
 //    }
     
     /**
@@ -61,6 +68,8 @@ public class LargeAsteroids extends Asteroids {
         // to see where the points are.
         affineTransform.translate(getLocationX(), getLocationY());
 
+//        setVectorTarget(speed);
+
         // Rotate the ship
 //        affineTransform.rotate(angle);
 
@@ -78,19 +87,20 @@ public class LargeAsteroids extends Asteroids {
      */
     public void paint(Graphics2D g) {
         super.paint(g);
-//        g.setColor(Color.WHITE);
         g.draw(getShape());
+        System.out.println("Painted Medium");
     }
     
     /**
      * Move the ship in its current direction
      */
-    public void move() {
+    public void move() {        
         super.move();
     }
     
     public void setTarget() {
-        super.setTarget();
+        setTargetedX(this.getLocationX() + SPEED * Math.sin(getAngle()));
+        setTargetedY(this.getLocationY() - SPEED * Math.cos(getAngle()));
     }
     
     /**

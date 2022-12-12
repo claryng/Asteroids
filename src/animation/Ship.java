@@ -228,10 +228,20 @@ public class Ship implements AnimatedObject {
 
     /**
      * Get the list of shots
-     * 
      * @return list of shots
      */
     public CopyOnWriteArrayList<Shot> getShots() {
         return shotList;
     }
+    
+    /**
+     * Die
+     */
+    public void die() {
+        x = X;
+        y = Y;
+        setVectorTarget(3);
+        speed = 0;
+    }
+    
 }
