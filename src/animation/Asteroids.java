@@ -6,12 +6,14 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Abstract class for creating asteroids of 3 sizes: large, medium, small
+ */
 public abstract class Asteroids implements AnimatedObject {
     
     // Width of the screen
@@ -20,227 +22,249 @@ public abstract class Asteroids implements AnimatedObject {
     // Speed of the asteroid
     protected static final double SPEED = 2.0;
     
-    // Min max
+    // Maximum and minimum X and Y coordinates where the asteroid flies in
     private static final double MIN = -50;
     private static final double MAX = 650;
     
-    // Coordinates of the asteroid
+    // Center coordinates of an asteroid
     private double locationX;
     private double locationY;
     
-    // Targeted coordinates where the asteroid will flow to the screen
+    // Direction coordinates of an asteroid: The point the asteroid will fly to 
     private double targetedX;
     private double targetedY;
     
     // Direction angle
     private double angle;
-    
-    
+
     // Shape of the asteroid
     private Polygon asteroid;
     
-    // Check if hit by the ship
+    // Check if asteroid hit by the shot
     private boolean isHit = false;
     
     // Animation that contains the object
     private AbstractAnimation animation;
     
-    // Random variable used to generate asteroids randomly
-    private Random rand = new Random();
-    
-    // List of broken up asteroids
+    // List of smaller asteroids broken up from larger asteroids
     private CopyOnWriteArrayList<Asteroids> asteroids;
     
-    
     /**
-     * Constructor
+     * Create the Asteroids object
+     * @param animation the animation that this object is part of
      */
     public Asteroids(AbstractAnimation animation) { 
         this.animation = animation;
-//        this.setRandom();
     }
     
+    /**
+     * Return the asteroid angle
+     * @return asteroid angle
+     */
+    public abstract double getAngle();
+    
+    /**
+     * Returns the x coordinate of the asteroid
+     * @return the x coordinate of the center of the asteroid
+     */
     public double getLocationX() {
         return locationX;
     }
     
+    /**
+     * Returns the y coordinate of the asteroid
+     * @return the y coordinate of the center of the asteroid
+     */
     public double getLocationY() {
         return locationY;
     }
     
+    /**
+     * Return the x coordinate of the direction point
+     * @return the x coordinate of the point where we want the asteroid to fly to
+     */
     public double getTargetedX() {
         return targetedX;
     }
     
+    /**
+     * Return the y coordinate of the direction point
+     * @return the y coordinate of the point where we want the asteroid to fly to
+     */
     public double getTargetedY() {
         return targetedY;
     }
     
-    public abstract double getAngle();
-    
-//    public boolean getHit() {
-//        return isHit;
-//    }
-    
+    /**
+     * Return the list of smaller asteroids broken up from one asteroid
+     * @return list of broken up asteroids
+     */
     public CopyOnWriteArrayList<Asteroids> getAsteroids() {
         return asteroids;
     }
     
+    /**
+     * Reset x coordinate of the center of the asteroid
+     * @param x
+     */
     public void setLocationX(double x) {
         locationX = x;
     }
     
+    /**
+     * Reset y coordinate of the center of the asteroid
+     * @param x
+     */
     public void setLocationY(double y) {
         locationY = y;
     }
     
+    /**
+     * Reset x coordinate of the point where asteroid will fly to
+     * @param x
+     */
     public void setTargetedX(double x) {
         targetedX = x;
     }
     
+    /**
+     * Reset y coordinate of the point where asteroid will fly to
+     * @param x
+     */
     public void setTargetedY(double y) {
         targetedY = y;
     }
     
-   
-    
+    /**
+     * Randomly set the angle with which a large asteroid will fly into the screen
+     * based on the edge where the asteroid starts
+     * @return a random direction angle
+     */
     public double setRandomAngle() {
-        // Bottom edge -- Correct
+        // The asteroid is flying from the bottom edge of screen
         if (targetedY == 570) {
+            // Left side of bottom edge
             if (targetedX < 300) {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
+            // Right side of bottom edge
             } else {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / ((-1) * Math.abs((getLocationX() - getTargetedX()))));
             }
-        // Upper edge
+        // The asteroid is flying from the upper edge of screen
         } else if (targetedY == 30) {
+            // Left side of upper edge
             if (targetedX < 300) {
                 angle = Math.PI/2 + (Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))));
+            // Right side of upper edge
             } else {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))) - Math.PI;
             }       
-        // Left edge
+        // The asteroid is flying from the left edge of screen
         } else if (targetedX == 30) {
+            // Upper side of left edge
             if (targetedX < 300) {
                 angle = Math.PI/2 + (Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))));
+            // Bottom side of left edge
             } else {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
             }
-        // Right edge
+        // The asteroid is flying from the right edge of screen
         } else if (targetedX == 570) {
+            // Upper side of right edge
             if (targetedX < 300) {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / ((-1) * Math.abs((getLocationX() - getTargetedX())))) - Math.PI;
+            // Bottom side of right edge
             } else {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))) - Math.PI/2;
             }
             
         }
-        System.out.println(angle);
         return angle;
     }
-    
-    public void setAngle(double parentAngle, int no) {
-        if (no == 1) {
-            angle = parentAngle + Math.PI/4;
-        } else if (no == 2) {
-            angle = parentAngle - Math.PI/4;
-        }
-    }
-     
+        
     /**
-     * Move the ship in its current direction
+     * Move the asteroid in its current direction
      */
     public void move() {
         
         if (!isHit) {
-              
             // Find coordinates using calculus: position vector
             setLocationX (this.getLocationX() + 1 * ((this.getTargetedX() - this.getLocationX())));
             setLocationY (this.getLocationY() + 1 * ((this.getTargetedY() - this.getLocationY())));
     
-             //Wrap the ship around the screen
+            //Wrap the asteroid around the screen
             setLocationX ((this.getLocationX() <= 0) ? WIDTH + this.getLocationX() : this.getLocationX() % WIDTH);
             setLocationY ((this.getLocationY() <= 0) ? WIDTH + this.getLocationY() : this.getLocationY() % WIDTH);
     
             // Change the vector target according to the new coordinates
             setTarget();
+        
+        // Disappears by moving to outside of screen if hit by a shot
         } else {
             setLocationX(-300);
             setLocationY(-300);
         }
-        
-        
-        // Set moving flag to true to continue moving in the next frames
-//        moving = true;
     }
     
+    /**
+     * Reset asteroid targeted direction point 
+     */
     public void setTarget() {
         setTargetedX(this.getLocationX() + SPEED * Math.sin(getAngle()));
         setTargetedY(this.getLocationY() - SPEED * Math.cos(getAngle()));
     }
+    
     /**
-     * 
+     * Randomly choose x and y coordinates of a large asteroid's starting point and
+     * set the x and y coordinates of the point the asteroid will fly to on the screen
+     * Asteroid must fly in from outside of screen 
      */
     public void setRandom() {
+        // Random starting x coordinate
         locationX = Math.random() * (MAX - MIN) + MIN;
         
-        // The asteroid is always coming from outside of screen
+        // Asteroid is always coming from outside of screen
         if (locationX < 0 || locationX > 600) {
             locationY = Math.random() * (MAX - MIN) + MIN;
-            // left edge
+            // Asteroid is coming from left edge of screen
             if (locationX < 0) {
                 targetedX = 30;
-            // right edge
+            // Asteroid is coming from right edge of screen 
             } else if (locationX  > 600) {
                 targetedX = 570;
-            } 
+            }
             targetedY = Math.random() * (200) + 200;
-        // Randomize if X is greater than 0
-        } else if (locationX >= 0) {
-            List<Integer> givenList = Arrays.asList(1, 2);
             
+        // If starting x coordinate is in the screen, starting y coordinate must be outside of screen
+        } else if (locationX >= 0) {
+            
+            // Randomly choose between 0 and 1
+            // If 1, asteroid is coming from upper edge
+            // If 2, asteroid is coming from bottom edge
+            List<Integer> givenList = Arrays.asList(1, 2);
             Random rand = new Random();
             int randomElement = givenList.get(rand.nextInt(givenList.size()));
-//            System.out.println(randomElement);
             
-            // Upper edge
             if (randomElement == 1) {
                 locationY = Math.random() * 50 - 50;
                 targetedY = 30;
-            // Bottom edge
             } else {
                 locationY = Math.random() * 50 + 600;
                 targetedY = 570;
             }
             targetedX = Math.random() * (200) + 200;
-        }
-//        System.out.println(locationY);
-//        System.out.println(locationX);
-//        System.out.println(targetedY);
-//        System.out.println(targetedX);
-       
+        }  
     }
     
     /**
-     * Moves the ball a small amount. If it reaches the left or right edge, it
-     * bounces.
+     * Moves the asteroid by its specified amount in each frame
      */
-    public void nextFrame() {
-        
-//        // If hit by a bullet, the asteroid is destroyed
-//        if (isHit) {
-//            isDestroyed = true;
-//        }
-//        
-//        // The asteroid keeps moving if it is not destroyed
-//        if (!isDestroyed) {
-//            frames++;
-//            move();
+     public void nextFrame() {
+         move();
      }
     
     /**
-     * Returns the shape after applying the current translation and rotation
-     * 
+     * Returns the shape of the asteroid after applying the current translation and rotation
      * @return the shape located as we want it to appear
      */
     public Shape getShape() {
@@ -254,19 +278,12 @@ public abstract class Asteroids implements AnimatedObject {
         // to see where the points are.
         affineTransform.translate(getLocationX(), getLocationY());
 
-//        setVectorTarget(speed);
-
-        // Rotate the ship
-//        affineTransform.rotate(angle);
-
         AffineTransform at = affineTransform;
 
         // Create a shape that looks like our polygon, but centered
         // and rotated as specified by the AffineTransform object.
         return at.createTransformedShape(asteroid);
     }
-    
-    
     
     /**
      * Draws an asteroid.
@@ -275,22 +292,28 @@ public abstract class Asteroids implements AnimatedObject {
      */
     public void paint(Graphics2D g) {
         g.setColor(Color.WHITE);
-////        g.draw(getShape());
     }
     
+    /**
+     * Split an asteroid into smaller asteroids if hit by a shot
+     * Each large asteroid is split into two medium asteroids
+     * Each medium asteroid is split into two smaller asteroids
+     * Smaller asteroids move at the same speed. Speed is offset by +/- pi/4 radians
+     * @param angle angle of parent asteroid 
+     * @param x x coordinate of the center of parent asteroid
+     * @param y y coordinate of the center of parent asteroid
+     */
     public void split(double angle, double x, double y) {
-        
+        // List of broken up asteroids
         asteroids = new CopyOnWriteArrayList<>();
-        
+        // Split a large asteroid
         if (this.getClass() == LargeAsteroids.class) {
             Asteroids a = new MediumAsteroids(animation, angle - Math.PI/4, x, y);
             Asteroids b = new MediumAsteroids(animation, angle + Math.PI/4, x, y);
             
             asteroids.add(a);
             asteroids.add(b);
-//            a.move();
-//            b.move();
-            
+        // Split a medium asteroid
         } else if (this.getClass() == MediumAsteroids.class){
             Asteroids a = new SmallAsteroids(animation, angle - Math.PI/4, x, y);
             System.out.println(a.getAngle());
@@ -298,16 +321,9 @@ public abstract class Asteroids implements AnimatedObject {
             System.out.println(b.getAngle());
             
             asteroids.add(a);
-            asteroids.add(b);
-            
-//            a.move();
-//            b.move();    
+            asteroids.add(b);  
         }
-        System.out.println(asteroids.toString());
-        this.isHit = true;
-        
-        
-        
+        this.isHit = true;      
     }
     
 }

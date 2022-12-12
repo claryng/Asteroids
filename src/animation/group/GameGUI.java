@@ -1,17 +1,14 @@
 package animation.group;
 
 import java.awt.BorderLayout;
-import animation.AnimatedObject;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -19,12 +16,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import animation.AbstractAnimation;
 import animation.Ship;
 import animation.Shot;
-import animation.UFO;
 
 /**
  * This class provides a simple demonstration of how you would implement an
