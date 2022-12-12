@@ -134,7 +134,7 @@ public abstract class Asteroids implements AnimatedObject {
     public void setTargetedY(double y) {
         targetedY = y;
     }
-    
+
     /**
      * Randomly set the angle with which a large asteroid will fly into the screen
      * based on the edge where the asteroid starts
@@ -143,6 +143,7 @@ public abstract class Asteroids implements AnimatedObject {
     public double setRandomAngle() {
         // The asteroid is flying from the bottom edge of screen
         if (targetedY == 570) {
+            
             // Left side of bottom edge
             if (targetedX < 300) {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
@@ -150,8 +151,10 @@ public abstract class Asteroids implements AnimatedObject {
             } else {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / ((-1) * Math.abs((getLocationX() - getTargetedX()))));
             }
+        
         // The asteroid is flying from the upper edge of screen
         } else if (targetedY == 30) {
+            
             // Left side of upper edge
             if (targetedX < 300) {
                 angle = Math.PI/2 + (Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))));
@@ -159,8 +162,10 @@ public abstract class Asteroids implements AnimatedObject {
             } else {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))) - Math.PI;
             }       
+        
         // The asteroid is flying from the left edge of screen
         } else if (targetedX == 30) {
+            
             // Upper side of left edge
             if (targetedX < 300) {
                 angle = Math.PI/2 + (Math.atan(Math.abs((getLocationY() - getTargetedY())) / (Math.abs((getLocationX() - getTargetedX())))));
@@ -168,8 +173,10 @@ public abstract class Asteroids implements AnimatedObject {
             } else {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / Math.abs((getLocationX() - getTargetedX())));
             }
+        
         // The asteroid is flying from the right edge of screen
         } else if (targetedX == 570) {
+            
             // Upper side of right edge
             if (targetedX < 300) {
                 angle = Math.atan(Math.abs((getLocationY() - getTargetedY())) / ((-1) * Math.abs((getLocationX() - getTargetedX())))) - Math.PI;
@@ -226,9 +233,11 @@ public abstract class Asteroids implements AnimatedObject {
         // Asteroid is always coming from outside of screen
         if (locationX < 0 || locationX > 600) {
             locationY = Math.random() * (MAX - MIN) + MIN;
+            
             // Asteroid is coming from left edge of screen
             if (locationX < 0) {
                 targetedX = 30;
+            
             // Asteroid is coming from right edge of screen 
             } else if (locationX  > 600) {
                 targetedX = 570;
@@ -253,9 +262,9 @@ public abstract class Asteroids implements AnimatedObject {
                 targetedY = 570;
             }
             targetedX = Math.random() * (200) + 200;
-        }  
+        }
     }
-    
+   
     /**
      * Moves the asteroid by its specified amount in each frame
      */
@@ -304,8 +313,10 @@ public abstract class Asteroids implements AnimatedObject {
      * @param y y coordinate of the center of parent asteroid
      */
     public void split(double angle, double x, double y) {
+        
         // List of broken up asteroids
         asteroids = new CopyOnWriteArrayList<>();
+        
         // Split a large asteroid
         if (this.getClass() == LargeAsteroids.class) {
             Asteroids a = new MediumAsteroids(animation, angle - Math.PI/4, x, y);
@@ -313,7 +324,8 @@ public abstract class Asteroids implements AnimatedObject {
             
             asteroids.add(a);
             asteroids.add(b);
-        // Split a medium asteroid
+        
+            // Split a medium asteroid
         } else if (this.getClass() == MediumAsteroids.class){
             Asteroids a = new SmallAsteroids(animation, angle - Math.PI/4, x, y);
             System.out.println(a.getAngle());

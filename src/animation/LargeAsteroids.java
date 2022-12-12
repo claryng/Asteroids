@@ -17,7 +17,9 @@ public class LargeAsteroids extends Asteroids {
      * Constructor to create a large asteroid
      */
     public LargeAsteroids(AbstractAnimation animation) {
+        
         super(animation);
+        
         // Size of a large asteroid: 30 x 60
         asteroid = new Polygon();
         asteroid.addPoint(0, 30);
@@ -26,10 +28,10 @@ public class LargeAsteroids extends Asteroids {
         asteroid.addPoint(0, -30);
         asteroid.addPoint(-20, -15);
         asteroid.addPoint(-20, 15);
+        
         // Set random starting point and angle
         setRandom();
-        this.angle = setRandomAngle();
-        
+        this.angle = setRandomAngle();     
     }
     
     /**

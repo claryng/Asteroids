@@ -16,12 +16,17 @@ public class MediumAsteroids extends Asteroids {
     
     /**
      * Constructor to create a large asteroid
+     * @param animation 
+     * @param angle 
+     * @param x 
+     * @param y 
      */
     public MediumAsteroids(AbstractAnimation animation, double angle, double x, double y) {
         
         super(animation);
         
         this.angle = angle;
+        
         // Size of a medium asteroid: 20 x 30
         asteroid = new Polygon();
         asteroid.addPoint(0, -15);
@@ -30,6 +35,7 @@ public class MediumAsteroids extends Asteroids {
         asteroid.addPoint(0, 15);
         asteroid.addPoint(10, 8);
         asteroid.addPoint(10, -8);
+        
         // Starting point is the same as parent's current center
         setLocationX(x);
         setLocationY(y);
@@ -61,6 +67,7 @@ public class MediumAsteroids extends Asteroids {
     public void paint(Graphics2D g) {
         super.paint(g);
         g.draw(getShape());
+        System.out.println("Painted Medium");
     }
     
     public void move() {        

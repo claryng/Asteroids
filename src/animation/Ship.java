@@ -9,7 +9,7 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D.Double;
-import java.util.LinkedList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This class creates the Ship
@@ -38,7 +38,7 @@ public class Ship implements AnimatedObject {
     private double angle = 0;
 
     // Direction of movement: The pointing point of the ship (the triangle)
-    private Double vector_target = new Double(X, Y - 3);
+    private Double vectorTarget = new Double(X, Y - 3);
 
     // Used to check if the ship is moving
     private boolean moving = false;
@@ -50,7 +50,10 @@ public class Ship implements AnimatedObject {
     private int frames = 1;
 
     // List of bullets
-    private LinkedList<Shot> shots = new LinkedList<>();
+    private CopyOnWriteArrayList<Shot> shotList = new CopyOnWriteArrayList<>();
+
+    // Rotating angle
+    private double rotatingAngle = 0;
 
     /**
      * Create the Ship object
@@ -79,6 +82,7 @@ public class Ship implements AnimatedObject {
         // Stop moving when speed is near 0
         if (moving && speed < 0.5) {
             moving = false;
+            angle = rotatingAngle;
         }
 
         // Speed decreases by 10% every 3 frames
@@ -122,7 +126,7 @@ public class Ship implements AnimatedObject {
         setVectorTarget(speed);
 
         // Rotate the ship
-        affineTransform.rotate(angle);
+        affineTransform.rotate(rotatingAngle);
 
         AffineTransform at = affineTransform;
 
@@ -136,8 +140,8 @@ public class Ship implements AnimatedObject {
      */
     public void move() {
         // Find coordinates using calculus: position vector
-        x = x + 1 * ((vector_target.getX() - x));
-        y = y + 1 * ((vector_target.getY() - y));
+        x = x + 1 * ((vectorTarget.getX() - x));
+        y = y + 1 * ((vectorTarget.getY() - y));
 
         // Wrap the ship around the screen
         x = (x <= 0) ? WIDTH + x : x % WIDTH;
@@ -154,14 +158,14 @@ public class Ship implements AnimatedObject {
      * Rotate counter-clockwise
      */
     public void rotateLeft() {
-        angle -= 0.2;
+        rotatingAngle -= 0.2;
     }
 
     /**
      * Rotate clockwise
      */
     public void rotateRight() {
-        angle += 0.2;
+        rotatingAngle += 0.2;
     }
 
     /**
@@ -174,7 +178,7 @@ public class Ship implements AnimatedObject {
         // positive y-axis is reversed
         double x_direction_point = x + speed * Math.sin(angle);
         double y_direction_point = y - speed * Math.cos(angle);
-        vector_target.setLocation(x_direction_point, y_direction_point);
+        vectorTarget.setLocation(x_direction_point, y_direction_point);
     }
 
     /**
@@ -201,14 +205,15 @@ public class Ship implements AnimatedObject {
     public void thrust() {
         frames = 0;
         speed += 3;
+        angle = rotatingAngle;
     }
 
     /**
      * Fire shots
      */
     public void fire() {
-        for (Shot s : shots) {
-            s.move();
+        for (Shot shot : shotList) {
+            shot.move();
         }
     }
 
@@ -216,17 +221,17 @@ public class Ship implements AnimatedObject {
      * Add shots to list of shots
      */
     public void addShots() {
-        Shot shot = new animation.Shot(animation, speed, angle,
-                vector_target.getX(), vector_target.getY());
-        shots.add(shot);
+        Shot shot = new animation.Shot(animation, speed, rotatingAngle,
+                vectorTarget.getX(), vectorTarget.getY());
+        shotList.add(shot);
     }
 
     /**
      * Get the list of shots
      * @return list of shots
      */
-    public LinkedList<Shot> getShots() {
-        return shots;
+    public CopyOnWriteArrayList<Shot> getShots() {
+        return shotList;
     }
     
     /**

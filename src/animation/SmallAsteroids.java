@@ -23,6 +23,7 @@ public class SmallAsteroids extends Asteroids {
         super(animation);
         
         this.angle = angle;
+        
         // Size of a small asteroid: 10 x 15
         asteroid = new Polygon();
         asteroid.addPoint(0, 10);
