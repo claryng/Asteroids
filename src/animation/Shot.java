@@ -83,17 +83,11 @@ public class Shot implements AnimatedObject {
 
             // Continue moving if is moving
             move();
-<<<<<<< HEAD
-//            System.out.println("Shot speed: " + speed + " Coordinate: " + x
-//                    + ", " + y + "Angle: " + angle);
-            if (!(x < 600 && y < 600 && x > 0 && y > 0)) {
-=======
 
             // Check if the shot gets out of the screen
             if (!(x < WIDTH + 5 && y < WIDTH + 5 && x > 0 - 5 && y > 0 - 5)) {
 
                 // Stop moving if it gets out of the screen
->>>>>>> clary-Ship
                 moving = false;
             }
         }
@@ -140,11 +134,7 @@ public class Shot implements AnimatedObject {
     public boolean getMoving() {
         return moving;
     }
-<<<<<<< HEAD
     
-=======
-
->>>>>>> clary-Ship
     /**
      * Get shape
      * 

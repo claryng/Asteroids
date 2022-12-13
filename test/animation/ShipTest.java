@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.awt.geom.Point2D.Double;
 
-import animation.group.GameGUI;
+import animation.UI.GameGUI;
 
 class ShipTest {
     // Width of the screen
