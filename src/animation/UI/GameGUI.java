@@ -1,10 +1,8 @@
 package animation.UI;
 
 import java.awt.BorderLayout;
-import animation.AnimatedObject;
 import animation.Asteroids;
 import animation.LargeAsteroids;
-import animation.MediumAsteroids;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -12,7 +10,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import java.awt.Insets;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,10 +24,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import animation.AbstractAnimation;
-import animation.AnimatedObject;
 import animation.Ship;
 import animation.Shot;
-import animation.SmallAsteroids;
 
 /**
  * This class provides a simple demonstration of how you would implement an
@@ -193,31 +188,15 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             
         }
     }
-
-    /**
-     * Check whether ship and an asteroid collides. This tests whether their shapes
-     * intersect.
-     * 
-     * @param shape1 asteroid
-     * @param shape2 ship
-     * @return true if the shapes intersect
-     */
-    private boolean checkCollisionShipAsteroid(Asteroids asteroid,Ship ship) {
-        return ship.getShape().intersects(asteroid.getShape().getBounds2D());
-    }
     
     /**
-     * Check whether shot and an asteroid collides. This tests whether their shapes
+     * Check whether two objects collide. This tests whether their shapes
      * intersect.
      * 
      * @param shape1 asteroid
      * @param shape2 shot
      * @return true if the shapes intersect
      */
-    public boolean checkCollisionShotAsteroid(Asteroids asteroid, Shot shot) {
-        return asteroid.getShape().intersects(shot.getShape().getBounds2D());
-    }
-    
     public boolean checkCollision(Shape shape1, Shape shape2) {
         return shape1.intersects(shape2.getBounds2D());
     }
