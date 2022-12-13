@@ -82,7 +82,7 @@ public class SmallAsteroids extends Asteroids {
     }
 
     public void nextFrame() {
-        super.nextFrame();     
+        super.nextFrame();       
     }
 
     public double getAngle() {
