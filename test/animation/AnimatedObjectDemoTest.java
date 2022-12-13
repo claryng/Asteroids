@@ -1,16 +1,17 @@
-//package animation.group;
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//
-//import animation.group.GameGUI;
-//
-//class AnimatedObjectDemoTest {
-//
-//    private GameGUI demo = new AnimationStub();
-//    private AnimatedObjectDemo obj = new AnimatedObjectDemo(demo);
-//
+package animation;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import animation.Ship;
+import animation.UI.GameGUI;
+
+class AnimatedObjectDemoTest {
+
+    private AnimationStub demo = new AnimationStub();
+    private Ship obj = new Ship(demo);
+
 //    @BeforeEach
 //    void setUp() throws Exception {
 //    }
@@ -73,5 +74,5 @@
 //        assertEquals(Math.abs(amount), obj.getX());
 //
 //    }
-//
-//}
+
+}
