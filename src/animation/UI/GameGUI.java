@@ -11,10 +11,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import java.awt.Insets;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Iterator;
@@ -42,15 +44,14 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     // The height of the window, in pixels.
     private static final int WINDOW_HEIGHT = 600;
 
-    // The object that moves during the animation. You might have
-    // many objects!
-    
+    // Create 5 large asteroids at the start of the game
     private Asteroids asteroid1 = new LargeAsteroids(this);
     private Asteroids asteroid2 = new LargeAsteroids(this);
     private Asteroids asteroid3 = new LargeAsteroids(this);
     private Asteroids asteroid4 = new LargeAsteroids(this);
     private Asteroids asteroid5 = new LargeAsteroids(this);
     
+    // List contains all asteroids on the screen
     CopyOnWriteArrayList<Asteroids> asteroids = new CopyOnWriteArrayList<Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
 
     private static JLabel livesUpdate;
@@ -194,13 +195,29 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     }
 
     /**
-     * Check whether two object collide. This tests whether their shapes
+     * Check whether ship and an asteroid collides. This tests whether their shapes
      * intersect.
      * 
-     * @param shape1 the first shape to test
-     * @param shape2 the second shape to test
+     * @param shape1 asteroid
+     * @param shape2 ship
      * @return true if the shapes intersect
      */
+    private boolean checkCollisionShipAsteroid(Asteroids asteroid,Ship ship) {
+        return ship.getShape().intersects(asteroid.getShape().getBounds2D());
+    }
+    
+    /**
+     * Check whether shot and an asteroid collides. This tests whether their shapes
+     * intersect.
+     * 
+     * @param shape1 asteroid
+     * @param shape2 shot
+     * @return true if the shapes intersect
+     */
+    public boolean checkCollisionShotAsteroid(Asteroids asteroid, Shot shot) {
+        return asteroid.getShape().intersects(shot.getShape().getBounds2D());
+    }
+    
     public boolean checkCollision(Shape shape1, Shape shape2) {
         return shape1.intersects(shape2.getBounds2D());
     }
@@ -221,18 +238,22 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * @param g the graphic context to draw on
      */
     public void paintComponent(Graphics g) {
-        // Note that your code should not call paintComponent directly.
-        // Instead your code calls repaint (as shown in the nextFrame
-        // method above, and repaint will call paintComponent.
-
+        
         super.paintComponent(g);
+        
+        // Paint asteroids
         for (animation.Asteroids asteroid : asteroids) {
             asteroid.paint((Graphics2D) g);
         }
-
+        
         // Paint ship
         ship.paint((Graphics2D) g);
-
+        
+        // Paint shots
+        for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
+            shots.next().paint((Graphics2D) g);
+        }
+        
         // Paint shots
         for (Shot shot : ship.getShots()) {
             shot.paint((Graphics2D) g);
