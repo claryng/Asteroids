@@ -167,10 +167,6 @@ public class Shot implements AnimatedObject {
         moving = newMoving;
     }
     
-    protected void setSpeed(double newSpeed) {
-        speed = newSpeed;
-    }
-    
     protected void setX(double newX) {
         x = newX;
     }

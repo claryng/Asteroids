@@ -36,16 +36,9 @@ class ShotTest {
   @Test
   void testNextFrame() {
       shot.setMoving(true);
-      while (shipSpeed < 18) {
+      while (shipSpeed <= 20) {
           shot.nextFrame();
           System.out.println(shot.getSpeed());
-
-          vectorTarget.setLocation(shot.getX() + (shipSpeed) * Math.sin(shipAngle),
-                  shot.getY() - (shipSpeed) * Math.cos(shipAngle));
-
-          x += (vectorTarget.getX() - x);
-          y += (vectorTarget.getY() - y);
-          
           assertEquals(shot.getX(), (shot.getY() + shot.getSpeed())*Math.cos(shot.getAngle()));
           shipSpeed+=3;
           shot = new Shot(demo, shipSpeed, shipAngle, x, y);
