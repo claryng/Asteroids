@@ -77,8 +77,7 @@ public class MediumAsteroids extends Asteroids {
     }
 
     public void nextFrame() {
-        super.nextFrame();    
-        move();     
+        super.nextFrame();        
     }
 
     public double getAngle() {
