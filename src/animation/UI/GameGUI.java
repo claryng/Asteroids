@@ -1,20 +1,19 @@
 package animation.UI;
 
 import java.awt.BorderLayout;
-import animation.AnimatedObject;
 import animation.Asteroids;
 import animation.LargeAsteroids;
-import animation.MediumAsteroids;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
+
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Iterator;
@@ -25,10 +24,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import animation.AbstractAnimation;
-import animation.AnimatedObject;
 import animation.Ship;
 import animation.Shot;
-import animation.SmallAsteroids;
 
 /**
  * This class provides a simple demonstration of how you would implement an
@@ -42,15 +39,14 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     // The height of the window, in pixels.
     private static final int WINDOW_HEIGHT = 600;
 
-    // The object that moves during the animation. You might have
-    // many objects!
-    
+    // Create 5 large asteroids at the start of the game
     private Asteroids asteroid1 = new LargeAsteroids(this);
     private Asteroids asteroid2 = new LargeAsteroids(this);
     private Asteroids asteroid3 = new LargeAsteroids(this);
     private Asteroids asteroid4 = new LargeAsteroids(this);
     private Asteroids asteroid5 = new LargeAsteroids(this);
     
+    // List contains all asteroids on the screen
     CopyOnWriteArrayList<Asteroids> asteroids = new CopyOnWriteArrayList<Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
 
     private static JLabel livesUpdate;
@@ -192,13 +188,13 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             
         }
     }
-
+    
     /**
-     * Check whether two object collide. This tests whether their shapes
+     * Check whether two objects collide. This tests whether their shapes
      * intersect.
      * 
-     * @param shape1 the first shape to test
-     * @param shape2 the second shape to test
+     * @param shape1 asteroid
+     * @param shape2 shot
      * @return true if the shapes intersect
      */
     public boolean checkCollision(Shape shape1, Shape shape2) {
@@ -221,18 +217,22 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * @param g the graphic context to draw on
      */
     public void paintComponent(Graphics g) {
-        // Note that your code should not call paintComponent directly.
-        // Instead your code calls repaint (as shown in the nextFrame
-        // method above, and repaint will call paintComponent.
-
+        
         super.paintComponent(g);
+        
+        // Paint asteroids
         for (animation.Asteroids asteroid : asteroids) {
             asteroid.paint((Graphics2D) g);
         }
-
+        
         // Paint ship
         ship.paint((Graphics2D) g);
-
+        
+        // Paint shots
+        for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
+            shots.next().paint((Graphics2D) g);
+        }
+        
         // Paint shots
         for (Shot shot : ship.getShots()) {
             shot.paint((Graphics2D) g);
