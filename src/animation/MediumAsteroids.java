@@ -11,39 +11,40 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
-public class LargeAsteroids extends Asteroids {
+public class MediumAsteroids extends Asteroids {
     
     private Polygon asteroid; 
-    private int size;
+    private double locationX;
+    private double locationY;
+    private double targetedX;
+    private double targetedY;
     private double angle;
-//    private double locationX;
-//    private double locationY;
-//    private double targetedX;
-//    private double targetedY;
     
     /**
      * Constructor to create a large asteroid
      */
-    public LargeAsteroids(AbstractAnimation animation) {
+    public MediumAsteroids(AbstractAnimation animation, double angle, double x, double y) {
         
         super(animation);
         
+        this.angle = angle;
+       
         asteroid = new Polygon();
-        asteroid.addPoint(0, 30);
-        asteroid.addPoint(20, 15);
-        asteroid.addPoint(20, -15);
-        asteroid.addPoint(0, -30);
-        asteroid.addPoint(-20, -15);
-        asteroid.addPoint(-20, 15);
+        asteroid.addPoint(0, -15);
+        asteroid.addPoint(-10, -8);
+        asteroid.addPoint(-10, 8);
+        asteroid.addPoint(0, 15);
+        asteroid.addPoint(10, 8);
+        asteroid.addPoint(10, -8);
+      
+        setLocationX(x);
+        setLocationY(y);
         
-        setRandom();
-        this.angle = setRandomAngle();
-        
+        setTarget();
+        move();
+        move();
+
     }
-    
-//    public double getAngle() {
-//        return angle;
-//    }
     
     /**
      * Returns the shape after applying the current translation and rotation
@@ -61,6 +62,7 @@ public class LargeAsteroids extends Asteroids {
         // to see where the points are.
         affineTransform.translate(getLocationX(), getLocationY());
 
+//        setVectorTarget(speed);
 
         // Rotate the ship
 //        affineTransform.rotate(angle);
@@ -79,18 +81,20 @@ public class LargeAsteroids extends Asteroids {
      */
     public void paint(Graphics2D g) {
         super.paint(g);
+//        g.setColor(Color.WHITE);
         g.draw(getShape());
     }
     
     /**
      * Move the ship in its current direction
      */
-    public void move() {
+    public void move() {        
         super.move();
     }
     
     public void setTarget() {
-        super.setTarget();
+        setTargetedX(this.getLocationX() + SPEED * Math.sin(getAngle()));
+        setTargetedY(this.getLocationY() - SPEED * Math.cos(getAngle()));
     }
     
     /**
@@ -98,15 +102,6 @@ public class LargeAsteroids extends Asteroids {
      * bounces.
      */
     public void nextFrame() {
-        
-//        // If hit by a bullet, the asteroid is destroyed
-//        if (isHit) {
-//            isDestroyed = true;
-//        }
-//        
-//        // The asteroid keeps moving if it is not destroyed
-//        if (!isDestroyed) {
-//            frames++;
         move();     
     }
     /**

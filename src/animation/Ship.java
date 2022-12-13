@@ -21,8 +21,9 @@ public class Ship implements AnimatedObject {
     private static final int WIDTH = 600;
 
     // Initial position of the ship when the game starts
-    private static final int X = 300;
-    private static final int Y = 300;
+    // Center of the screen
+    private static final int X = WIDTH / 2;
+    private static final int Y = WIDTH / 2;
 
     // Coordinates of the center of the Ship
     private double x;
@@ -34,8 +35,8 @@ public class Ship implements AnimatedObject {
     // The animation that this object is part of
     private AbstractAnimation animation;
 
-    // Original Angle of direction
-    private double angle = 0;
+    // Original angle of direction
+    private double directionAngle = 0;
 
     // Direction of movement: The pointing point of the ship (the triangle)
     private Double vectorTarget = new Double(X, Y - 3);
@@ -47,9 +48,11 @@ public class Ship implements AnimatedObject {
     private double speed = 0;
 
     // Used to keep track of number of frames
-    private int frames = 1;
+    private int frames;
 
     // List of bullets
+    // Use CopyOnWriteArrayList to avoid ConcurrentMosdificationException in
+    // main class
     private CopyOnWriteArrayList<Shot> shotList = new CopyOnWriteArrayList<>();
 
     // Rotating angle
@@ -78,19 +81,19 @@ public class Ship implements AnimatedObject {
      * the animation.
      */
     public void nextFrame() {
-
+        
         // Stop moving when speed is near 0
         if (moving && speed < 0.5) {
             moving = false;
-            angle = rotatingAngle;
+            directionAngle = rotatingAngle;
         }
 
         // Speed decreases by 10% every 3 frames
-        if (moving && frames % 3 == 0 && frames > 0) {
+        if (moving && frames % 3 == 0) {
             speed = (speed * 90) / 100;
         }
 
-        // The ship keeps moving when speed is larger than 1
+        // The ship keeps moving when speed is larger than 0.5
         if (moving) {
             frames++;
             move();
@@ -123,8 +126,6 @@ public class Ship implements AnimatedObject {
         // to see where the points are.
         affineTransform.translate(x, y);
 
-        setVectorTarget(speed);
-
         // Rotate the ship
         affineTransform.rotate(rotatingAngle);
 
@@ -139,6 +140,7 @@ public class Ship implements AnimatedObject {
      * Move the ship in its current direction
      */
     public void move() {
+
         // Find coordinates using calculus: position vector
         x = x + 1 * ((vectorTarget.getX() - x));
         y = y + 1 * ((vectorTarget.getY() - y));
@@ -159,6 +161,9 @@ public class Ship implements AnimatedObject {
      */
     public void rotateLeft() {
         rotatingAngle -= 0.2;
+        if(!moving) {
+            directionAngle = rotatingAngle;
+        }
     }
 
     /**
@@ -166,6 +171,9 @@ public class Ship implements AnimatedObject {
      */
     public void rotateRight() {
         rotatingAngle += 0.2;
+        if(!moving) {
+            directionAngle = rotatingAngle;
+        }
     }
 
     /**
@@ -173,18 +181,20 @@ public class Ship implements AnimatedObject {
      * 
      * @param speed the speed is the radius of the circle with (x,y) center
      */
-    private void setVectorTarget(double speed) {
+    protected void setVectorTarget(double speed) {
         // -> positive x-axis
         // positive y-axis is reversed
-        double x_direction_point = x + speed * Math.sin(angle);
-        double y_direction_point = y - speed * Math.cos(angle);
+        double x_direction_point = x + speed * Math.sin(directionAngle);
+        double y_direction_point = y - speed * Math.cos(directionAngle);
         vectorTarget.setLocation(x_direction_point, y_direction_point);
     }
 
     /**
-     * Send the ship into hyperspace
+     * Send the ship into hyperspace: disappear and reappear at a random
+     * location
      */
     public void space() {
+
         // Set max, min value so that the ship still jumps to coordinates inside
         // the screen
         double min = 20;
@@ -195,6 +205,9 @@ public class Ship implements AnimatedObject {
         x = (Math.random() * range) + min;
         y = (Math.random() * range) + min;
 
+        // Change speed to 0
+        speed = 0;
+
         // Change the vector target according to new coordinates
         setVectorTarget(speed);
     }
@@ -203,15 +216,21 @@ public class Ship implements AnimatedObject {
      * Set frames and increase speed at each thrust by 3 pixels each frame
      */
     public void thrust() {
-        frames = 0;
-        speed += 3;
-        angle = rotatingAngle;
+        frames = 1;
+        
+        // Max speed = 20
+        if(speed < 18) {
+            speed += 3;
+        }
+        directionAngle = rotatingAngle;
     }
 
     /**
      * Fire shots
      */
     public void fire() {
+
+        // Fire every shots in the list
         for (Shot shot : shotList) {
             shot.move();
         }
@@ -221,6 +240,8 @@ public class Ship implements AnimatedObject {
      * Add shots to list of shots
      */
     public void addShots() {
+
+        // Create the Shot
         Shot shot = new animation.Shot(animation, speed, rotatingAngle,
                 vectorTarget.getX(), vectorTarget.getY());
         shotList.add(shot);
@@ -233,5 +254,82 @@ public class Ship implements AnimatedObject {
      */
     public CopyOnWriteArrayList<Shot> getShots() {
         return shotList;
+    }
+
+    /**
+     * Die
+     */
+    public void die() {
+
+        // Get back to the center of the screen
+        x = X;
+        y = Y;
+
+        // Reset the vector target of the ship
+        setVectorTarget(3);
+
+        // Reset the speed to stop moving
+        speed = 0;
+    }
+    
+    // JUNIT TESTING METHODS
+    
+    /**
+     * FOR JUNIT TESTING 
+     * Get coordinates of the ship 
+     * 
+     * @return (x,y) pair
+     */
+    protected Double getXY() {
+        return new Double(x,y);
+    }
+    
+    /**
+     * FOR JUNIT TESTING
+     * Get moving status of the ship
+     * 
+     * @return true or false based on moving or not moving
+     */
+    protected boolean getMoving() {
+        return moving;
+    }
+    
+    /**
+     * FOR JUNIT TESTING
+     * Get speed of the ship
+     * 
+     * @return the speed of the ship
+     */
+    protected double getSpeed() {
+        return speed;
+    }
+    
+    /**
+     * FOR JUNIT TESTING
+     * Set the speed to 0 and moving to false
+     */
+    protected void reset() {
+        speed = 0;
+        moving = false;
+    }
+    
+    /**
+     * FOR JUNIT TESTING
+     * Get the direction angle
+     * 
+     * @return direction angle
+     */
+    protected double getDirectionAngle() {
+        return directionAngle;
+    }
+    
+    /**
+     * FOR JUNIT TESTING
+     * Get rotation angle
+     * 
+     * @return rotation angle
+     */
+    protected double getRotatingAngle() {
+        return rotatingAngle;
     }
 }
