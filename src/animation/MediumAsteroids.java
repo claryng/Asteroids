@@ -106,7 +106,7 @@ public class MediumAsteroids extends Asteroids {
      * bounces.
      */
     public void nextFrame() {
-        move();     
+        super.nextFrame();    
     }
     /**
      * Get Angle

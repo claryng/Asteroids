@@ -210,7 +210,9 @@ public abstract class Asteroids implements AnimatedObject {
      * Moves the ball a small amount. If it reaches the left or right edge, it
      * bounces.
      */
-    public abstract void nextFrame();
+    public void nextFrame() {
+        move();
+    }
     
     /**
      * Returns the shape after applying the current translation and rotation

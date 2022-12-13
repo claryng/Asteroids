@@ -101,7 +101,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                start();
+                
                 remove(replayButton);
                 lives = 3;
                 score = 0;

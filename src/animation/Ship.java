@@ -219,9 +219,7 @@ public class Ship implements AnimatedObject {
         frames = 1;
         
         // Max speed = 20
-        if(speed < 18) {
-            speed += 3;
-        }
+        speed = Math.min(20, speed+3);
         directionAngle = rotatingAngle;
     }
 
