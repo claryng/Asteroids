@@ -118,16 +118,7 @@ public class SmallAsteroids extends Asteroids {
      * bounces.
      */
     public void nextFrame() {
-        
-//        // If hit by a bullet, the asteroid is destroyed
-//        if (isHit) {
-//            isDestroyed = true;
-//        }
-//        
-//        // The asteroid keeps moving if it is not destroyed
-//        if (!isDestroyed) {
-//            frames++;
-        move();     
+        super.nextFrame();    
     }
     /**
      * Get Angle
