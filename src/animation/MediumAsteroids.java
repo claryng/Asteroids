@@ -86,7 +86,6 @@ public class MediumAsteroids extends Asteroids {
     public void paint(Graphics2D g) {
         super.paint(g);
         g.draw(getShape());
-        System.out.println("Painted Medium");
     }
     
     /**

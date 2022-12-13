@@ -22,7 +22,6 @@ class ShotTest {
     private double shipAngle = 0;
     private double x = 300;
     private double y = 300;
-    private Double vectorTarget = new Double(x, y - shipSpeed);
     
     private Shot shot = new Shot(demo, shipSpeed, shipAngle, x, y);
 
@@ -35,13 +34,20 @@ class ShotTest {
 
   @Test
   void testNextFrame() {
-      shot.setMoving(true);
       while (shipSpeed <= 20) {
-          shot.nextFrame();
-          System.out.println(shot.getSpeed());
-          assertEquals(shot.getX(), (shot.getY() + shot.getSpeed())*Math.cos(shot.getAngle()));
-          shipSpeed+=3;
-          shot = new Shot(demo, shipSpeed, shipAngle, x, y);
+          while(shipAngle < 2) {
+              shot.setMoving(true);
+              shot.nextFrame();
+              x = x + shot.getSpeed()*Math.sin(shot.getAngle());
+              y = y - shot.getSpeed()*Math.cos(shot.getAngle());
+              assertEquals(shot.getX(), x);
+              assertEquals(shot.getY(), y);
+              x = 300;
+              y = 300;
+              shipSpeed+=3;
+              shipAngle+=0.2;
+              shot = new Shot(demo, shipSpeed, shipAngle, x, y);
+          }
       }
   }
 

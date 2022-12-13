@@ -174,8 +174,4 @@ public class Shot implements AnimatedObject {
     protected void setY(double newY) {
         y = newY;
     }
-    
-    protected void setAngle(double newAngle) {
-        angle = newAngle;
-    }
 }
