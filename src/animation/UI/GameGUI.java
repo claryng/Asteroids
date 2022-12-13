@@ -1,11 +1,14 @@
 package animation.UI;
 
 import java.awt.BorderLayout;
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
 import animation.AnimatedObject;
 import animation.Asteroids;
 import animation.LargeAsteroids;
 import animation.MediumAsteroids;
 
+=======
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -18,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -27,10 +29,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+=======
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
 import animation.AbstractAnimation;
 import animation.AnimatedObject;
 import animation.Ship;
@@ -68,11 +73,17 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
     private static int score = 0;
 
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
     private Ship ship = new animation.Ship(this);
     
     private static JLabel gameOverText = new JLabel();
     
     private static JButton replayButton = new JButton("Replay");
+=======
+    private static JLabel gameOverText = new JLabel();
+    
+    private Ship ship = new Ship(this);
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
 
     private boolean moving = true;
 
@@ -83,6 +94,11 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     @SuppressWarnings("boxing")
     public GameGUI() {
 
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
+=======
+//        ufo.appear();
+
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
         scoreUpdate = new JLabel(String.format("%04d", score));
         scoreUpdate.setForeground(Color.white);
         scoreUpdate.setBackground(Color.black);
@@ -137,7 +153,11 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     protected void nextFrame() {
         if (moving) {
             
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
             for (Asteroids asteroid : asteroids) {
+=======
+            for (animation.Asteroids asteroid : asteroids) {
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
                 asteroid.nextFrame();
             }
 
@@ -158,8 +178,15 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             }
             repaint();
             
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
             for (Asteroids asteroid : asteroids) {
                 if (checkCollisionShipAsteroid(asteroid, ship)) {
+=======
+            // Check collision of the asteroids with the ship
+            for (animation.Asteroids asteroid : asteroids) {
+                if (checkCollision(asteroid.getShape(), ship.getShape())) {
+                    ship.die();
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
                     lives--;
                     livesUpdate.setText("Lives: " + lives);
                     if (lives == 0) {
@@ -169,6 +196,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             }
             
             CopyOnWriteArrayList<Shot> shotList = ship.getShots(); 
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
             
             for (int i = 0; i < shotList.size(); i++) {
                 for (Asteroids asteroid : asteroids) {
@@ -180,6 +208,18 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                             score+=50;
                             scoreUpdate.setText(String.format("%04d", score));
                         } else if (asteroid.getClass() == SmallAsteroids.class) {
+=======
+            for (int i = 0; i < shotList.size(); i++) {
+                for (animation.Asteroids asteroid : asteroids) {
+                    if (checkCollision(asteroid.getShape(), shotList.get(i).getShape())) {
+                        if (asteroid.getClass() == animation.LargeAsteroids.class) {
+                            score+=20;
+                            scoreUpdate.setText(String.format("%04d", score));
+                        } else if (asteroid.getClass() == animation.MediumAsteroids.class) {
+                            score+=50;
+                            scoreUpdate.setText(String.format("%04d", score));
+                        } else if (asteroid.getClass() == animation.SmallAsteroids.class) {
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
                             score+=100;
                             scoreUpdate.setText(String.format("%04d", score));
                         }
@@ -195,8 +235,11 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                 }
             }
             
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
             repaint();
             
+=======
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
         }
     }
 
@@ -208,17 +251,25 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * @param shape2 the second shape to test
      * @return true if the shapes intersect
      */
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
     private boolean checkCollisionShipAsteroid(animation.Asteroids asteroid,Ship ship) {
         return ship.getShape().intersects(asteroid.getShape().getBounds2D());
+=======
+    public boolean checkCollision(Shape shape1, Shape shape2) {
+        return shape1.intersects(shape2.getBounds2D());
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
     }
     
     /**
+     * Add game over to the screen
      * 
      */
-    public boolean checkCollisionShotAsteroid(animation.Asteroids asteroid, Shot shot) {
-        return asteroid.getShape().intersects(shot.getShape().getBounds2D());
+    private void gameOver() {
+        gameOverText.setText("GAME OVER");
+        stop();
     }
     
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
     /**
      * Add game over to the screen
      * 
@@ -229,6 +280,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         stop();
     }
     
+=======
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
     /**
      * Paint the animation by painting the objects in the animation.
      * 
@@ -242,6 +295,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         super.paintComponent(g);
         for (animation.Asteroids asteroid : asteroids) {
             asteroid.paint((Graphics2D) g);
+<<<<<<< HEAD:src/animation/UI/GameGUI.java
         }
 
         // Paint ship
@@ -250,6 +304,20 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
             shots.next().paint((Graphics2D) g);
         }
+=======
+        }
+
+        // Paint ship
+        ship.paint((Graphics2D) g);
+
+        // Paint shots
+        for (Shot shot : ship.getShots()) {
+            shot.paint((Graphics2D) g);
+        }
+//        for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
+//            shots.next().paint((Graphics2D) g);
+//        }
+>>>>>>> clary-Ship:src/animation/group/GameGUI.java
     }
 
     @Override

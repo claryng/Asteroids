@@ -131,16 +131,7 @@ public abstract class Asteroids implements AnimatedObject {
             }
             
         }
-        System.out.println(angle);
         return angle;
-    }
-    
-    public void setAngle(double parentAngle, int no) {
-        if (no == 1) {
-            angle = parentAngle + Math.PI/4;
-        } else if (no == 2) {
-            angle = parentAngle - Math.PI/4;
-        }
     }
      
     /**
@@ -219,48 +210,14 @@ public abstract class Asteroids implements AnimatedObject {
      * Moves the ball a small amount. If it reaches the left or right edge, it
      * bounces.
      */
-    public void nextFrame() {
-        
-//        // If hit by a bullet, the asteroid is destroyed
-//        if (isHit) {
-//            isDestroyed = true;
-//        }
-//        
-//        // The asteroid keeps moving if it is not destroyed
-//        if (!isDestroyed) {
-//            frames++;
-//            move();
-     }
+    public abstract void nextFrame();
     
     /**
      * Returns the shape after applying the current translation and rotation
      * 
      * @return the shape located as we want it to appear
      */
-    public Shape getShape() {
-
-        // AffineTransform captures the movement and rotation we
-        // want the asteroid to have
-        AffineTransform affineTransform = new AffineTransform();
-
-        // x, y are where the origin of the shape will be. In this
-        // case, this is the center of the polygon. See the constructor
-        // to see where the points are.
-        affineTransform.translate(getLocationX(), getLocationY());
-
-//        setVectorTarget(speed);
-
-        // Rotate the ship
-//        affineTransform.rotate(angle);
-
-        AffineTransform at = affineTransform;
-
-        // Create a shape that looks like our polygon, but centered
-        // and rotated as specified by the AffineTransform object.
-        return at.createTransformedShape(asteroid);
-    }
-    
-    
+    public abstract Shape getShape();
     
     /**
      * Draws an asteroid.
@@ -279,29 +236,18 @@ public abstract class Asteroids implements AnimatedObject {
             Asteroids a = new MediumAsteroids(animation, angle - Math.PI/4, x, y);
             Asteroids b = new MediumAsteroids(animation, angle + Math.PI/4, x, y);
             
-            
             asteroids.add(a);
             asteroids.add(b);
-//            a.move();
-//            b.move();
             
         } else if (this.getClass() == MediumAsteroids.class){
             Asteroids a = new SmallAsteroids(animation, angle - Math.PI/4, x, y);
-            System.out.println(a.getAngle());
             Asteroids b = new SmallAsteroids(animation, angle + Math.PI/4, x, y);
-            System.out.println(b.getAngle());
             
             asteroids.add(a);
             asteroids.add(b);
-            
-//            a.move();
-//            b.move();    
+              
         }
-        System.out.println(asteroids.toString());
         this.isHit = true;
-        
-        
-        
     }
     
 }

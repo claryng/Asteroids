@@ -41,15 +41,14 @@ public class SmallAsteroids extends Asteroids {
         setLocationY(y);
         
         setTarget();
-        
-        
-       
+        move();
+        move();
         
     }
     
-    public void setAngle(double parentAngle, int no) {
-        super.setAngle(parentAngle, no);
-    }
+//    public void setAngle(double parentAngle, int no) {
+//        super.setAngle(parentAngle, no);
+//    }
     
     /**
      * Returns the shape after applying the current translation and rotation

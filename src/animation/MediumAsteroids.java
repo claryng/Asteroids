@@ -45,12 +45,10 @@ public class MediumAsteroids extends Asteroids {
         setLocationY(y);
         
         setTarget();
+        move();
+        move();
 
     }
-    
-//    public void setAngle(double parentAngle, int no) {
-//        super.setAngle(parentAngle, no);
-//    }
     
     /**
      * Returns the shape after applying the current translation and rotation
@@ -108,15 +106,6 @@ public class MediumAsteroids extends Asteroids {
      * bounces.
      */
     public void nextFrame() {
-        
-//        // If hit by a bullet, the asteroid is destroyed
-//        if (isHit) {
-//            isDestroyed = true;
-//        }
-//        
-//        // The asteroid keeps moving if it is not destroyed
-//        if (!isDestroyed) {
-//            frames++;
         move();     
     }
     /**
