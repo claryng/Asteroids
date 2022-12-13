@@ -5,7 +5,6 @@ import animation.AnimatedObject;
 import animation.Asteroids;
 import animation.LargeAsteroids;
 import animation.MediumAsteroids;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -27,11 +26,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import animation.AbstractAnimation;
 import animation.AnimatedObject;
 import animation.Ship;
@@ -136,7 +130,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-            
+
             for (Asteroids asteroid : asteroids) {
                 asteroid.nextFrame();
             }
@@ -158,8 +152,10 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             }
             repaint();
             
+            // Check collision of the asteroids with the ship
             for (Asteroids asteroid : asteroids) {
-                if (checkCollisionShipAsteroid(asteroid, ship)) {
+                if (checkCollision(asteroid.getShape(), ship.getShape())) {
+                    ship.die();
                     lives--;
                     livesUpdate.setText("Lives: " + lives);
                     if (lives == 0) {
@@ -171,15 +167,15 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             CopyOnWriteArrayList<Shot> shotList = ship.getShots(); 
             
             for (int i = 0; i < shotList.size(); i++) {
-                for (Asteroids asteroid : asteroids) {
-                    if (checkCollisionShotAsteroid(asteroid, shotList.get(i))) {
-                        if (asteroid.getClass() == LargeAsteroids.class) {
+                for (animation.Asteroids asteroid : asteroids) {
+                    if (checkCollision(asteroid.getShape(), shotList.get(i).getShape())) {
+                        if (asteroid.getClass() == animation.LargeAsteroids.class) {
                             score+=20;
                             scoreUpdate.setText(String.format("%04d", score));
-                        } else if (asteroid.getClass() == MediumAsteroids.class) {
+                        } else if (asteroid.getClass() == animation.MediumAsteroids.class) {
                             score+=50;
                             scoreUpdate.setText(String.format("%04d", score));
-                        } else if (asteroid.getClass() == SmallAsteroids.class) {
+                        } else if (asteroid.getClass() == animation.SmallAsteroids.class) {
                             score+=100;
                             scoreUpdate.setText(String.format("%04d", score));
                         }
@@ -194,8 +190,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                     }   
                 }
             }
-            
-            repaint();
             
         }
     }
@@ -222,6 +216,10 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     public boolean checkCollisionShotAsteroid(Asteroids asteroid, Shot shot) {
         return asteroid.getShape().intersects(shot.getShape().getBounds2D());
+    }
+    
+    public boolean checkCollision(Shape shape1, Shape shape2) {
+        return shape1.intersects(shape2.getBounds2D());
     }
     
     /**
@@ -254,6 +252,11 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         // Paint shots
         for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
             shots.next().paint((Graphics2D) g);
+        }
+        
+        // Paint shots
+        for (Shot shot : ship.getShots()) {
+            shot.paint((Graphics2D) g);
         }
     }
 

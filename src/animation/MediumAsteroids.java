@@ -43,9 +43,8 @@ public class MediumAsteroids extends Asteroids {
         setTarget();
         move();
         move();
-        move();
     }
-
+    
     public Shape getShape() {
 
         // AffineTransform captures the movement and rotation we
@@ -67,7 +66,6 @@ public class MediumAsteroids extends Asteroids {
     public void paint(Graphics2D g) {
         super.paint(g);
         g.draw(getShape());
-        System.out.println("Painted Medium");
     }
     
     public void move() {        
@@ -80,6 +78,7 @@ public class MediumAsteroids extends Asteroids {
 
     public void nextFrame() {
         super.nextFrame();    
+        move();     
     }
 
     public double getAngle() {

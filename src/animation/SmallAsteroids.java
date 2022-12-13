@@ -39,9 +39,17 @@ public class SmallAsteroids extends Asteroids {
         setTarget();
         move();
         move();
-        move();
     }
-
+    
+//    public void setAngle(double parentAngle, int no) {
+//        super.setAngle(parentAngle, no);
+//    }
+    
+    /**
+     * Returns the shape after applying the current translation and rotation
+     * 
+     * @return the shape located as we want it to appear
+     */
     public Shape getShape() {
         
         // AffineTransform captures the movement and rotation we

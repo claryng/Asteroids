@@ -188,7 +188,6 @@ public abstract class Asteroids implements AnimatedObject {
         }
         return angle;
     }
-        
     /**
      * Move the asteroid in its current direction
      */
@@ -276,23 +275,7 @@ public abstract class Asteroids implements AnimatedObject {
      * Returns the shape of the asteroid after applying the current translation and rotation
      * @return the shape located as we want it to appear
      */
-    public Shape getShape() {
-
-        // AffineTransform captures the movement and rotation we
-        // want the asteroid to have
-        AffineTransform affineTransform = new AffineTransform();
-
-        // x, y are where the origin of the shape will be. In this
-        // case, this is the center of the polygon. See the constructor
-        // to see where the points are.
-        affineTransform.translate(getLocationX(), getLocationY());
-
-        AffineTransform at = affineTransform;
-
-        // Create a shape that looks like our polygon, but centered
-        // and rotated as specified by the AffineTransform object.
-        return at.createTransformedShape(asteroid);
-    }
+    public abstract Shape getShape();
     
     /**
      * Draws an asteroid.
@@ -326,16 +309,15 @@ public abstract class Asteroids implements AnimatedObject {
             asteroids.add(b);
         
             // Split a medium asteroid
+            
         } else if (this.getClass() == MediumAsteroids.class){
             Asteroids a = new SmallAsteroids(animation, angle - Math.PI/4, x, y);
-            System.out.println(a.getAngle());
             Asteroids b = new SmallAsteroids(animation, angle + Math.PI/4, x, y);
-            System.out.println(b.getAngle());
             
             asteroids.add(a);
             asteroids.add(b);  
-        }
-        this.isHit = true;      
+        }  
+        this.isHit = true;
     }
     
 }
