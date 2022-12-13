@@ -59,10 +59,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     
     private Ship ship = new Ship(this);
 
-//    private animation.Shot shot;
-
-//    private animation.UFO ufo = new animation.UFO(this);
-
     private boolean moving = true;
 
     /**
@@ -127,7 +123,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             }
             repaint();
             
-            // Check collsion of the asteroids with the ship
+            // Check collision of the asteroids with the ship
             for (animation.Asteroids asteroid : asteroids) {
                 if (checkCollision(asteroid.getShape(), ship.getShape())) {
                     ship.die();

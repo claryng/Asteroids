@@ -35,8 +35,8 @@ public class Ship implements AnimatedObject {
     // The animation that this object is part of
     private AbstractAnimation animation;
 
-    // Original Angle of direction
-    private double angle = 0;
+    // Original angle of direction
+    private double directionAngle = 0;
 
     // Direction of movement: The pointing point of the ship (the triangle)
     private Double vectorTarget = new Double(X, Y - 3);
@@ -81,15 +81,15 @@ public class Ship implements AnimatedObject {
      * the animation.
      */
     public void nextFrame() {
-
+        
         // Stop moving when speed is near 0
         if (moving && speed < 0.5) {
             moving = false;
-            angle = rotatingAngle;
+            directionAngle = rotatingAngle;
         }
 
         // Speed decreases by 10% every 3 frames
-        if (moving && frames % 3 == 0 && frames > 0) {
+        if (moving && frames % 3 == 0) {
             speed = (speed * 90) / 100;
         }
 
@@ -161,6 +161,9 @@ public class Ship implements AnimatedObject {
      */
     public void rotateLeft() {
         rotatingAngle -= 0.2;
+        if(!moving) {
+            directionAngle = rotatingAngle;
+        }
     }
 
     /**
@@ -168,6 +171,9 @@ public class Ship implements AnimatedObject {
      */
     public void rotateRight() {
         rotatingAngle += 0.2;
+        if(!moving) {
+            directionAngle = rotatingAngle;
+        }
     }
 
     /**
@@ -175,11 +181,11 @@ public class Ship implements AnimatedObject {
      * 
      * @param speed the speed is the radius of the circle with (x,y) center
      */
-    private void setVectorTarget(double speed) {
+    protected void setVectorTarget(double speed) {
         // -> positive x-axis
         // positive y-axis is reversed
-        double x_direction_point = x + speed * Math.sin(angle);
-        double y_direction_point = y - speed * Math.cos(angle);
+        double x_direction_point = x + speed * Math.sin(directionAngle);
+        double y_direction_point = y - speed * Math.cos(directionAngle);
         vectorTarget.setLocation(x_direction_point, y_direction_point);
     }
 
@@ -210,9 +216,13 @@ public class Ship implements AnimatedObject {
      * Set frames and increase speed at each thrust by 3 pixels each frame
      */
     public void thrust() {
-        frames = 0;
-        speed += 3;
-        angle = rotatingAngle;
+        frames = 1;
+        
+        // Max speed = 20
+        if(speed < 18) {
+            speed += 3;
+        }
+        directionAngle = rotatingAngle;
     }
 
     /**
@@ -261,5 +271,65 @@ public class Ship implements AnimatedObject {
         // Reset the speed to stop moving
         speed = 0;
     }
-
+    
+    // JUNIT TESTING METHODS
+    
+    /**
+     * FOR JUNIT TESTING 
+     * Get coordinates of the ship 
+     * 
+     * @return (x,y) pair
+     */
+    protected Double getXY() {
+        return new Double(x,y);
+    }
+    
+    /**
+     * FOR JUNIT TESTING
+     * Get moving status of the ship
+     * 
+     * @return true or false based on moving or not moving
+     */
+    protected boolean getMoving() {
+        return moving;
+    }
+    
+    /**
+     * FOR JUNIT TESTING
+     * Get speed of the ship
+     * 
+     * @return the speed of the ship
+     */
+    protected double getSpeed() {
+        return speed;
+    }
+    
+    /**
+     * FOR JUNIT TESTING
+     * Set the speed to 0 and moving to false
+     */
+    protected void reset() {
+        speed = 0;
+        moving = false;
+    }
+    
+    /**
+     * FOR JUNIT TESTING
+     * Get the direction angle
+     * 
+     * @return direction angle
+     */
+    protected double getDirectionAngle() {
+        return directionAngle;
+    }
+    
+    /**
+     * FOR JUNIT TESTING
+     * Get rotation angle
+     * 
+     * @return rotation angle
+     */
+    protected double getRotatingAngle() {
+        return rotatingAngle;
+    }
 }
