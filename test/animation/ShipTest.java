@@ -218,6 +218,5 @@ class ShipTest {
         // Hyperspace
         ship.space();
         assertTrue(ship.getSpeed() == speed);
-        assertEquals(3, ship.getSpeed());
     }
 }
