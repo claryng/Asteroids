@@ -19,9 +19,11 @@ import java.awt.event.KeyListener;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import animation.AbstractAnimation;
 import animation.Ship;
@@ -59,7 +61,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
     private Ship ship = new animation.Ship(this);
     
-    private static JLabel gameOverText = new JLabel();
+    private static JLabel gameResult = new JLabel();
     
     private static JButton replayButton = new JButton("Replay");
 
@@ -74,18 +76,19 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
         scoreUpdate = new JLabel(String.format("%04d", score));
         scoreUpdate.setForeground(Color.white);
-        scoreUpdate.setBackground(Color.black);
+        scoreUpdate.setBackground(null);
         scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
         
         livesUpdate = new JLabel("Lives: " + lives);
         livesUpdate.setForeground(Color.white);
         livesUpdate.setBackground(null);
         livesUpdate.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        livesUpdate.setVerticalAlignment(SwingConstants.TOP);
         
-        gameOverText.setForeground(Color.white);
-        gameOverText.setBackground(Color.black);
-        gameOverText.setFont(new Font("Monospaced", Font.PLAIN, 25));
-        gameOverText.setHorizontalAlignment(SwingConstants.CENTER);
+        gameResult.setForeground(Color.white);
+        gameResult.setBackground(Color.black);
+        gameResult.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        gameResult.setHorizontalAlignment(SwingConstants.CENTER);
         
         replayButton.setForeground(Color.white);
         replayButton.setBackground(Color.black);
@@ -97,20 +100,28 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                newAsteroids();
                 remove(replayButton);
                 lives = 3;
+                livesUpdate.setText("Lives: " + lives);
                 score = 0;
-                remove(gameOverText);
+                scoreUpdate.setText(String.format("%04d", score));
+                remove(gameResult);
                 ship.die();
+                start();
             }
             
         });
         
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setOpaque(false);
+        
         setLayout(new BorderLayout());
-        add(scoreUpdate, BorderLayout.PAGE_START);
-        add(livesUpdate, BorderLayout.PAGE_START);
-        add(gameOverText, BorderLayout.CENTER);
+        infoPanel.add(scoreUpdate);
+        infoPanel.add(livesUpdate);
+        add(infoPanel, BorderLayout.PAGE_START);
+        add(gameResult, BorderLayout.CENTER);
         
         // Allow the game to receive key input
         setFocusable(true);
@@ -186,6 +197,10 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                 }
             }
             
+            if (asteroids.size() == 0) {
+                win();
+            }
+            
         }
     }
     
@@ -206,9 +221,32 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * 
      */
     private void gameOver() {
-        gameOverText.setText("GAME OVER");
+        gameResult.setText("GAME OVER");
         add(replayButton, BorderLayout.PAGE_END);
         stop();
+    }
+    
+    /**
+     * Add winning message to the screen
+     * 
+     */
+    private void win() {
+        gameResult.setText("YOU WON!");
+        add(replayButton, BorderLayout.PAGE_END);
+        stop();
+    }
+    
+    /**
+     * Add new asteroids when restart the game
+     * 
+     */
+    private void newAsteroids() {
+        asteroid1 = new LargeAsteroids(this);
+        asteroid2 = new LargeAsteroids(this);
+        asteroid3 = new LargeAsteroids(this);
+        asteroid4 = new LargeAsteroids(this);
+        asteroid5 = new LargeAsteroids(this);
+        asteroids = new CopyOnWriteArrayList<Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
     }
     
     /**
