@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.awt.geom.Point2D.Double;
 
-import animation.group.GameGUI;
+import animation.UI.GameGUI;
 
 class ShipTest {
     // Width of the screen
@@ -139,19 +139,19 @@ class ShipTest {
         ship.move();
         ship.thrust();
         ship.move();
-        assertEquals(18, ship.getSpeed());
+        assertEquals(20, ship.getSpeed());
         ship.thrust();
         ship.move();
-        assertEquals(18, ship.getSpeed());
+        assertEquals(20, ship.getSpeed());
         
         // Max speed stays the same after 2 frames
         ship.nextFrame();
         ship.nextFrame();
-        assertEquals(18, ship.getSpeed());
+        assertEquals(20, ship.getSpeed());
         
         // Max speed decreases by 10% after 3 frames
         ship.nextFrame();
-        assertEquals((double) 18 * 90 / 100, ship.getSpeed());
+        assertEquals((double) 20 * 90 / 100, ship.getSpeed());
     }
     
     @Test

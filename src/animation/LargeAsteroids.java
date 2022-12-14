@@ -1,25 +1,17 @@
 package animation;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
+/**
+ * This class creates a large asteroid and is an inheritance of Asteroids 
+ */
 public class LargeAsteroids extends Asteroids {
     
     private Polygon asteroid; 
-    private int size;
     private double angle;
-//    private double locationX;
-//    private double locationY;
-//    private double targetedX;
-//    private double targetedY;
     
     /**
      * Constructor to create a large asteroid
@@ -28,6 +20,7 @@ public class LargeAsteroids extends Asteroids {
         
         super(animation);
         
+        // Size of a large asteroid: 30 x 60
         asteroid = new Polygon();
         asteroid.addPoint(0, 30);
         asteroid.addPoint(20, 15);
@@ -36,14 +29,10 @@ public class LargeAsteroids extends Asteroids {
         asteroid.addPoint(-20, -15);
         asteroid.addPoint(-20, 15);
         
+        // Set random starting point and angle
         setRandom();
-        this.angle = setRandomAngle();
-        
+        this.angle = setRandomAngle();     
     }
-    
-//    public double getAngle() {
-//        return angle;
-//    }
     
     /**
      * Returns the shape after applying the current translation and rotation
@@ -51,19 +40,14 @@ public class LargeAsteroids extends Asteroids {
      * @return the shape located as we want it to appear
      */
     public Shape getShape() {
-
+        
         // AffineTransform captures the movement and rotation we
         // want the asteroid to have
         AffineTransform affineTransform = new AffineTransform();
 
         // x, y are where the origin of the shape will be. In this
-        // case, this is the center of the polygon. See the constructor
-        // to see where the points are.
+        // case, this is the center of the polygon. 
         affineTransform.translate(getLocationX(), getLocationY());
-
-
-        // Rotate the ship
-//        affineTransform.rotate(angle);
 
         AffineTransform at = affineTransform;
 
@@ -72,19 +56,11 @@ public class LargeAsteroids extends Asteroids {
         return at.createTransformedShape(asteroid);
     }
     
-    /**
-     * Draws the object
-     * 
-     * @param g the graphics context to draw on
-     */
     public void paint(Graphics2D g) {
         super.paint(g);
         g.draw(getShape());
     }
     
-    /**
-     * Move the ship in its current direction
-     */
     public void move() {
         super.move();
     }
@@ -93,25 +69,10 @@ public class LargeAsteroids extends Asteroids {
         super.setTarget();
     }
     
-    /**
-     * Moves the ball a small amount. If it reaches the left or right edge, it
-     * bounces.
-     */
     public void nextFrame() {
-        
-//        // If hit by a bullet, the asteroid is destroyed
-//        if (isHit) {
-//            isDestroyed = true;
-//        }
-//        
-//        // The asteroid keeps moving if it is not destroyed
-//        if (!isDestroyed) {
-//            frames++;
-        move();     
+        super.nextFrame();   
     }
-    /**
-     * Get Angle
-     */
+
     public double getAngle() {
         return angle;
     }

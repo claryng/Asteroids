@@ -134,7 +134,7 @@ public class Shot implements AnimatedObject {
     public boolean getMoving() {
         return moving;
     }
-
+    
     /**
      * Get shape
      * 
@@ -142,5 +142,36 @@ public class Shot implements AnimatedObject {
      */
     public Shape getShape() {
         return shot;
+    }
+    
+    protected double getSpeed() {
+        return speed;
+    }
+    
+    protected double getX() {
+        return x;
+    }
+    
+    protected double getY() {
+        return y;
+    }
+    
+    protected double getAngle() {
+        return angle;
+    }
+    
+    /**
+     * @param newMoving
+     */
+    public void setMoving(boolean newMoving) {
+        moving = newMoving;
+    }
+    
+    protected void setX(double newX) {
+        x = newX;
+    }
+    
+    protected void setY(double newY) {
+        y = newY;
     }
 }

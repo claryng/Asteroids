@@ -205,9 +205,6 @@ public class Ship implements AnimatedObject {
         x = (Math.random() * range) + min;
         y = (Math.random() * range) + min;
 
-        // Change speed to 0
-        speed = 0;
-
         // Change the vector target according to new coordinates
         setVectorTarget(speed);
     }
@@ -219,9 +216,7 @@ public class Ship implements AnimatedObject {
         frames = 1;
         
         // Max speed = 20
-        if(speed < 18) {
-            speed += 3;
-        }
+        speed = Math.min(20, speed+3);
         directionAngle = rotatingAngle;
     }
 
@@ -249,7 +244,6 @@ public class Ship implements AnimatedObject {
 
     /**
      * Get the list of shots
-     * 
      * @return list of shots
      */
     public CopyOnWriteArrayList<Shot> getShots() {

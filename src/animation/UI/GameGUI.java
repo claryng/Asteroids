@@ -1,24 +1,31 @@
-package animation.group;
+package animation.UI;
 
 import java.awt.BorderLayout;
+import animation.Asteroids;
+import animation.LargeAsteroids;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
 import animation.AbstractAnimation;
-import animation.AnimatedObject;
 import animation.Ship;
 import animation.Shot;
 
@@ -34,16 +41,15 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     // The height of the window, in pixels.
     private static final int WINDOW_HEIGHT = 600;
 
-    // The object that moves during the animation. You might have
-    // many objects!
+    // Create 5 large asteroids at the start of the game
+    private Asteroids asteroid1 = new LargeAsteroids(this);
+    private Asteroids asteroid2 = new LargeAsteroids(this);
+    private Asteroids asteroid3 = new LargeAsteroids(this);
+    private Asteroids asteroid4 = new LargeAsteroids(this);
+    private Asteroids asteroid5 = new LargeAsteroids(this);
     
-    private animation.Asteroids asteroid1 = new animation.LargeAsteroids(this);
-    private animation.Asteroids asteroid2 = new animation.LargeAsteroids(this);
-    private animation.Asteroids asteroid3 = new animation.LargeAsteroids(this);
-    private animation.Asteroids asteroid4 = new animation.LargeAsteroids(this);
-    private animation.Asteroids asteroid5 = new animation.LargeAsteroids(this);
-    
-    CopyOnWriteArrayList<animation.Asteroids> asteroids = new CopyOnWriteArrayList<animation.Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
+    // List contains all asteroids on the screen
+    CopyOnWriteArrayList<Asteroids> asteroids = new CopyOnWriteArrayList<Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
 
     private static JLabel livesUpdate;
     
@@ -53,9 +59,11 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
     private static int score = 0;
 
-    private static JLabel gameOverText = new JLabel();
+    private Ship ship = new animation.Ship(this);
     
-    private Ship ship = new Ship(this);
+    private static JLabel gameResult = new JLabel();
+    
+    private static JButton replayButton = new JButton("Replay");
 
     private boolean moving = true;
 
@@ -63,35 +71,64 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * Constructs an animation and initializes it to be able to accept key
      * input.
      */
+    @SuppressWarnings("boxing")
     public GameGUI() {
-
-//        ufo.appear();
 
         scoreUpdate = new JLabel(String.format("%04d", score));
         scoreUpdate.setForeground(Color.white);
-        scoreUpdate.setBackground(Color.black);
+        scoreUpdate.setBackground(null);
         scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
         
         livesUpdate = new JLabel("Lives: " + lives);
         livesUpdate.setForeground(Color.white);
         livesUpdate.setBackground(null);
         livesUpdate.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        livesUpdate.setVerticalAlignment(SwingConstants.TOP);
         
-        gameOverText.setForeground(Color.white);
-        gameOverText.setBackground(Color.black);
-        gameOverText.setFont(new Font("Monospaced", Font.PLAIN, 25));
-        gameOverText.setHorizontalAlignment(SwingConstants.CENTER);
+        gameResult.setForeground(Color.white);
+        gameResult.setBackground(Color.black);
+        gameResult.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        gameResult.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        replayButton.setForeground(Color.white);
+        replayButton.setBackground(Color.black);
+        replayButton.setFont(new Font("Monospaced", Font.PLAIN, 25));
+        replayButton.setVerticalAlignment(SwingConstants.BOTTOM);
+        replayButton.setBorderPainted(false);
+        replayButton.setContentAreaFilled(false);
+        replayButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                newAsteroids();
+                remove(replayButton);
+                lives = 3;
+                livesUpdate.setText("Lives: " + lives);
+                score = 0;
+                scoreUpdate.setText(String.format("%04d", score));
+                remove(gameResult);
+                ship.die();
+                start();
+            }
+            
+        });
+        
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setOpaque(false);
         
         setLayout(new BorderLayout());
-        add(scoreUpdate, BorderLayout.PAGE_START);
-        add(livesUpdate, BorderLayout.PAGE_START);
-        add(gameOverText, BorderLayout.CENTER);
+        infoPanel.add(scoreUpdate);
+        infoPanel.add(livesUpdate);
+        add(infoPanel, BorderLayout.PAGE_START);
+        add(gameResult, BorderLayout.CENTER);
         
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener(this);
     }
 
+    @SuppressWarnings("boxing")
     @Override
     /**
      * Updates the animated object for the next frame of the animation and
@@ -99,8 +136,8 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      */
     protected void nextFrame() {
         if (moving) {
-            
-            for (animation.Asteroids asteroid : asteroids) {
+
+            for (Asteroids asteroid : asteroids) {
                 asteroid.nextFrame();
             }
 
@@ -122,7 +159,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             repaint();
             
             // Check collision of the asteroids with the ship
-            for (animation.Asteroids asteroid : asteroids) {
+            for (Asteroids asteroid : asteroids) {
                 if (checkCollision(asteroid.getShape(), ship.getShape())) {
                     ship.die();
                     lives--;
@@ -134,6 +171,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
             }
             
             CopyOnWriteArrayList<Shot> shotList = ship.getShots(); 
+            
             for (int i = 0; i < shotList.size(); i++) {
                 for (animation.Asteroids asteroid : asteroids) {
                     if (checkCollision(asteroid.getShape(), shotList.get(i).getShape())) {
@@ -159,15 +197,19 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                 }
             }
             
+            if (asteroids.size() == 0) {
+                win();
+            }
+            
         }
     }
-
+    
     /**
-     * Check whether two object collide. This tests whether their shapes
+     * Check whether two objects collide. This tests whether their shapes
      * intersect.
      * 
-     * @param shape1 the first shape to test
-     * @param shape2 the second shape to test
+     * @param shape1 asteroid
+     * @param shape2 shot
      * @return true if the shapes intersect
      */
     public boolean checkCollision(Shape shape1, Shape shape2) {
@@ -179,8 +221,32 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * 
      */
     private void gameOver() {
-        gameOverText.setText("GAME OVER");
+        gameResult.setText("GAME OVER");
+        add(replayButton, BorderLayout.PAGE_END);
         stop();
+    }
+    
+    /**
+     * Add winning message to the screen
+     * 
+     */
+    private void win() {
+        gameResult.setText("YOU WON!");
+        add(replayButton, BorderLayout.PAGE_END);
+        stop();
+    }
+    
+    /**
+     * Add new asteroids when restart the game
+     * 
+     */
+    private void newAsteroids() {
+        asteroid1 = new LargeAsteroids(this);
+        asteroid2 = new LargeAsteroids(this);
+        asteroid3 = new LargeAsteroids(this);
+        asteroid4 = new LargeAsteroids(this);
+        asteroid5 = new LargeAsteroids(this);
+        asteroids = new CopyOnWriteArrayList<Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
     }
     
     /**
@@ -189,25 +255,26 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
      * @param g the graphic context to draw on
      */
     public void paintComponent(Graphics g) {
-        // Note that your code should not call paintComponent directly.
-        // Instead your code calls repaint (as shown in the nextFrame
-        // method above, and repaint will call paintComponent.
-
+        
         super.paintComponent(g);
+        
+        // Paint asteroids
         for (animation.Asteroids asteroid : asteroids) {
             asteroid.paint((Graphics2D) g);
         }
-
+        
         // Paint ship
         ship.paint((Graphics2D) g);
-
+        
+        // Paint shots
+        for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
+            shots.next().paint((Graphics2D) g);
+        }
+        
         // Paint shots
         for (Shot shot : ship.getShots()) {
             shot.paint((Graphics2D) g);
         }
-//        for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
-//            shots.next().paint((Graphics2D) g);
-//        }
     }
 
     @Override
