@@ -81,14 +81,14 @@ public class Shot implements AnimatedObject {
     public void nextFrame() {
         if (moving) {
 
-            // Continue moving if is moving
-            move();
-
             // Check if the shot gets out of the screen
             if (!(x < WIDTH + 5 && y < WIDTH + 5 && x > 0 - 5 && y > 0 - 5)) {
 
                 // Stop moving if it gets out of the screen
                 moving = false;
+            } else {
+                // Continue moving if is moving
+                move();
             }
         }
     }
