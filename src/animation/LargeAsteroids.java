@@ -28,8 +28,8 @@ public class LargeAsteroids extends Asteroids {
         asteroid.addPoint(17, -30);
         asteroid.addPoint(30, -21);
         asteroid.addPoint(30, -17);
-        asteroid.addPoint(10, -1);
-        asteroid.addPoint(10, 1);
+        asteroid.addPoint(20, -1);
+        asteroid.addPoint(20, 1);
         asteroid.addPoint(28, 9);
         asteroid.addPoint(30, 11);
         asteroid.addPoint(22, 28);

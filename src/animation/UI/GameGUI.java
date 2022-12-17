@@ -63,7 +63,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     //number of scores the ship earned
     private static int score = 0;
 
-    //Label used to show the reult of a game
+    //Label used to show the result of a game
     private static JLabel gameResult = new JLabel();
     
     //Button used to replay the game when died or win
@@ -179,12 +179,12 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                     ship.getShots().remove(s);
                 }
             }
+
             repaint();
             
             // Check collision of the asteroids with the ship
             for (Asteroids asteroid : asteroids) {
                 if (checkCollision(asteroid.getShape(), ship.getShape())) {
-                    
                     //when the asteroid hit the ship
                     //ship will die, deduct the lives count and reset the lives label
                     ship.die();
@@ -205,12 +205,14 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                     
                     //increase score when shot hit an asteroid
                     if (checkCollision(asteroid.getShape(), shotList.get(i).getShape())) {
-                        
+                    	//Shot will disappear off screen if it hits any asteroid
+                    	shotList.get(i).hitTarget();
+                    	
                         //check if the shot is hitting large asteroids
                         if (asteroid.getClass() == animation.LargeAsteroids.class) {
                             score+=20;
                             scoreUpdate.setText(String.format("%04d", score));
-                        } 
+                           } 
                         
                         //check if the shot is hitting medium asteroids
                         else if (asteroid.getClass() == animation.MediumAsteroids.class) {
@@ -271,7 +273,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     }
     
     /**
-     * Add winning message to the screen (not working though) and stop the thread
+     * Add winning message to the screen and stop the thread
      * 
      */
     private void win() {

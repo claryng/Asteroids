@@ -20,7 +20,7 @@ public abstract class Asteroids implements AnimatedObject {
     protected static final int WIDTH = 600;
     
     // Speed of the asteroid
-    protected static final double SPEED = 2.0;
+    protected static double SPEED = 2.0;
     
     // Maximum and minimum X and Y coordinates where the asteroid flies in
     private static final double MIN = -50;

@@ -125,6 +125,14 @@ public class Shot implements AnimatedObject {
         // Set moving variable to true to continue moving in the next frame
         moving = true;
     }
+    
+    /**
+     * If shot hits target, it disappears off screen
+     */
+    public void hitTarget(){
+    	x = -300;
+    	y = -300;
+    }
 
     /**
      * Get moving status
