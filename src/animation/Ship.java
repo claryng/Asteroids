@@ -205,9 +205,6 @@ public class Ship implements AnimatedObject {
         x = (Math.random() * range) + min;
         y = (Math.random() * range) + min;
 
-        // Change speed to 0
-        speed = 0;
-
         // Change the vector target according to new coordinates
         setVectorTarget(speed);
     }

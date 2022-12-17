@@ -249,9 +249,9 @@ public abstract class Asteroids implements AnimatedObject {
             // Randomly choose between 0 and 1
             // If 1, asteroid is coming from upper edge
             // If 2, asteroid is coming from bottom edge
-            List<Integer> givenList = Arrays.asList(1, 2);
+            List<Integer> randomList = Arrays.asList(1, 2);
             Random rand = new Random();
-            int randomElement = givenList.get(rand.nextInt(givenList.size()));
+            int randomElement = randomList.get(rand.nextInt(randomList.size()));
             
             if (randomElement == 1) {
                 locationY = Math.random() * 50 - 50;
