@@ -24,14 +24,19 @@ public class SmallAsteroids extends Asteroids {
         
         this.angle = angle;
         
-        // Size of a small asteroid: 10 x 15
+        // Size of a small asteroid: 16 x 16
         asteroid = new Polygon();
-        asteroid.addPoint(0, 10);
-        asteroid.addPoint(5, 5);
-        asteroid.addPoint(5, 0);
-        asteroid.addPoint(0, -5);
-        asteroid.addPoint(-5, 0);
-        asteroid.addPoint(-5, 5);
+        asteroid.addPoint(2, -8);
+        asteroid.addPoint(5, -8);
+        asteroid.addPoint(3, -2);
+        asteroid.addPoint(8, 2);
+        asteroid.addPoint(6, 8);
+        asteroid.addPoint(2, 5);
+        asteroid.addPoint(-3, 6);
+        asteroid.addPoint(-6, 3);
+        asteroid.addPoint(-7, 4);
+        asteroid.addPoint(-7, -4);
+        asteroid.addPoint(-2, -3);
         // Starting point is the same as parent's current center
         setLocationX(x);
         setLocationY(y);

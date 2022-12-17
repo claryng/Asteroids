@@ -20,14 +20,32 @@ public class LargeAsteroids extends Asteroids {
         
         super(animation);
         
-        // Size of a large asteroid: 30 x 60
+        // Size of a large asteroid: 60 x 60
         asteroid = new Polygon();
-        asteroid.addPoint(0, 30);
-        asteroid.addPoint(20, 15);
-        asteroid.addPoint(20, -15);
-        asteroid.addPoint(0, -30);
-        asteroid.addPoint(-20, -15);
-        asteroid.addPoint(-20, 15);
+        asteroid.addPoint(-2, -19);
+        asteroid.addPoint(2, -20);
+        asteroid.addPoint(12, -30);
+        asteroid.addPoint(17, -30);
+        asteroid.addPoint(30, -21);
+        asteroid.addPoint(30, -17);
+        asteroid.addPoint(10, -1);
+        asteroid.addPoint(10, 1);
+        asteroid.addPoint(28, 9);
+        asteroid.addPoint(30, 11);
+        asteroid.addPoint(22, 28);
+        asteroid.addPoint(12, 30);
+        asteroid.addPoint(-4, 30);
+        asteroid.addPoint(-6, 30);
+        asteroid.addPoint(-12, 17);
+        asteroid.addPoint(-14, 17);
+        asteroid.addPoint(-21, 22);
+        asteroid.addPoint(-23, 22);
+        asteroid.addPoint(-30, 11);
+        asteroid.addPoint(-30, 9);
+        asteroid.addPoint(-27, -20);
+        asteroid.addPoint(-25, -22);
+        asteroid.addPoint(-9, -30);
+        asteroid.addPoint(-7, -30);
         
         // Set random starting point and angle
         setRandom();

@@ -27,14 +27,20 @@ public class MediumAsteroids extends Asteroids {
         
         this.angle = angle;
         
-        // Size of a medium asteroid: 20 x 30
+        // Size of a medium asteroid: 30 x 30
         asteroid = new Polygon();
-        asteroid.addPoint(0, -15);
-        asteroid.addPoint(-10, -8);
-        asteroid.addPoint(-10, 8);
-        asteroid.addPoint(0, 15);
-        asteroid.addPoint(10, 8);
-        asteroid.addPoint(10, -8);
+        asteroid.addPoint(5, -12);
+        asteroid.addPoint(7, -15);
+        asteroid.addPoint(13, -10);
+        asteroid.addPoint(15, 0);
+        asteroid.addPoint(10, 10);
+        asteroid.addPoint(3, 15);
+        asteroid.addPoint(-4, 10);
+        asteroid.addPoint(-6, 13);
+        asteroid.addPoint(-10, 11);
+        asteroid.addPoint(-15, -3);
+        asteroid.addPoint(-10, -15);
+        asteroid.addPoint(-4, -15);
         
         // Starting point is the same as parent's current center
         setLocationX(x);
