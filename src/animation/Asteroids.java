@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -204,12 +203,6 @@ public abstract class Asteroids implements AnimatedObject {
     
             // Change the vector target according to the new coordinates
             setTarget();
-        
-        // Disappears by moving to outside of screen if hit by a shot
-        } else {
-            setLocationX(-300);
-            setLocationY(-300);
-            System.out.println(locationY);
         }
     }
     
@@ -321,10 +314,11 @@ public abstract class Asteroids implements AnimatedObject {
         this.isHit = true;
     }
     
-    protected boolean getIsHit() {
-    	return isHit;
-    }
+    // METHODS FOR J-UNIT TESTING
     
+    /**
+     * Set isHit to true: asteroid is hit by a bullet
+     */
     protected void setIsHit() {
     	isHit = true;
     }

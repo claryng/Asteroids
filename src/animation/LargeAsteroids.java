@@ -20,7 +20,7 @@ public class LargeAsteroids extends Asteroids {
         
         super(animation);
         
-        // Size of a large asteroid: 60 x 60
+        // Size of a large asteroid: 40 x 60
         asteroid = new Polygon();
         asteroid.addPoint(-2, -19);
         asteroid.addPoint(2, -20);
@@ -41,9 +41,7 @@ public class LargeAsteroids extends Asteroids {
         asteroid.addPoint(-14, 22);
         asteroid.addPoint(-16, 22);
         asteroid.addPoint(-20, 11);
-        asteroid.addPoint(-20, 9);
         asteroid.addPoint(-16, -20);
-        asteroid.addPoint(-14, -22);
         asteroid.addPoint(-9, -30);
         asteroid.addPoint(-7, -30);
         
