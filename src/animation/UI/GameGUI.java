@@ -192,7 +192,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                     livesUpdate.setText("Lives: " + lives);
                     
                     //end the game when ship have no more lives
-                    if (lives == 0) {
+                    if (lives == -1) {
                         gameOver();
                     }
                 } 

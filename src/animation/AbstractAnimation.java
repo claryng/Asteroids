@@ -1,4 +1,5 @@
 package animation;
+
 import javax.swing.JComponent;
 
 /**

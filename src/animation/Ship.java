@@ -1,6 +1,3 @@
-/**
- * 
- */
 package animation;
 
 import java.awt.Color;
@@ -81,7 +78,7 @@ public class Ship implements AnimatedObject {
      * the animation.
      */
     public void nextFrame() {
-        
+
         // Stop moving when speed is near 0
         if (moving && speed < 0.5) {
             moving = false;
@@ -161,9 +158,6 @@ public class Ship implements AnimatedObject {
      */
     public void rotateLeft() {
         rotatingAngle -= 0.2;
-        if(!moving) {
-            directionAngle = rotatingAngle;
-        }
     }
 
     /**
@@ -171,9 +165,6 @@ public class Ship implements AnimatedObject {
      */
     public void rotateRight() {
         rotatingAngle += 0.2;
-        if(!moving) {
-            directionAngle = rotatingAngle;
-        }
     }
 
     /**
@@ -213,11 +204,17 @@ public class Ship implements AnimatedObject {
      * Set frames and increase speed at each thrust by 3 pixels each frame
      */
     public void thrust() {
+
+        // Set frame to 1 because after this method is called, move is called
+        // right after, and that counts as 1
         frames = 1;
-        
+
         // Max speed = 20
-        speed = Math.min(20, speed+3);
+        speed = Math.min(20, speed + 3);
         directionAngle = rotatingAngle;
+
+        // Change the vector target according to new angle after rotating
+        setVectorTarget(speed);
     }
 
     /**
@@ -244,6 +241,7 @@ public class Ship implements AnimatedObject {
 
     /**
      * Get the list of shots
+     * 
      * @return list of shots
      */
     public CopyOnWriteArrayList<Shot> getShots() {
@@ -259,27 +257,32 @@ public class Ship implements AnimatedObject {
         x = X;
         y = Y;
 
+        // Reset the speed to stop moving
+        speed = 0;
+
+        // Reset the angles
+        rotatingAngle = 0;
+        directionAngle = 0;
+
         // Reset the vector target of the ship
         setVectorTarget(3);
 
-        // Reset the speed to stop moving
-        speed = 0;
+        // Reset moving
+        moving = false;
     }
-    
+
     // JUNIT TESTING METHODS
-    
+
     /**
-     * FOR JUNIT TESTING 
-     * Get coordinates of the ship 
+     * Get coordinates of the ship
      * 
      * @return (x,y) pair
      */
     protected Double getXY() {
-        return new Double(x,y);
+        return new Double(x, y);
     }
-    
+
     /**
-     * FOR JUNIT TESTING
      * Get moving status of the ship
      * 
      * @return true or false based on moving or not moving
@@ -287,9 +290,8 @@ public class Ship implements AnimatedObject {
     protected boolean getMoving() {
         return moving;
     }
-    
+
     /**
-     * FOR JUNIT TESTING
      * Get speed of the ship
      * 
      * @return the speed of the ship
@@ -297,18 +299,16 @@ public class Ship implements AnimatedObject {
     protected double getSpeed() {
         return speed;
     }
-    
+
     /**
-     * FOR JUNIT TESTING
      * Set the speed to 0 and moving to false
      */
     protected void reset() {
         speed = 0;
         moving = false;
     }
-    
+
     /**
-     * FOR JUNIT TESTING
      * Get the direction angle
      * 
      * @return direction angle
@@ -316,9 +316,8 @@ public class Ship implements AnimatedObject {
     protected double getDirectionAngle() {
         return directionAngle;
     }
-    
+
     /**
-     * FOR JUNIT TESTING
      * Get rotation angle
      * 
      * @return rotation angle
