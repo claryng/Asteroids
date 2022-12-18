@@ -6,20 +6,20 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
 /**
- * This class creates a large asteroid and is an inheritance of Asteroids 
+ * This class creates a large asteroid and is an inheritance of Asteroids
  */
 public class LargeAsteroids extends Asteroids {
-    
-    private Polygon asteroid; 
+
+    private Polygon asteroid;
     private double angle;
-    
+
     /**
      * Constructor to create a large asteroid
      */
     public LargeAsteroids(AbstractAnimation animation) {
-        
+
         super(animation);
-        
+
         // Size of a large asteroid: 40 x 60
         asteroid = new Polygon();
         asteroid.addPoint(-2, -19);
@@ -44,25 +44,25 @@ public class LargeAsteroids extends Asteroids {
         asteroid.addPoint(-16, -20);
         asteroid.addPoint(-9, -30);
         asteroid.addPoint(-7, -30);
-        
+
         // Set random starting point and angle
         setRandom();
-        this.angle = setRandomAngle();     
+        this.angle = setRandomAngle();
     }
-    
+
     /**
      * Returns the shape after applying the current translation and rotation
      * 
      * @return the shape located as we want it to appear
      */
     public Shape getShape() {
-        
+
         // AffineTransform captures the movement and rotation we
         // want the asteroid to have
         AffineTransform affineTransform = new AffineTransform();
 
         // x, y are where the origin of the shape will be. In this
-        // case, this is the center of the polygon. 
+        // case, this is the center of the polygon.
         affineTransform.translate(getLocationX(), getLocationY());
 
         AffineTransform at = affineTransform;
@@ -71,22 +71,22 @@ public class LargeAsteroids extends Asteroids {
         // and rotated as specified by the AffineTransform object.
         return at.createTransformedShape(asteroid);
     }
-    
+
     public void paint(Graphics2D g) {
         super.paint(g);
         g.draw(getShape());
     }
-    
+
     public void move() {
         super.move();
     }
-    
+
     public void setTarget() {
         super.setTarget();
     }
-    
+
     public void nextFrame() {
-        super.nextFrame();   
+        super.nextFrame();
     }
 
     public double getAngle() {

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package animation;
 
 import java.awt.Color;
@@ -10,7 +8,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D.Double;
 
 /**
- * This class creates the Ship
+ * This class creates the Shot
  *
  */
 public class Shot implements AnimatedObject {
@@ -47,7 +45,7 @@ public class Shot implements AnimatedObject {
     private double speed = 0;
 
     /**
-     * Create the Ship object
+     * Create the Shot object
      * @param animation the animation that this object is part of
      * @param speedShip the speed of the object carrying shot
      * @param angle the angle that the object is pointing
@@ -144,33 +142,58 @@ public class Shot implements AnimatedObject {
         return shot;
     }
     
+    /**
+     * Get the speed of the shot
+     * @return the speed of the shot
+     */
     protected double getSpeed() {
         return speed;
     }
     
+    /**
+     * Get the x coordinate
+     * @return x coordinate
+     */
     protected double getX() {
         return x;
     }
     
+    /**
+     * Get the y coordinate
+     * @return y coordinate
+     */
     protected double getY() {
         return y;
     }
     
+    /**
+     * Get the angle of the shot
+     * @return angle of the shot
+     */
     protected double getAngle() {
         return angle;
     }
     
     /**
-     * @param newMoving
+     * Set the moving status of the shot
+     * @param newMoving true if shot is moving, otherwise false
      */
     public void setMoving(boolean newMoving) {
         moving = newMoving;
     }
     
+    /**
+     * Set the x coordinate to the passed-in x value
+     * @param newX passed-in value
+     */
     protected void setX(double newX) {
         x = newX;
     }
     
+    /**
+     * Set the y coordinate to the passed-in y-value
+     * @param newY passed-in value
+     */
     protected void setY(double newY) {
         y = newY;
     }

@@ -179,74 +179,79 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                     ship.getShots().remove(s);
                 }
             }
-
             repaint();
-            
+
             // Check collision of the asteroids with the ship
             for (Asteroids asteroid : asteroids) {
                 if (checkCollision(asteroid.getShape(), ship.getShape())) {
-                    //when the asteroid hit the ship
-                    //ship will die, deduct the lives count and reset the lives label
+
+                    // when the asteroid hit the ship
+                    // ship will die, deduct the lives count and reset the lives
+                    // label
                     ship.die();
                     lives--;
                     livesUpdate.setText("Lives: " + lives);
-                    
-                    //end the game when ship have no more lives
-                    if (lives == 0) {
+
+                    // end the game when ship have no more lives
+                    if (lives == -1) {
                         gameOver();
                     }
-                } 
+                }
             }
-            
-            CopyOnWriteArrayList<Shot> shotList = ship.getShots(); 
-            
+
+            CopyOnWriteArrayList<Shot> shotList = ship.getShots();
+
             for (int i = 0; i < shotList.size(); i++) {
                 for (animation.Asteroids asteroid : asteroids) {
-                    
-                    //increase score when shot hit an asteroid
-                    if (checkCollision(asteroid.getShape(), shotList.get(i).getShape())) {
-                    	//Shot will disappear off screen if it hits any asteroid
-                    	shotList.get(i).setMoving(false);
-                    	
-                        //check if the shot is hitting large asteroids
-                        if (asteroid.getClass() == animation.LargeAsteroids.class) {
-                            score+=20;
-                            scoreUpdate.setText(String.format("%04d", score));
-                           } 
-                        
-                        //check if the shot is hitting medium asteroids
-                        else if (asteroid.getClass() == animation.MediumAsteroids.class) {
-                            score+=50;
-                            scoreUpdate.setText(String.format("%04d", score));
-                        } 
-                        
-                        //check if the shot is hitting small asteroids
-                        else if (asteroid.getClass() == animation.SmallAsteroids.class) {
-                            score+=100;
+
+                    // increase score when shot hit an asteroid
+                    if (checkCollision(asteroid.getShape(),
+                            shotList.get(i).getShape())) {
+
+                        // check if the shot is hitting large asteroids
+                        if (asteroid
+                                .getClass() == animation.LargeAsteroids.class) {
+                            score += 20;
                             scoreUpdate.setText(String.format("%04d", score));
                         }
-                        
-                        //for each 10000 score add a life
-                        if (score%10000 == 0) {
+
+                        // check if the shot is hitting medium asteroids
+                        else if (asteroid
+                                .getClass() == animation.MediumAsteroids.class) {
+                            score += 50;
+                            scoreUpdate.setText(String.format("%04d", score));
+                        }
+
+                        // check if the shot is hitting small asteroids
+                        else if (asteroid
+                                .getClass() == animation.SmallAsteroids.class) {
+                            score += 100;
+                            scoreUpdate.setText(String.format("%04d", score));
+                        }
+
+                        // for each 10000 score add a life
+                        if (score % 10000 == 0) {
                             lives++;
                             livesUpdate.setText("Lives: " + lives);
                         }
-                        
-                        //split the asteroid
-                        asteroid.split(asteroid.getAngle(), asteroid.getLocationX(), asteroid.getLocationY()); 
-                        
-                        //remove this asteroid and add the smaller in
+
+                        // split the asteroid
+                        asteroid.split(asteroid.getAngle(),
+                                asteroid.getLocationX(),
+                                asteroid.getLocationY());
+
+                        // remove this asteroid and add the smaller in
                         asteroids.remove(asteroid);
                         asteroids.addAll(asteroid.getAsteroids());
-                    }   
+                    }
                 }
             }
-            
-            //if there is not more asteroid, the player win
+
+            // if there is not more asteroid, the player win
             if (asteroids.size() == 0) {
                 win();
             }
-            
+
         }
     }
     
