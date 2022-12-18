@@ -2,7 +2,7 @@
 ## Description
 This project simulates a simpler version of the arcade game Asteroids 1979.
 ## How to start the game
-Run the GameGUI.java file in UI folder in src.
+Run the GameGUI.java file in UI folder in src/animation.
 ## How to play
 Press Up to move forward.<br>
 Press Spacebar to shoot. <br>
