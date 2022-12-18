@@ -206,7 +206,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                     //increase score when shot hit an asteroid
                     if (checkCollision(asteroid.getShape(), shotList.get(i).getShape())) {
                     	//Shot will disappear off screen if it hits any asteroid
-                    	shotList.get(i).hitTarget();
+                    	shotList.get(i).setMoving(false);
                     	
                         //check if the shot is hitting large asteroids
                         if (asteroid.getClass() == animation.LargeAsteroids.class) {

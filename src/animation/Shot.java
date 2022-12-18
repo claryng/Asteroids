@@ -127,14 +127,6 @@ public class Shot implements AnimatedObject {
     }
     
     /**
-     * If shot hits target, it disappears off screen
-     */
-    public void hitTarget(){
-    	x = -300;
-    	y = -300;
-    }
-
-    /**
      * Get moving status
      * 
      * @return the status of the bullet
