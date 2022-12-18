@@ -100,6 +100,15 @@ public abstract class Asteroids implements AnimatedObject {
     public double getTargetedY() {
         return targetedY;
     }
+    
+    /**
+     * Get is hit status
+     * 
+     * @return isHit status true or false
+     */
+    public boolean getIsHit() {
+        return isHit;
+    }
 
     /**
      * Return the list of smaller asteroids broken up from one asteroid

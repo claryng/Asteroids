@@ -179,7 +179,6 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                     ship.getShots().remove(s);
                 }
             }
-            repaint();
 
             // Check collision of the asteroids with the ship
             for (Asteroids asteroid : asteroids) {
@@ -246,12 +245,13 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                     }
                 }
             }
-
+            
+            repaint();
+            
             // if there is not more asteroid, the player win
             if (asteroids.size() == 0) {
                 win();
             }
-
         }
     }
     
@@ -311,20 +311,21 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         
         // Paint asteroids
         for (Asteroids asteroid : asteroids) {
-            asteroid.paint((Graphics2D) g);
+            if(!asteroid.getIsHit()) {
+                asteroid.paint((Graphics2D) g);
+            }
         }
         
         // Paint ship
         ship.paint((Graphics2D) g);
         
         // Paint shots
-        for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
-            shots.next().paint((Graphics2D) g);
-        }
-        
-        // Paint shots
         for (Shot shot : ship.getShots()) {
-            shot.paint((Graphics2D) g);
+            
+            // Do not draw shots that hit asteroids 
+            if(shot.getMoving()) {
+                shot.paint((Graphics2D) g);
+            }
         }
     }
 
