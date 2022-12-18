@@ -179,7 +179,7 @@ public class Ship implements AnimatedObject {
         double y_direction_point = y - speed * Math.cos(directionAngle);
         vectorTarget.setLocation(x_direction_point, y_direction_point);
     }
-    
+
     /**
      * Send the ship into hyperspace: disappear and reappear at a random
      * location
@@ -252,7 +252,7 @@ public class Ship implements AnimatedObject {
      * Die
      */
     public void die() {
-        
+
         // Get back to the center of the screen
         x = X;
         y = Y;
@@ -269,6 +269,9 @@ public class Ship implements AnimatedObject {
 
         // Reset moving
         moving = false;
+
+        // Reset list of shots
+        shotList.clear();
     }
 
     // JUNIT TESTING METHODS
