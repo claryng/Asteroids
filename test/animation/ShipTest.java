@@ -162,7 +162,7 @@ class ShipTest {
         // When not moving
         ship.rotateLeft();
         assertEquals(-0.2, ship.getRotatingAngle());
-        assertEquals(-0.2, ship.getDirectionAngle());
+        assertEquals(0, ship.getDirectionAngle());
         ship.rotateRight();
         assertEquals(0, ship.getRotatingAngle());
         assertEquals(0, ship.getDirectionAngle());
