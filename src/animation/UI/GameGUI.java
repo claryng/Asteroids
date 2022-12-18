@@ -195,6 +195,10 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
                     // ship will die, deduct the lives count and reset the lives
                     // label
                     ship.die();
+
+                    // Reset location of the asteroid that hits the ship
+                    asteroid.setRandom();
+
                     lives--;
                     livesUpdate.setText("Lives: " + lives);
 
