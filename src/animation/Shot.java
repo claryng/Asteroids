@@ -123,7 +123,7 @@ public class Shot implements AnimatedObject {
         // Set moving variable to true to continue moving in the next frame
         moving = true;
     }
-
+    
     /**
      * Get moving status
      * 

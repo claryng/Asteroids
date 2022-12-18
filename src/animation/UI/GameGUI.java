@@ -47,40 +47,32 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     private Asteroids asteroid3 = new LargeAsteroids(this);
     private Asteroids asteroid4 = new LargeAsteroids(this);
     private Asteroids asteroid5 = new LargeAsteroids(this);
-
+    
     // List contains all asteroids on the screen
-    CopyOnWriteArrayList<Asteroids> asteroids = new CopyOnWriteArrayList<Asteroids>() {
-        {
-            add(asteroid1);
-            add(asteroid2);
-            add(asteroid3);
-            add(asteroid4);
-            add(asteroid5);
-        }
-    };
+    CopyOnWriteArrayList<Asteroids> asteroids = new CopyOnWriteArrayList<Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
 
-    // Label used to show the lives on the screen
+    //Label used to show the lives on the screen
     private static JLabel livesUpdate;
-
-    // number of lives the ship have left
+    
+    //number of lives the ship have left
     private static int lives = 3;
 
-    // Label used to show the scores on the screen
+    //Label used to show the scores on the screen
     private static JLabel scoreUpdate;
 
-    // number of scores the ship earned
+    //number of scores the ship earned
     private static int score = 0;
 
-    // Label used to show the reult of a game
+    //Label used to show the result of a game
     private static JLabel gameResult = new JLabel();
-
-    // Button used to replay the game when died or win
+    
+    //Button used to replay the game when died or win
     private static JButton replayButton = new JButton("Replay");
-
-    // ship object
+    
+    //ship object
     private Ship ship = new Ship(this);
 
-    // use to check if the frame is moving
+    //use to check if the frame is moving
     private boolean moving = true;
 
     /**
@@ -90,27 +82,27 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     @SuppressWarnings("boxing")
     public GameGUI() {
 
-        // modify score lablel UI
-        // set score format to stay at 4 digits
+        //modify score lablel UI
+        //set score format to stay at 4 digits
         scoreUpdate = new JLabel(String.format("%04d", score));
         scoreUpdate.setForeground(Color.white);
         scoreUpdate.setBackground(null);
         scoreUpdate.setFont(new Font("Monospaced", Font.PLAIN, 25));
-
-        // modify lives lablel UI
+        
+        //modify lives lablel UI
         livesUpdate = new JLabel("Lives: " + lives);
         livesUpdate.setForeground(Color.white);
         livesUpdate.setBackground(null);
         livesUpdate.setFont(new Font("Monospaced", Font.PLAIN, 20));
         livesUpdate.setVerticalAlignment(SwingConstants.TOP);
-
-        // modify game result lablel UI
+        
+        //modify game result lablel UI
         gameResult.setForeground(Color.white);
         gameResult.setBackground(Color.black);
         gameResult.setFont(new Font("Monospaced", Font.PLAIN, 25));
         gameResult.setHorizontalAlignment(SwingConstants.CENTER);
-
-        // modify replay button UI
+        
+        //modify replay button UI
         replayButton.setForeground(Color.white);
         replayButton.setBackground(Color.black);
         replayButton.setFont(new Font("Monospaced", Font.PLAIN, 25));
@@ -121,40 +113,40 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // creating new asteroid
+                //creating new asteroid
                 newAsteroids();
-
-                // remove the replay button, update the new game score, result
-                // and lives on the screen
+                
+                //remove the replay button, update the new game score, result 
+                //and lives on the screen
                 remove(replayButton);
                 lives = 3;
                 livesUpdate.setText("Lives: " + lives);
                 score = 0;
                 scoreUpdate.setText(String.format("%04d", score));
                 gameResult.setText("");
-
-                // reset the ship to it's original starting point
+                
+                //reset the ship to it's original starting point
                 ship.die();
-
-                // start the thread
+                
+                //start the thread
                 start();
             }
-
+            
         });
-
-        // create the info panel containing score and lives
+        
+        //create the info panel containing score and lives
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.add(scoreUpdate);
         infoPanel.add(livesUpdate);
-        // set background to transparent
+        //set background to transparent
         infoPanel.setOpaque(false);
-
-        // set layout and add the labels
+        
+        //set layout and add the labels
         setLayout(new BorderLayout());
         add(infoPanel, BorderLayout.PAGE_START);
         add(gameResult, BorderLayout.CENTER);
-
+        
         // Allow the game to receive key input
         setFocusable(true);
         addKeyListener(this);
@@ -262,19 +254,19 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
 
         }
     }
-
+    
     /**
      * Check whether two objects collide. This tests whether their shapes
      * intersect.
      * 
      * @param shape1 asteroid
-     * @param shape2 shot/ship
+     * @param shape2 shot
      * @return true if the shapes intersect
      */
     public boolean checkCollision(Shape shape1, Shape shape2) {
         return shape1.intersects(shape2.getBounds2D());
     }
-
+    
     /**
      * Add game over to the screen and stop the thread
      * 
@@ -284,10 +276,9 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         add(replayButton, BorderLayout.PAGE_END);
         stop();
     }
-
+    
     /**
-     * Add winning message to the screen (not working though) and stop the
-     * thread
+     * Add winning message to the screen and stop the thread
      * 
      */
     private void win() {
@@ -295,7 +286,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         add(replayButton, BorderLayout.PAGE_END);
         stop();
     }
-
+    
     /**
      * Add 5 new asteroids
      * 
@@ -306,40 +297,31 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
         asteroid3 = new LargeAsteroids(this);
         asteroid4 = new LargeAsteroids(this);
         asteroid5 = new LargeAsteroids(this);
-        asteroids = new CopyOnWriteArrayList<Asteroids>() {
-            {
-                add(asteroid1);
-                add(asteroid2);
-                add(asteroid3);
-                add(asteroid4);
-                add(asteroid5);
-            }
-        };
+        asteroids = new CopyOnWriteArrayList<Asteroids>() {{add(asteroid1); add(asteroid2); add(asteroid3); add(asteroid4); add(asteroid5);}};
     }
-
+    
     /**
      * Paint the animation by painting the objects in the animation.
      * 
      * @param g the graphic context to draw on
      */
     public void paintComponent(Graphics g) {
-
+        
         super.paintComponent(g);
-
+        
         // Paint asteroids
         for (Asteroids asteroid : asteroids) {
             asteroid.paint((Graphics2D) g);
         }
-
+        
         // Paint ship
         ship.paint((Graphics2D) g);
-
+        
         // Paint shots
-        for (Iterator<Shot> shots = ship.getShots().iterator(); shots
-                .hasNext();) {
+        for(Iterator<Shot> shots = ship.getShots().iterator(); shots.hasNext();) {
             shots.next().paint((Graphics2D) g);
         }
-
+        
         // Paint shots
         for (Shot shot : ship.getShots()) {
             shot.paint((Graphics2D) g);
@@ -350,7 +332,7 @@ public class GameGUI extends AbstractAnimation implements KeyListener {
     /**
      * This is called on the downward action when the user presses a key. It
      * notifies the animated ball about presses of up arrow, right arrow, left
-     * arrow, H, and the space bar. All other keys are ignored.
+     * arrow, and the space bar. All other keys are ignored.
      * 
      * @param e information about the key pressed
      */
